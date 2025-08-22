@@ -1,0 +1,17 @@
+﻿mode: paper
+fee_rate: 0.0005
+leverage: 10
+margin_mode: cross
+per_order_budget_pct: 0.05
+safe_brake_enabled: true
+safe_brake_threshold: 0.60
+daily_dd_enabled: false
+kill_switch: { enabled: true, threshold: -0.25, cooldown_hours: 24 }
+allocation: { bitget: 1.0, okx: 0.0, bybit: 0.0 }
+paper: { initial_balance_usdt: 1000 }
+ui: { chinese_names: true }
+ensemble:
+  filters:
+    spa_alpha: 0.10   # 允许更宽的显著性阈值
+    pbo_max:   0.70   # PBO 上限放宽
+    dsr_min:   0.40   # DSR 下限放宽

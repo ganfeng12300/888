@@ -1,0 +1,13 @@
+﻿strategies:
+  - name: ma_cross_fast
+    module: strategies.ma_cross
+    params: { fast: 9, slow: 21, tf: "1h" }
+    enabled: true
+  - name: ma_cross_slow
+    module: strategies.ma_cross
+    params: { fast: 20, slow: 60, tf: "1h" }
+    enabled: true
+  - name: breakout_ch
+    module: strategies.breakout_ch
+    params: { n: 55, tf: "1h" }
+    enabled: true

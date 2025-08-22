@@ -1,0 +1,251 @@
+﻿# -*- coding: utf-8 -*-
+import os, time, json, sqlite3, importlib, pandas as pd, sys
+from datetime import datetime
+ROOT=r"D:\SQuant_Pro"; DB=r"D:\quant_system_v2\data\market_data.db"
+CFG=os.path.join(ROOT,"config")
+LOG=os.path.join(ROOT,"logs","paper"); os.makedirs(LOG, exist_ok=True)
+CTRL=os.path.join(ROOT,"control"); os.makedirs(CTRL, exist_ok=True)
+if ROOT not in sys.path: sys.path.insert(0, ROOT)
+
+def last_close(db, sym, tf='1h'):
+    # 只用已收盘K线
+    tf_sec = 3600 if tf=='1h' else (900 if tf=='15m' else 60)
+    cutoff = int(time.time()//tf_sec*tf_sec - 1)
+    con=sqlite3.connect(db)
+    try:
+        df=pd.read_sql(f'SELECT * FROM "{sym}_{tf}" WHERE timestamp<=? ORDER BY 1 DESC LIMIT 1', con, params=[cutoff])
+    except:
+        con.close(); return None
+    con.close()
+    if df.empty: return None
+    return float(df['close'].iloc[-1])
+
+def load_yaml(p):
+    import yaml; return yaml.safe_load(open(p,'r',encoding='utf-8-sig'))
+
+def append_csv(path, row, header=None):
+    import csv
+    exists=os.path.exists(path)
+    with open(path,'a',newline='',encoding='utf-8') as f:
+        w=csv.DictWriter(f, fieldnames=header or list(row.keys()))
+        if not exists: w.writeheader()
+        w.writerow(row)
+
+def pop_commands():
+    out=[]
+    try:
+        for fn in os.listdir(CTRL):
+            if fn.startswith("cmd_") and fn.endswith(".json"):
+                p=os.path.join(CTRL,fn)
+                try:
+                    with open(p,'r',encoding='utf-8-sig') as f:
+                        out.append(json.load(f))
+                finally:
+                    try: os.remove(p)
+                    except: pass
+    except FileNotFoundError:
+        os.makedirs(CTRL, exist_ok=True)
+    return out
+
+def current_signals(reg, symbols, cutoff_ts=None):
+    out={}
+    for ent in reg.get('strategies',[]):
+        if not ent.get('enabled',True): continue
+        name,module,params=ent['name'],ent['module'],dict(ent.get('params',{}))
+        try:
+            mod=importlib.import_module(module)
+            sig=mod.generate_signals(DB, symbols, params)
+            if cutoff_ts is not None:
+                ts_cut = pd.to_datetime(cutoff_ts, unit='s', utc=True)
+                sig = sig[sig['ts']<=ts_cut]        # 不看未来
+            for s in symbols:
+                row=sig[sig['symbol']==s].tail(1)
+                if row.empty: continue
+                out.setdefault(s,{})[name]=int(row['signal'].iloc[-1])
+        except Exception:
+            continue
+    return out
+
+def calc_targets_old(equity_usdt, gov, weights_df, signals_map, prices, symbol_list):
+    per=gov.get('per_order_budget_pct',0.05); lev=gov.get('leverage',10)
+    w={r['name']:r['weight'] for _,r in weights_df.iterrows()}
+    targets={}
+    for sym in symbol_list:
+        agg=0.0
+        for strat, sgn in signals_map.get(sym, {}).items():
+            agg += w.get(strat,0.0)*sgn
+        side = 1 if agg>0.15 else (-1 if agg<-0.15 else 0)
+        if side==0: targets[sym]=0.0; continue
+        px=prices.get(sym,0.0) or 0.0
+        if px<=0: targets[sym]=0.0; continue
+        notional=equity_usdt*per
+        qty=(notional/px)*lev
+        targets[sym]=side*qty
+    return targets
+
+def calc_targets(equity_usdt, gov, weights_df, signals_map, prices, symbol_list, pos_state=None):
+    per=gov.get('per_order_budget_pct',0.05); lev=gov.get('leverage',10)
+    w={r['name']:r['weight'] for _,r in weights_df.iterrows()}
+    OPEN_T=0.25; CLOSE_T=0.10; FLIP_T=0.35
+    targets={}
+    for sym in symbol_list:
+        agg=sum(w.get(strat,0.0)*sgn for strat, sgn in signals_map.get(sym, {}).items())
+        last_side = 0 if pos_state is None else int(pos_state.get(sym+'_side', 0))
+        if last_side==0:
+            side = 1 if agg>OPEN_T else (-1 if agg<-OPEN_T else 0)
+        elif last_side==1:
+            side = -1 if agg<-FLIP_T else (0 if agg<=CLOSE_T else 1)
+        else:
+            side = 1 if agg>FLIP_T else (0 if agg>=-CLOSE_T else -1)
+        if side==0:
+            targets[sym]=0.0; continue
+        px=prices.get(sym,0.0) or 0.0
+        if px<=0:
+            targets[sym]=0.0; continue
+        notional=equity_usdt*per
+        qty=(notional/px)*lev
+        targets[sym]=side*qty
+    return targets
+def main():
+    gov=load_yaml(os.path.join(CFG,'governance.yaml'))
+    init=float(gov.get('paper',{}).get('initial_balance_usdt',1000)); balance=init
+
+    uni_path=os.path.join(ROOT,'data','universe','Top50.txt')
+    if not os.path.exists(uni_path):
+        print('Top50.txt missing, run ops_refresh_universe.ps1 first.'); return
+    uni=[x.strip() for x in open(uni_path,'r',encoding='ascii').read().splitlines() if x.strip()]
+
+    wfile=os.path.join(ROOT,'data','signals','live','ensemble_weights.csv')
+    import pandas as pd
+    weights=pd.read_csv(wfile) if os.path.exists(wfile) else pd.DataFrame(columns=['name','weight'])
+    if weights.empty:
+        print('no ensemble_weights, run ensemble_live.py'); return
+
+    pos={}
+    cooldown_sec = 300  # 5分钟
+    last_trade_ts = {}
+    fee_rate=float(gov.get('fee_rate',0.0005))
+    lev=int(gov.get('leverage',10))
+    safe_thr=float(gov.get('safe_brake_threshold',0.6))
+
+    tf_sec = 3600  # 与策略一致，1h
+    while True:
+        cutoff = int(time.time()//tf_sec*tf_sec - 1)
+
+        prices={s: last_close(DB,s,'1h') for s in uni}
+        reg=load_yaml(os.path.join(CFG,'strategy_registry.yaml'))
+        sigs=current_signals(reg, uni, cutoff_ts=cutoff)
+        targets=calc_targets(balance, gov, weights, sigs, prices, uni, pos_state=pos)
+
+        # 控制指令：随时平仓
+        cmds = pop_commands()
+        force_all = any(c.get("cmd")=="close_all" for c in cmds)
+        force_syms = {str(s).upper() for c in cmds if c.get("cmd")=="close_symbol" for s in c.get("symbols",[])}
+
+        if force_all:
+            for s in uni: targets[s]=0.0
+            print("[CTRL] FORCE CLOSE ALL")
+        if force_syms:
+            for s in force_syms:
+                if s in targets: targets[s]=0.0
+            print("[CTRL] FORCE CLOSE:", ",".join(sorted(force_syms)))
+
+        used=0.0
+        for sym,tgt in targets.items():
+            px=prices.get(sym,0.0)
+            if px<=0: continue
+            cur=pos.get(sym,0.0); delta=tgt-cur
+
+            # 冷却：新开或翻向在冷却期内则不动作
+            now = time.time()
+            opening = (cur==0.0 and tgt!=0.0) or (cur*tgt<0)
+            if opening and (now - last_trade_ts.get(sym, 0) < cooldown_sec):
+                tgt = cur
+                delta = 0.0
+
+            # 安全刹车仅限制新开仓；平仓不限制
+            if cur==0.0 and tgt!=0.0:
+                used += abs(tgt)*px/lev
+            if used/max(1.0,balance) >= safe_thr and cur==0.0 and tgt!=0.0:
+                continue
+
+            if abs(delta)<1e-9: continue
+            side='buy' if delta>0 else 'sell'
+            slip=px*0.0005; fill=px+(slip if side=='buy' else -slip)
+            qty=abs(delta); fee=fill*qty*fee_rate; realized=0.0
+
+            # 翻向或清仓时结算
+            if cur!=0 and (cur>0)!=(tgt>0 or tgt==0):
+                realized += (fill - pos.get(sym+'_entry',fill)) * (-cur)
+                fee += abs(cur)*fill*fee_rate
+                cur=0.0
+
+            pos[sym]=tgt
+            pos[sym+'_side']=(1 if tgt>0 else (-1 if tgt<0 else 0))
+            if tgt!=0: pos[sym+'_entry']=fill
+
+            reason = 'force_close' if ( (force_all or sym in force_syms) and tgt==0 ) else 'auto'
+            append_csv(os.path.join(LOG, f"trades_{datetime.utcnow().strftime('%Y%m%d')}.csv"), {
+                'ts': datetime.utcnow().isoformat(), 'symbol': sym, 'name_cn': sym,
+                'side': side, 'qty': round(qty,8), 'price': round(fill,6),
+                'fee': round(fee,6), 'pnl': round(realized,6), 'reason': reason
+            })
+            balance += realized - fee
+            last_trade_ts[sym] = now
+
+        unreal=0.0
+        for sym in uni:
+            q=pos.get(sym,0.0); px=prices.get(sym,0.0)
+            if q!=0 and px>0:
+                entry=pos.get(sym+'_entry', px)
+                unreal += (px-entry)*q
+        eq=balance+unreal
+        append_csv(os.path.join(LOG, "paper_equity.csv"), {
+            'ts': datetime.utcnow().isoformat(), 'balance': round(balance,6),
+            'unreal': round(unreal,6), 'equity': round(eq,6)
+        })
+        print('paper tick', datetime.utcnow().isoformat(), 'eq=', round(eq,2))
+        time.sleep(5)
+
+if __name__=='__main__': main()
+# --- patched: hysteresis version of calc_targets ---
+def calc_targets_old(equity_usdt, gov, weights_df, signals_map, prices, symbol_list, pos_state=None):
+    per=gov.get('per_order_budget_pct',0.05)
+    lev=gov.get('leverage',10)
+
+    # 策略权重映射
+    w={r['name']:r['weight'] for _,r in weights_df.iterrows()}
+
+    # 滞回阈值：开仓/平仓/翻向
+    OPEN_T=0.25; CLOSE_T=0.10; FLIP_T=0.35
+
+    targets={}
+    for sym in symbol_list:
+        agg=sum(w.get(strat,0.0)*sgn for strat, sgn in signals_map.get(sym, {}).items())
+        last_side = 0 if pos_state is None else int(pos_state.get(sym+'_side', 0))
+
+        if last_side==0:
+            side = 1 if agg>OPEN_T else (-1 if agg<-OPEN_T else 0)
+        elif last_side==1:
+            side = -1 if agg<-FLIP_T else (0 if agg<=CLOSE_T else 1)
+        else:  # last_side==-1
+            side = 1 if agg>FLIP_T else (0 if agg>=-CLOSE_T else -1)
+
+        if side==0:
+            targets[sym]=0.0
+            continue
+
+        px=prices.get(sym,0.0) or 0.0
+        if px<=0:
+            targets[sym]=0.0
+            continue
+
+        notional=equity_usdt*per
+        qty=(notional/px)*lev
+        targets[sym]=side*qty
+    return targets
+# --- end patch ---
+
+
+
+

@@ -1,0 +1,36 @@
+﻿<!doctype html>
+<html><head><meta charset="utf-8"><title>Health Report</title>
+<style>
+body{font-family:Arial,Helvetica,sans-serif;margin:20px;}
+h1{margin:0 0 10px 0;} .meta{color:#555;}
+table{border-collapse:collapse;width:100%;}
+th,td{border:1px solid #ddd;padding:8px;font-size:14px;}
+th{background:#f2f2f2;}
+.ok{background:#e7f7e7;} .warn{background:#fff7e0;} .fail{background:#fde7e7;}
+pre{white-space:pre-wrap;font-size:12px;background:#f9f9f9;border:1px solid #eee;padding:8px;}
+</style></head><body>
+<h1>Health Report</h1>
+<div class="meta">Started: 2025-08-20 18:49:42 UTC | DB: D:\quant_system_v2\data\market_data.db | Roots: D:\quant_system_pro (3)\quant_system_pro, D:\SQuant_Pro | Quick: True</div>
+<table><tr><th>Status</th><th>ID</th><th>Name</th><th>Details</th><th>Evidence</th><th>Suggestion</th></tr><tr class='ok'><td>OK</td><td>env.sys</td><td>System profile</td><td>OS/CPU/RAM captured</td><td><pre>Microsoft Windows 11 专业版 CPU=40/20 RAM=127.84 GB</pre></td><td>None</td></tr>
+<tr class='ok'><td>OK</td><td>env.py</td><td>Python</td><td>Python detected</td><td><pre>version=3.9.13</pre></td><td>None</td></tr>
+<tr class='ok'><td>OK</td><td>env.deps</td><td>Python deps (soft check)</td><td>Detected 1 modules</td><td><pre>{"sqlite3": {"ok": true}, "pandas": {"ok": false, "err": "No module named 'pandas'"}, "numpy": {"ok": false, "err": "No module named 'numpy'"}, "torch": {"ok": false, "err": "No module named 'torch'"}, "lightgbm": {"ok": false, "err": "No module named 'lightgbm'"}}</pre></td><td>Install missing ones only if needed</td></tr>
+<tr class='ok'><td>OK</td><td>env.db</td><td>DB files</td><td>DB located</td><td><pre>DB=D:\quant_system_v2\data\market_data.db; size=3697778688</pre></td><td>None</td></tr>
+<tr class='ok'><td>OK</td><td>net.Binance_Futures_Ping</td><td>Binance_Futures_Ping</td><td>Reachable</td><td><pre>status=200 time_ms=785</pre></td><td>None</td></tr>
+<tr class='ok'><td>OK</td><td>net.Binance_Spot_Ping</td><td>Binance_Spot_Ping</td><td>Reachable</td><td><pre>status=200 time_ms=632</pre></td><td>None</td></tr>
+<tr class='ok'><td>OK</td><td>net.OKX_Time</td><td>OKX_Time</td><td>Reachable</td><td><pre>status=200 time_ms=724</pre></td><td>None</td></tr>
+<tr class='warn'><td>WARN</td><td>net.Bitget_Time_Mix</td><td>Bitget_Time_Mix</td><td>Unreachable or slow</td><td><pre>err=远程服务器返回错误: (404) 未找到。</pre></td><td>Check network or regional blocking</td></tr>
+<tr class='ok'><td>OK</td><td>net.Bitget_Time_Spot</td><td>Bitget_Time_Spot</td><td>Reachable</td><td><pre>status=200 time_ms=125</pre></td><td>None</td></tr>
+<tr class='ok'><td>OK</td><td>cfg.wmic</td><td>wmic usage</td><td>Detect deprecated wmic references</td><td><pre>hits=0</pre></td><td>Replace with PowerShell Get-CimInstance/Stop-Process</td></tr>
+<tr class='ok'><td>OK</td><td>cfg.1m</td><td>1m timeframe references</td><td>1m should be excluded per policy</td><td><pre>hits=0</pre></td><td>Purge 1m in configs; keep 5m..1d only</td></tr>
+<tr class='ok'><td>OK</td><td>cfg.legacy</td><td>Legacy path references</td><td>Hardcoded legacy paths detected</td><td><pre>hits=0</pre></td><td>Normalize to D:\quant_system_v2 or D:\SQuant_Pro</td></tr>
+<tr class='warn'><td>WARN</td><td>guard.pid</td><td>Guardian PID</td><td>PID status</td><td><pre>PID file absent (may be stopped or not created)</pre></td><td>If running, ensure it writes PID atomically; if stopped, ignore</td></tr>
+<tr class='ok'><td>OK</td><td>logs.latest</td><td>Latest collector log</td><td>Found rotating or fixed log</td><td><pre>latest=D:\SQuant_Pro\logs\collector_task.log lastWrite=2025-08-20 18:48:09 UTC</pre></td><td>Tail newest when verifying realtime</td></tr>
+<tr class='ok'><td>OK</td><td>logs.ht</td><td>Hashtable path anomaly</td><td>Detect wrong object-to-string path usage</td><td><pre>hits=0</pre></td><td>Ensure log path variables are strings only</td></tr>
+<tr class='ok'><td>OK</td><td>db.cover30</td><td>Coverage30 >=95%</td><td>Existing pairs with coverage30>=95%</td><td><pre>ok=57 / exists=77</pre></td><td>Run backfill to raise coverage30</td></tr>
+<tr class='ok'><td>OK</td><td>db.cover90</td><td>Coverage90 >=95%</td><td>Existing pairs with coverage90>=95%</td><td><pre>ok=57 / exists=77</pre></td><td>Backfill until >=95% for core pairs</td></tr>
+<tr class='ok'><td>OK</td><td>db.cover365</td><td>Coverage365 >=95%</td><td>Existing pairs with coverage365>=95%</td><td><pre>ok=77 / exists=77</pre></td><td>Target 365d coverage for full backtest</td></tr>
+<tr class='ok'><td>OK</td><td>db.futurek</td><td>Future K guard</td><td>Any table latest_ts > now+120s</td><td><pre>future_k=0</pre></td><td>Fix data source or drop future bars</td></tr>
+<tr class='warn'><td>WARN</td><td>db.fresh5m</td><td>5m freshness</td><td>5m last_age_sec > 1800 count</td><td><pre>lag_count=7</pre></td><td>Check realtime collector and API limits</td></tr>
+<tr class='warn'><td>WARN</td><td>flow.fn1</td><td>Function save_optimized_params_to_db</td><td>Check presence in codebase</td><td><pre>hits=0</pre></td><td>Ensure utils/param_loader.py exports it</td></tr>
+<tr class='ok'><td>OK</td><td>flow.fn2</td><td>strategy_func support</td><td>Backtest engine should accept strategy_func</td><td><pre>hits=5</pre></td><td>Upgrade backtest engine if missing</td></tr>
+</table></body></html>

@@ -1,0 +1,27 @@
+{
+  "ts_utc": "20250821_010507",
+  "source": "D:\\SQuant_Pro\\data\\scores\\strategy_scores_20250821_081551.csv",
+  "rows": 3,
+  "md5": "157207cd5e9a1a3541b405df73d19644",
+  "required_cols": [
+    "symbol",
+    "tf",
+    "strategy",
+    "trades",
+    "ret",
+    "sharpe",
+    "sortino",
+    "mdd",
+    "calmar",
+    "ulcer",
+    "upi",
+    "dsr",
+    "spa_alpha",
+    "pbo",
+    "cagr",
+    "vol",
+    "turnover",
+    "asof_utc",
+    "score"
+  ]
+}

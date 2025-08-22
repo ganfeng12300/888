@@ -1,0 +1,1712 @@
+﻿{
+    "meta":  {
+                 "db":  "D:\\quant_system_v2\\data\\market_data.db",
+                 "python_cmd_path":  "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python39\\python.exe",
+                 "db_probe":  {
+                                  "now_ts":  1755715787,
+                                  "pairs":  [
+                                                {
+                                                    "symbol":  "BTCUSDT",
+                                                    "tf":  "5m",
+                                                    "exists":  true,
+                                                    "latest":  1755715200,
+                                                    "counts":  {
+                                                                   "30":  8639,
+                                                                   "90":  25919,
+                                                                   "365":  105119
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9999,
+                                                                     "90":  1.0,
+                                                                     "365":  1.0
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  587
+                                                },
+                                                {
+                                                    "symbol":  "BTCUSDT",
+                                                    "tf":  "15m",
+                                                    "exists":  true,
+                                                    "latest":  1755714600,
+                                                    "counts":  {
+                                                                   "30":  2879,
+                                                                   "90":  8639,
+                                                                   "365":  35039
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9997,
+                                                                     "90":  0.9999,
+                                                                     "365":  1.0
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  1187
+                                                },
+                                                {
+                                                    "symbol":  "BTCUSDT",
+                                                    "tf":  "30m",
+                                                    "exists":  true,
+                                                    "latest":  1755712800,
+                                                    "counts":  {
+                                                                   "30":  1439,
+                                                                   "90":  4319,
+                                                                   "365":  17519
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9993,
+                                                                     "90":  0.9998,
+                                                                     "365":  0.9999
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  2987
+                                                },
+                                                {
+                                                    "symbol":  "BTCUSDT",
+                                                    "tf":  "1h",
+                                                    "exists":  true,
+                                                    "latest":  1755709200,
+                                                    "counts":  {
+                                                                   "30":  719,
+                                                                   "90":  2159,
+                                                                   "365":  8759
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9986,
+                                                                     "90":  0.9995,
+                                                                     "365":  0.9999
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  6587
+                                                },
+                                                {
+                                                    "symbol":  "BTCUSDT",
+                                                    "tf":  "2h",
+                                                    "exists":  true,
+                                                    "latest":  1755705600,
+                                                    "counts":  {
+                                                                   "30":  359,
+                                                                   "90":  1079,
+                                                                   "365":  4379
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9972,
+                                                                     "90":  0.9991,
+                                                                     "365":  0.9998
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  10187
+                                                },
+                                                {
+                                                    "symbol":  "BTCUSDT",
+                                                    "tf":  "4h",
+                                                    "exists":  true,
+                                                    "latest":  1755691200,
+                                                    "counts":  {
+                                                                   "30":  179,
+                                                                   "90":  539,
+                                                                   "365":  2189
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9944,
+                                                                     "90":  0.9981,
+                                                                     "365":  0.9995
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  24587
+                                                },
+                                                {
+                                                    "symbol":  "BTCUSDT",
+                                                    "tf":  "1d",
+                                                    "exists":  true,
+                                                    "latest":  1755648000,
+                                                    "counts":  {
+                                                                   "30":  30,
+                                                                   "90":  90,
+                                                                   "365":  365
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  1.0,
+                                                                     "90":  1.0,
+                                                                     "365":  1.0
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  67787
+                                                },
+                                                {
+                                                    "symbol":  "ETHUSDT",
+                                                    "tf":  "5m",
+                                                    "exists":  true,
+                                                    "latest":  1755715200,
+                                                    "counts":  {
+                                                                   "30":  8639,
+                                                                   "90":  25919,
+                                                                   "365":  105119
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9999,
+                                                                     "90":  1.0,
+                                                                     "365":  1.0
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  587
+                                                },
+                                                {
+                                                    "symbol":  "ETHUSDT",
+                                                    "tf":  "15m",
+                                                    "exists":  true,
+                                                    "latest":  1755714600,
+                                                    "counts":  {
+                                                                   "30":  2879,
+                                                                   "90":  8639,
+                                                                   "365":  35039
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9997,
+                                                                     "90":  0.9999,
+                                                                     "365":  1.0
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  1187
+                                                },
+                                                {
+                                                    "symbol":  "ETHUSDT",
+                                                    "tf":  "30m",
+                                                    "exists":  true,
+                                                    "latest":  1755712800,
+                                                    "counts":  {
+                                                                   "30":  1439,
+                                                                   "90":  4319,
+                                                                   "365":  17519
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9993,
+                                                                     "90":  0.9998,
+                                                                     "365":  0.9999
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  2987
+                                                },
+                                                {
+                                                    "symbol":  "ETHUSDT",
+                                                    "tf":  "1h",
+                                                    "exists":  true,
+                                                    "latest":  1755709200,
+                                                    "counts":  {
+                                                                   "30":  719,
+                                                                   "90":  2159,
+                                                                   "365":  8759
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9986,
+                                                                     "90":  0.9995,
+                                                                     "365":  0.9999
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  6587
+                                                },
+                                                {
+                                                    "symbol":  "ETHUSDT",
+                                                    "tf":  "2h",
+                                                    "exists":  true,
+                                                    "latest":  1755705600,
+                                                    "counts":  {
+                                                                   "30":  359,
+                                                                   "90":  1079,
+                                                                   "365":  4379
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9972,
+                                                                     "90":  0.9991,
+                                                                     "365":  0.9998
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  10187
+                                                },
+                                                {
+                                                    "symbol":  "ETHUSDT",
+                                                    "tf":  "4h",
+                                                    "exists":  true,
+                                                    "latest":  1755691200,
+                                                    "counts":  {
+                                                                   "30":  179,
+                                                                   "90":  539,
+                                                                   "365":  2189
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9944,
+                                                                     "90":  0.9981,
+                                                                     "365":  0.9995
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  24587
+                                                },
+                                                {
+                                                    "symbol":  "ETHUSDT",
+                                                    "tf":  "1d",
+                                                    "exists":  true,
+                                                    "latest":  1755648000,
+                                                    "counts":  {
+                                                                   "30":  30,
+                                                                   "90":  90,
+                                                                   "365":  365
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  1.0,
+                                                                     "90":  1.0,
+                                                                     "365":  1.0
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  67787
+                                                },
+                                                {
+                                                    "symbol":  "OPUSDT",
+                                                    "tf":  "5m",
+                                                    "exists":  true,
+                                                    "latest":  1755670200,
+                                                    "counts":  {
+                                                                   "30":  7183,
+                                                                   "90":  24463,
+                                                                   "365":  103663
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.8314,
+                                                                     "90":  0.9438,
+                                                                     "365":  0.9861
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  45587
+                                                },
+                                                {
+                                                    "symbol":  "OPUSDT",
+                                                    "tf":  "15m",
+                                                    "exists":  true,
+                                                    "latest":  1755669600,
+                                                    "counts":  {
+                                                                   "30":  2395,
+                                                                   "90":  8155,
+                                                                   "365":  34555
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.8316,
+                                                                     "90":  0.9439,
+                                                                     "365":  0.9862
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  46187
+                                                },
+                                                {
+                                                    "symbol":  "OPUSDT",
+                                                    "tf":  "30m",
+                                                    "exists":  true,
+                                                    "latest":  1755667800,
+                                                    "counts":  {
+                                                                   "30":  1198,
+                                                                   "90":  4078,
+                                                                   "365":  17278
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.8319,
+                                                                     "90":  0.944,
+                                                                     "365":  0.9862
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  47987
+                                                },
+                                                {
+                                                    "symbol":  "OPUSDT",
+                                                    "tf":  "1h",
+                                                    "exists":  true,
+                                                    "latest":  1755666000,
+                                                    "counts":  {
+                                                                   "30":  600,
+                                                                   "90":  2040,
+                                                                   "365":  8640
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.8333,
+                                                                     "90":  0.9444,
+                                                                     "365":  0.9863
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  49787
+                                                },
+                                                {
+                                                    "symbol":  "OPUSDT",
+                                                    "tf":  "2h",
+                                                    "exists":  true,
+                                                    "latest":  1755669600,
+                                                    "counts":  {
+                                                                   "30":  302,
+                                                                   "90":  1022,
+                                                                   "365":  4322
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.8389,
+                                                                     "90":  0.9463,
+                                                                     "365":  0.9868
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  46187
+                                                },
+                                                {
+                                                    "symbol":  "OPUSDT",
+                                                    "tf":  "4h",
+                                                    "exists":  true,
+                                                    "latest":  1755273600,
+                                                    "counts":  {
+                                                                   "30":  150,
+                                                                   "90":  510,
+                                                                   "365":  2160
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.8333,
+                                                                     "90":  0.9444,
+                                                                     "365":  0.9863
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  442187
+                                                },
+                                                {
+                                                    "symbol":  "OPUSDT",
+                                                    "tf":  "1d",
+                                                    "exists":  true,
+                                                    "latest":  1755216000,
+                                                    "counts":  {
+                                                                   "30":  25,
+                                                                   "90":  85,
+                                                                   "365":  360
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.8333,
+                                                                     "90":  0.9444,
+                                                                     "365":  0.9863
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  499787
+                                                },
+                                                {
+                                                    "symbol":  "RNDRUSDT",
+                                                    "tf":  "5m",
+                                                    "exists":  false
+                                                },
+                                                {
+                                                    "symbol":  "RNDRUSDT",
+                                                    "tf":  "15m",
+                                                    "exists":  false
+                                                },
+                                                {
+                                                    "symbol":  "RNDRUSDT",
+                                                    "tf":  "30m",
+                                                    "exists":  false
+                                                },
+                                                {
+                                                    "symbol":  "RNDRUSDT",
+                                                    "tf":  "1h",
+                                                    "exists":  false
+                                                },
+                                                {
+                                                    "symbol":  "RNDRUSDT",
+                                                    "tf":  "2h",
+                                                    "exists":  false
+                                                },
+                                                {
+                                                    "symbol":  "RNDRUSDT",
+                                                    "tf":  "4h",
+                                                    "exists":  false
+                                                },
+                                                {
+                                                    "symbol":  "RNDRUSDT",
+                                                    "tf":  "1d",
+                                                    "exists":  false
+                                                },
+                                                {
+                                                    "symbol":  "ARBUSDT",
+                                                    "tf":  "5m",
+                                                    "exists":  true,
+                                                    "latest":  1755704700,
+                                                    "counts":  {
+                                                                   "30":  8604,
+                                                                   "90":  25884,
+                                                                   "365":  105084
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9958,
+                                                                     "90":  0.9986,
+                                                                     "365":  0.9997
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  11087
+                                                },
+                                                {
+                                                    "symbol":  "ARBUSDT",
+                                                    "tf":  "15m",
+                                                    "exists":  true,
+                                                    "latest":  1755703800,
+                                                    "counts":  {
+                                                                   "30":  2867,
+                                                                   "90":  8627,
+                                                                   "365":  35027
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9955,
+                                                                     "90":  0.9985,
+                                                                     "365":  0.9996
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  11987
+                                                },
+                                                {
+                                                    "symbol":  "ARBUSDT",
+                                                    "tf":  "30m",
+                                                    "exists":  true,
+                                                    "latest":  1755702000,
+                                                    "counts":  {
+                                                                   "30":  1433,
+                                                                   "90":  4313,
+                                                                   "365":  17513
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9951,
+                                                                     "90":  0.9984,
+                                                                     "365":  0.9996
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  13787
+                                                },
+                                                {
+                                                    "symbol":  "ARBUSDT",
+                                                    "tf":  "1h",
+                                                    "exists":  true,
+                                                    "latest":  1755698400,
+                                                    "counts":  {
+                                                                   "30":  716,
+                                                                   "90":  2156,
+                                                                   "365":  8756
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9944,
+                                                                     "90":  0.9981,
+                                                                     "365":  0.9995
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  17387
+                                                },
+                                                {
+                                                    "symbol":  "ARBUSDT",
+                                                    "tf":  "2h",
+                                                    "exists":  true,
+                                                    "latest":  1755691200,
+                                                    "counts":  {
+                                                                   "30":  357,
+                                                                   "90":  1077,
+                                                                   "365":  4377
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9917,
+                                                                     "90":  0.9972,
+                                                                     "365":  0.9993
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  24587
+                                                },
+                                                {
+                                                    "symbol":  "ARBUSDT",
+                                                    "tf":  "4h",
+                                                    "exists":  true,
+                                                    "latest":  1755676800,
+                                                    "counts":  {
+                                                                   "30":  178,
+                                                                   "90":  538,
+                                                                   "365":  2188
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9889,
+                                                                     "90":  0.9963,
+                                                                     "365":  0.9991
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  38987
+                                                },
+                                                {
+                                                    "symbol":  "ARBUSDT",
+                                                    "tf":  "1d",
+                                                    "exists":  true,
+                                                    "latest":  1755561600,
+                                                    "counts":  {
+                                                                   "30":  29,
+                                                                   "90":  89,
+                                                                   "365":  364
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9667,
+                                                                     "90":  0.9889,
+                                                                     "365":  0.9973
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  154187
+                                                },
+                                                {
+                                                    "symbol":  "FETUSDT",
+                                                    "tf":  "5m",
+                                                    "exists":  true,
+                                                    "latest":  1755669900,
+                                                    "counts":  {
+                                                                   "30":  7159,
+                                                                   "90":  24439,
+                                                                   "365":  103639
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.8286,
+                                                                     "90":  0.9429,
+                                                                     "365":  0.9859
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  45887
+                                                },
+                                                {
+                                                    "symbol":  "FETUSDT",
+                                                    "tf":  "15m",
+                                                    "exists":  true,
+                                                    "latest":  1755669600,
+                                                    "counts":  {
+                                                                   "30":  2388,
+                                                                   "90":  8148,
+                                                                   "365":  34548
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.8292,
+                                                                     "90":  0.9431,
+                                                                     "365":  0.986
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  46187
+                                                },
+                                                {
+                                                    "symbol":  "FETUSDT",
+                                                    "tf":  "30m",
+                                                    "exists":  true,
+                                                    "latest":  1755270000,
+                                                    "counts":  {
+                                                                   "30":  1193,
+                                                                   "90":  4073,
+                                                                   "365":  17273
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.8285,
+                                                                     "90":  0.9428,
+                                                                     "365":  0.9859
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  445787
+                                                },
+                                                {
+                                                    "symbol":  "FETUSDT",
+                                                    "tf":  "1h",
+                                                    "exists":  true,
+                                                    "latest":  1755259200,
+                                                    "counts":  {
+                                                                   "30":  594,
+                                                                   "90":  2034,
+                                                                   "365":  8634
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.825,
+                                                                     "90":  0.9417,
+                                                                     "365":  0.9856
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  456587
+                                                },
+                                                {
+                                                    "symbol":  "FETUSDT",
+                                                    "tf":  "2h",
+                                                    "exists":  true,
+                                                    "latest":  1755669600,
+                                                    "counts":  {
+                                                                   "30":  299,
+                                                                   "90":  1019,
+                                                                   "365":  4319
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.8306,
+                                                                     "90":  0.9435,
+                                                                     "365":  0.9861
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  46187
+                                                },
+                                                {
+                                                    "symbol":  "FETUSDT",
+                                                    "tf":  "4h",
+                                                    "exists":  true,
+                                                    "latest":  1755259200,
+                                                    "counts":  {
+                                                                   "30":  149,
+                                                                   "90":  509,
+                                                                   "365":  2159
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.8278,
+                                                                     "90":  0.9426,
+                                                                     "365":  0.9858
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  456587
+                                                },
+                                                {
+                                                    "symbol":  "FETUSDT",
+                                                    "tf":  "1d",
+                                                    "exists":  true,
+                                                    "latest":  1755129600,
+                                                    "counts":  {
+                                                                   "30":  24,
+                                                                   "90":  84,
+                                                                   "365":  359
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.8,
+                                                                     "90":  0.9333,
+                                                                     "365":  0.9836
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  586187
+                                                },
+                                                {
+                                                    "symbol":  "SOLUSDT",
+                                                    "tf":  "5m",
+                                                    "exists":  true,
+                                                    "latest":  1755715200,
+                                                    "counts":  {
+                                                                   "30":  8639,
+                                                                   "90":  25919,
+                                                                   "365":  105119
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9999,
+                                                                     "90":  1.0,
+                                                                     "365":  1.0
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  587
+                                                },
+                                                {
+                                                    "symbol":  "SOLUSDT",
+                                                    "tf":  "15m",
+                                                    "exists":  true,
+                                                    "latest":  1755714600,
+                                                    "counts":  {
+                                                                   "30":  2879,
+                                                                   "90":  8639,
+                                                                   "365":  35039
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9997,
+                                                                     "90":  0.9999,
+                                                                     "365":  1.0
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  1187
+                                                },
+                                                {
+                                                    "symbol":  "SOLUSDT",
+                                                    "tf":  "30m",
+                                                    "exists":  true,
+                                                    "latest":  1755712800,
+                                                    "counts":  {
+                                                                   "30":  1439,
+                                                                   "90":  4319,
+                                                                   "365":  17519
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9993,
+                                                                     "90":  0.9998,
+                                                                     "365":  0.9999
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  2987
+                                                },
+                                                {
+                                                    "symbol":  "SOLUSDT",
+                                                    "tf":  "1h",
+                                                    "exists":  true,
+                                                    "latest":  1755709200,
+                                                    "counts":  {
+                                                                   "30":  719,
+                                                                   "90":  2159,
+                                                                   "365":  8759
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9986,
+                                                                     "90":  0.9995,
+                                                                     "365":  0.9999
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  6587
+                                                },
+                                                {
+                                                    "symbol":  "SOLUSDT",
+                                                    "tf":  "2h",
+                                                    "exists":  true,
+                                                    "latest":  1755705600,
+                                                    "counts":  {
+                                                                   "30":  359,
+                                                                   "90":  1079,
+                                                                   "365":  4379
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9972,
+                                                                     "90":  0.9991,
+                                                                     "365":  0.9998
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  10187
+                                                },
+                                                {
+                                                    "symbol":  "SOLUSDT",
+                                                    "tf":  "4h",
+                                                    "exists":  true,
+                                                    "latest":  1755691200,
+                                                    "counts":  {
+                                                                   "30":  179,
+                                                                   "90":  539,
+                                                                   "365":  2189
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9944,
+                                                                     "90":  0.9981,
+                                                                     "365":  0.9995
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  24587
+                                                },
+                                                {
+                                                    "symbol":  "SOLUSDT",
+                                                    "tf":  "1d",
+                                                    "exists":  true,
+                                                    "latest":  1755561600,
+                                                    "counts":  {
+                                                                   "30":  29,
+                                                                   "90":  89,
+                                                                   "365":  364
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9667,
+                                                                     "90":  0.9889,
+                                                                     "365":  0.9973
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  154187
+                                                },
+                                                {
+                                                    "symbol":  "LDOUSDT",
+                                                    "tf":  "5m",
+                                                    "exists":  true,
+                                                    "latest":  1755670200,
+                                                    "counts":  {
+                                                                   "30":  7168,
+                                                                   "90":  24448,
+                                                                   "365":  103648
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.8296,
+                                                                     "90":  0.9432,
+                                                                     "365":  0.986
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  45587
+                                                },
+                                                {
+                                                    "symbol":  "LDOUSDT",
+                                                    "tf":  "15m",
+                                                    "exists":  true,
+                                                    "latest":  1755668700,
+                                                    "counts":  {
+                                                                   "30":  2391,
+                                                                   "90":  8151,
+                                                                   "365":  34551
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.8302,
+                                                                     "90":  0.9434,
+                                                                     "365":  0.986
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  47087
+                                                },
+                                                {
+                                                    "symbol":  "LDOUSDT",
+                                                    "tf":  "30m",
+                                                    "exists":  true,
+                                                    "latest":  1755669600,
+                                                    "counts":  {
+                                                                   "30":  1191,
+                                                                   "90":  4071,
+                                                                   "365":  17271
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.8271,
+                                                                     "90":  0.9424,
+                                                                     "365":  0.9858
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  46187
+                                                },
+                                                {
+                                                    "symbol":  "LDOUSDT",
+                                                    "tf":  "1h",
+                                                    "exists":  true,
+                                                    "latest":  1755669600,
+                                                    "counts":  {
+                                                                   "30":  597,
+                                                                   "90":  2037,
+                                                                   "365":  8637
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.8292,
+                                                                     "90":  0.9431,
+                                                                     "365":  0.986
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  46187
+                                                },
+                                                {
+                                                    "symbol":  "LDOUSDT",
+                                                    "tf":  "2h",
+                                                    "exists":  true,
+                                                    "latest":  1755669600,
+                                                    "counts":  {
+                                                                   "30":  300,
+                                                                   "90":  1020,
+                                                                   "365":  4320
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.8333,
+                                                                     "90":  0.9444,
+                                                                     "365":  0.9863
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  46187
+                                                },
+                                                {
+                                                    "symbol":  "LDOUSDT",
+                                                    "tf":  "4h",
+                                                    "exists":  true,
+                                                    "latest":  1755676800,
+                                                    "counts":  {
+                                                                   "30":  178,
+                                                                   "90":  538,
+                                                                   "365":  2188
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9889,
+                                                                     "90":  0.9963,
+                                                                     "365":  0.9991
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  38987
+                                                },
+                                                {
+                                                    "symbol":  "LDOUSDT",
+                                                    "tf":  "1d",
+                                                    "exists":  true,
+                                                    "latest":  1755129600,
+                                                    "counts":  {
+                                                                   "30":  24,
+                                                                   "90":  84,
+                                                                   "365":  359
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.8,
+                                                                     "90":  0.9333,
+                                                                     "365":  0.9836
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  586187
+                                                },
+                                                {
+                                                    "symbol":  "INJUSDT",
+                                                    "tf":  "5m",
+                                                    "exists":  true,
+                                                    "latest":  1755703200,
+                                                    "counts":  {
+                                                                   "30":  8599,
+                                                                   "90":  25879,
+                                                                   "365":  105079
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9953,
+                                                                     "90":  0.9984,
+                                                                     "365":  0.9996
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  12587
+                                                },
+                                                {
+                                                    "symbol":  "INJUSDT",
+                                                    "tf":  "15m",
+                                                    "exists":  true,
+                                                    "latest":  1755702000,
+                                                    "counts":  {
+                                                                   "30":  2865,
+                                                                   "90":  8625,
+                                                                   "365":  35025
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9948,
+                                                                     "90":  0.9983,
+                                                                     "365":  0.9996
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  13787
+                                                },
+                                                {
+                                                    "symbol":  "INJUSDT",
+                                                    "tf":  "30m",
+                                                    "exists":  true,
+                                                    "latest":  1755700200,
+                                                    "counts":  {
+                                                                   "30":  1432,
+                                                                   "90":  4312,
+                                                                   "365":  17512
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9944,
+                                                                     "90":  0.9981,
+                                                                     "365":  0.9995
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  15587
+                                                },
+                                                {
+                                                    "symbol":  "INJUSDT",
+                                                    "tf":  "1h",
+                                                    "exists":  true,
+                                                    "latest":  1755698400,
+                                                    "counts":  {
+                                                                   "30":  716,
+                                                                   "90":  2156,
+                                                                   "365":  8756
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9944,
+                                                                     "90":  0.9981,
+                                                                     "365":  0.9995
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  17387
+                                                },
+                                                {
+                                                    "symbol":  "INJUSDT",
+                                                    "tf":  "2h",
+                                                    "exists":  true,
+                                                    "latest":  1755691200,
+                                                    "counts":  {
+                                                                   "30":  357,
+                                                                   "90":  1077,
+                                                                   "365":  4377
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9917,
+                                                                     "90":  0.9972,
+                                                                     "365":  0.9993
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  24587
+                                                },
+                                                {
+                                                    "symbol":  "INJUSDT",
+                                                    "tf":  "4h",
+                                                    "exists":  true,
+                                                    "latest":  1755676800,
+                                                    "counts":  {
+                                                                   "30":  178,
+                                                                   "90":  538,
+                                                                   "365":  2188
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9889,
+                                                                     "90":  0.9963,
+                                                                     "365":  0.9991
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  38987
+                                                },
+                                                {
+                                                    "symbol":  "INJUSDT",
+                                                    "tf":  "1d",
+                                                    "exists":  true,
+                                                    "latest":  1755561600,
+                                                    "counts":  {
+                                                                   "30":  29,
+                                                                   "90":  89,
+                                                                   "365":  364
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9667,
+                                                                     "90":  0.9889,
+                                                                     "365":  0.9973
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  154187
+                                                },
+                                                {
+                                                    "symbol":  "AVAXUSDT",
+                                                    "tf":  "5m",
+                                                    "exists":  true,
+                                                    "latest":  1755704700,
+                                                    "counts":  {
+                                                                   "30":  8604,
+                                                                   "90":  25884,
+                                                                   "365":  105084
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9958,
+                                                                     "90":  0.9986,
+                                                                     "365":  0.9997
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  11087
+                                                },
+                                                {
+                                                    "symbol":  "AVAXUSDT",
+                                                    "tf":  "15m",
+                                                    "exists":  true,
+                                                    "latest":  1755703800,
+                                                    "counts":  {
+                                                                   "30":  2867,
+                                                                   "90":  8627,
+                                                                   "365":  35027
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9955,
+                                                                     "90":  0.9985,
+                                                                     "365":  0.9996
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  11987
+                                                },
+                                                {
+                                                    "symbol":  "AVAXUSDT",
+                                                    "tf":  "30m",
+                                                    "exists":  true,
+                                                    "latest":  1755702000,
+                                                    "counts":  {
+                                                                   "30":  1433,
+                                                                   "90":  4313,
+                                                                   "365":  17513
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9951,
+                                                                     "90":  0.9984,
+                                                                     "365":  0.9996
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  13787
+                                                },
+                                                {
+                                                    "symbol":  "AVAXUSDT",
+                                                    "tf":  "1h",
+                                                    "exists":  true,
+                                                    "latest":  1755698400,
+                                                    "counts":  {
+                                                                   "30":  716,
+                                                                   "90":  2156,
+                                                                   "365":  8756
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9944,
+                                                                     "90":  0.9981,
+                                                                     "365":  0.9995
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  17387
+                                                },
+                                                {
+                                                    "symbol":  "AVAXUSDT",
+                                                    "tf":  "2h",
+                                                    "exists":  true,
+                                                    "latest":  1755691200,
+                                                    "counts":  {
+                                                                   "30":  357,
+                                                                   "90":  1077,
+                                                                   "365":  4377
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9917,
+                                                                     "90":  0.9972,
+                                                                     "365":  0.9993
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  24587
+                                                },
+                                                {
+                                                    "symbol":  "AVAXUSDT",
+                                                    "tf":  "4h",
+                                                    "exists":  true,
+                                                    "latest":  1755676800,
+                                                    "counts":  {
+                                                                   "30":  178,
+                                                                   "90":  538,
+                                                                   "365":  2188
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9889,
+                                                                     "90":  0.9963,
+                                                                     "365":  0.9991
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  38987
+                                                },
+                                                {
+                                                    "symbol":  "AVAXUSDT",
+                                                    "tf":  "1d",
+                                                    "exists":  true,
+                                                    "latest":  1755561600,
+                                                    "counts":  {
+                                                                   "30":  29,
+                                                                   "90":  89,
+                                                                   "365":  364
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9667,
+                                                                     "90":  0.9889,
+                                                                     "365":  0.9973
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  154187
+                                                },
+                                                {
+                                                    "symbol":  "APTUSDT",
+                                                    "tf":  "5m",
+                                                    "exists":  true,
+                                                    "latest":  1755715200,
+                                                    "counts":  {
+                                                                   "30":  8639,
+                                                                   "90":  25919,
+                                                                   "365":  105119
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9999,
+                                                                     "90":  1.0,
+                                                                     "365":  1.0
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  587
+                                                },
+                                                {
+                                                    "symbol":  "APTUSDT",
+                                                    "tf":  "15m",
+                                                    "exists":  true,
+                                                    "latest":  1755714600,
+                                                    "counts":  {
+                                                                   "30":  2879,
+                                                                   "90":  8639,
+                                                                   "365":  35039
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9997,
+                                                                     "90":  0.9999,
+                                                                     "365":  1.0
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  1187
+                                                },
+                                                {
+                                                    "symbol":  "APTUSDT",
+                                                    "tf":  "30m",
+                                                    "exists":  true,
+                                                    "latest":  1755712800,
+                                                    "counts":  {
+                                                                   "30":  1439,
+                                                                   "90":  4319,
+                                                                   "365":  17519
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9993,
+                                                                     "90":  0.9998,
+                                                                     "365":  0.9999
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  2987
+                                                },
+                                                {
+                                                    "symbol":  "APTUSDT",
+                                                    "tf":  "1h",
+                                                    "exists":  true,
+                                                    "latest":  1755709200,
+                                                    "counts":  {
+                                                                   "30":  719,
+                                                                   "90":  2159,
+                                                                   "365":  8759
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9986,
+                                                                     "90":  0.9995,
+                                                                     "365":  0.9999
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  6587
+                                                },
+                                                {
+                                                    "symbol":  "APTUSDT",
+                                                    "tf":  "2h",
+                                                    "exists":  true,
+                                                    "latest":  1755705600,
+                                                    "counts":  {
+                                                                   "30":  359,
+                                                                   "90":  1079,
+                                                                   "365":  4379
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9972,
+                                                                     "90":  0.9991,
+                                                                     "365":  0.9998
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  10187
+                                                },
+                                                {
+                                                    "symbol":  "APTUSDT",
+                                                    "tf":  "4h",
+                                                    "exists":  true,
+                                                    "latest":  1755691200,
+                                                    "counts":  {
+                                                                   "30":  179,
+                                                                   "90":  539,
+                                                                   "365":  2189
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9944,
+                                                                     "90":  0.9981,
+                                                                     "365":  0.9995
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  24587
+                                                },
+                                                {
+                                                    "symbol":  "APTUSDT",
+                                                    "tf":  "1d",
+                                                    "exists":  true,
+                                                    "latest":  1755561600,
+                                                    "counts":  {
+                                                                   "30":  29,
+                                                                   "90":  89,
+                                                                   "365":  364
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9667,
+                                                                     "90":  0.9889,
+                                                                     "365":  0.9973
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  154187
+                                                },
+                                                {
+                                                    "symbol":  "NEARUSDT",
+                                                    "tf":  "5m",
+                                                    "exists":  true,
+                                                    "latest":  1755704700,
+                                                    "counts":  {
+                                                                   "30":  8604,
+                                                                   "90":  25884,
+                                                                   "365":  105084
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9958,
+                                                                     "90":  0.9986,
+                                                                     "365":  0.9997
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  11087
+                                                },
+                                                {
+                                                    "symbol":  "NEARUSDT",
+                                                    "tf":  "15m",
+                                                    "exists":  true,
+                                                    "latest":  1755703800,
+                                                    "counts":  {
+                                                                   "30":  2867,
+                                                                   "90":  8627,
+                                                                   "365":  35027
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9955,
+                                                                     "90":  0.9985,
+                                                                     "365":  0.9996
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  11987
+                                                },
+                                                {
+                                                    "symbol":  "NEARUSDT",
+                                                    "tf":  "30m",
+                                                    "exists":  true,
+                                                    "latest":  1755702000,
+                                                    "counts":  {
+                                                                   "30":  1433,
+                                                                   "90":  4313,
+                                                                   "365":  17513
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9951,
+                                                                     "90":  0.9984,
+                                                                     "365":  0.9996
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  13787
+                                                },
+                                                {
+                                                    "symbol":  "NEARUSDT",
+                                                    "tf":  "1h",
+                                                    "exists":  true,
+                                                    "latest":  1755698400,
+                                                    "counts":  {
+                                                                   "30":  716,
+                                                                   "90":  2156,
+                                                                   "365":  8756
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9944,
+                                                                     "90":  0.9981,
+                                                                     "365":  0.9995
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  17387
+                                                },
+                                                {
+                                                    "symbol":  "NEARUSDT",
+                                                    "tf":  "2h",
+                                                    "exists":  true,
+                                                    "latest":  1755691200,
+                                                    "counts":  {
+                                                                   "30":  357,
+                                                                   "90":  1077,
+                                                                   "365":  4377
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9917,
+                                                                     "90":  0.9972,
+                                                                     "365":  0.9993
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  24587
+                                                },
+                                                {
+                                                    "symbol":  "NEARUSDT",
+                                                    "tf":  "4h",
+                                                    "exists":  true,
+                                                    "latest":  1755676800,
+                                                    "counts":  {
+                                                                   "30":  178,
+                                                                   "90":  538,
+                                                                   "365":  2188
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9889,
+                                                                     "90":  0.9963,
+                                                                     "365":  0.9991
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  38987
+                                                },
+                                                {
+                                                    "symbol":  "NEARUSDT",
+                                                    "tf":  "1d",
+                                                    "exists":  true,
+                                                    "latest":  1755561600,
+                                                    "counts":  {
+                                                                   "30":  29,
+                                                                   "90":  89,
+                                                                   "365":  364
+                                                               },
+                                                    "coverage":  {
+                                                                     "30":  0.9667,
+                                                                     "90":  0.9889,
+                                                                     "365":  0.9973
+                                                                 },
+                                                    "future_k":  false,
+                                                    "last_age_sec":  154187
+                                                }
+                                            ],
+                                  "agg":  {
+                                              "exists":  77,
+                                              "ok30_ge95":  57,
+                                              "ok90_ge95":  57,
+                                              "ok365_ge95":  77,
+                                              "future_k":  0,
+                                              "lag5m_over_30min":  7
+                                          },
+                                  "quick":  true
+                              },
+                 "python_version":  "3.9.13",
+                 "path_scan":  {
+                                   "legacy_refs":  {
+
+                                                   },
+                                   "wmic_refs":  {
+
+                                                 },
+                                   "one_min_refs":  {
+
+                                                    }
+                               },
+                 "root2":  "D:\\SQuant_Pro",
+                 "deps":  {
+                              "sqlite3":  {
+                                              "ok":  true
+                                          },
+                              "pandas":  {
+                                             "ok":  false,
+                                             "err":  "No module named \u0027pandas\u0027"
+                                         },
+                              "numpy":  {
+                                            "ok":  false,
+                                            "err":  "No module named \u0027numpy\u0027"
+                                        },
+                              "torch":  {
+                                            "ok":  false,
+                                            "err":  "No module named \u0027torch\u0027"
+                                        },
+                              "lightgbm":  {
+                                               "ok":  false,
+                                               "err":  "No module named \u0027lightgbm\u0027"
+                                           }
+                          },
+                 "root1":  "D:\\quant_system_pro (3)\\quant_system_pro",
+                 "outdir":  "D:\\SQuant_Pro\\healthcheck",
+                 "db_files":  {
+                                  "size_bytes":  3697778688,
+                                  "shm_exists":  true,
+                                  "shm_size_bytes":  32768,
+                                  "exists":  true,
+                                  "wal_exists":  true,
+                                  "wal_size_bytes":  0
+                              },
+                 "started_utc":  "2025-08-20 18:49:42 UTC",
+                 "quick":  true,
+                 "system":  {
+                                "cores_physical":  20,
+                                "build":  "26100",
+                                "memory_gb":  127.84,
+                                "cpu_name":  "Intel(R) Xeon(R) CPU E5-2673 v4 @ 2.30GHz",
+                                "cores_logical":  40,
+                                "os":  "Microsoft Windows 11 专业版"
+                            },
+                 "python_cmd":  "python",
+                 "api":  [
+                             {
+                                 "ok":  true,
+                                 "url":  "https://fapi.binance.com/fapi/v1/ping",
+                                 "name":  "Binance_Futures_Ping",
+                                 "status":  200,
+                                 "ms":  785
+                             },
+                             {
+                                 "ok":  true,
+                                 "url":  "https://api.binance.com/api/v3/ping",
+                                 "name":  "Binance_Spot_Ping",
+                                 "status":  200,
+                                 "ms":  632
+                             },
+                             {
+                                 "ok":  true,
+                                 "url":  "https://www.okx.com/api/v5/public/time",
+                                 "name":  "OKX_Time",
+                                 "status":  200,
+                                 "ms":  724
+                             },
+                             {
+                                 "err":  "远程服务器返回错误: (404) 未找到。",
+                                 "name":  "Bitget_Time_Mix",
+                                 "ok":  false,
+                                 "ms":  666,
+                                 "url":  "https://api.bitget.com/api/mix/v1/market/time",
+                                 "status":  0
+                             },
+                             {
+                                 "ok":  true,
+                                 "url":  "https://api.bitget.com/api/spot/v1/public/time",
+                                 "name":  "Bitget_Time_Spot",
+                                 "status":  200,
+                                 "ms":  125
+                             }
+                         ]
+             },
+    "results":  [
+                    {
+                        "id":  "env.sys",
+                        "name":  "System profile",
+                        "status":  "OK",
+                        "details":  "OS/CPU/RAM captured",
+                        "evidence":  "Microsoft Windows 11 专业版 CPU=40/20 RAM=127.84 GB",
+                        "suggestion":  "None"
+                    },
+                    {
+                        "id":  "env.py",
+                        "name":  "Python",
+                        "status":  "OK",
+                        "details":  "Python detected",
+                        "evidence":  "version=3.9.13",
+                        "suggestion":  "None"
+                    },
+                    {
+                        "id":  "env.deps",
+                        "name":  "Python deps (soft check)",
+                        "status":  "OK",
+                        "details":  "Detected 1 modules",
+                        "evidence":  "{\"sqlite3\": {\"ok\": true}, \"pandas\": {\"ok\": false, \"err\": \"No module named \u0027pandas\u0027\"}, \"numpy\": {\"ok\": false, \"err\": \"No module named \u0027numpy\u0027\"}, \"torch\": {\"ok\": false, \"err\": \"No module named \u0027torch\u0027\"}, \"lightgbm\": {\"ok\": false, \"err\": \"No module named \u0027lightgbm\u0027\"}}",
+                        "suggestion":  "Install missing ones only if needed"
+                    },
+                    {
+                        "id":  "env.db",
+                        "name":  "DB files",
+                        "status":  "OK",
+                        "details":  "DB located",
+                        "evidence":  "DB=D:\\quant_system_v2\\data\\market_data.db; size=3697778688",
+                        "suggestion":  "None"
+                    },
+                    {
+                        "id":  "net.Binance_Futures_Ping",
+                        "name":  "Binance_Futures_Ping",
+                        "status":  "OK",
+                        "details":  "Reachable",
+                        "evidence":  "status=200 time_ms=785",
+                        "suggestion":  "None"
+                    },
+                    {
+                        "id":  "net.Binance_Spot_Ping",
+                        "name":  "Binance_Spot_Ping",
+                        "status":  "OK",
+                        "details":  "Reachable",
+                        "evidence":  "status=200 time_ms=632",
+                        "suggestion":  "None"
+                    },
+                    {
+                        "id":  "net.OKX_Time",
+                        "name":  "OKX_Time",
+                        "status":  "OK",
+                        "details":  "Reachable",
+                        "evidence":  "status=200 time_ms=724",
+                        "suggestion":  "None"
+                    },
+                    {
+                        "id":  "net.Bitget_Time_Mix",
+                        "name":  "Bitget_Time_Mix",
+                        "status":  "WARN",
+                        "details":  "Unreachable or slow",
+                        "evidence":  "err=远程服务器返回错误: (404) 未找到。",
+                        "suggestion":  "Check network or regional blocking"
+                    },
+                    {
+                        "id":  "net.Bitget_Time_Spot",
+                        "name":  "Bitget_Time_Spot",
+                        "status":  "OK",
+                        "details":  "Reachable",
+                        "evidence":  "status=200 time_ms=125",
+                        "suggestion":  "None"
+                    },
+                    {
+                        "id":  "cfg.wmic",
+                        "name":  "wmic usage",
+                        "status":  "OK",
+                        "details":  "Detect deprecated wmic references",
+                        "evidence":  "hits=0",
+                        "suggestion":  "Replace with PowerShell Get-CimInstance/Stop-Process"
+                    },
+                    {
+                        "id":  "cfg.1m",
+                        "name":  "1m timeframe references",
+                        "status":  "OK",
+                        "details":  "1m should be excluded per policy",
+                        "evidence":  "hits=0",
+                        "suggestion":  "Purge 1m in configs; keep 5m..1d only"
+                    },
+                    {
+                        "id":  "cfg.legacy",
+                        "name":  "Legacy path references",
+                        "status":  "OK",
+                        "details":  "Hardcoded legacy paths detected",
+                        "evidence":  "hits=0",
+                        "suggestion":  "Normalize to D:\\quant_system_v2 or D:\\SQuant_Pro"
+                    },
+                    {
+                        "id":  "guard.pid",
+                        "name":  "Guardian PID",
+                        "status":  "WARN",
+                        "details":  "PID status",
+                        "evidence":  "PID file absent (may be stopped or not created)",
+                        "suggestion":  "If running, ensure it writes PID atomically; if stopped, ignore"
+                    },
+                    {
+                        "id":  "logs.latest",
+                        "name":  "Latest collector log",
+                        "status":  "OK",
+                        "details":  "Found rotating or fixed log",
+                        "evidence":  "latest=D:\\SQuant_Pro\\logs\\collector_task.log lastWrite=2025-08-20 18:48:09 UTC",
+                        "suggestion":  "Tail newest when verifying realtime"
+                    },
+                    {
+                        "id":  "logs.ht",
+                        "name":  "Hashtable path anomaly",
+                        "status":  "OK",
+                        "details":  "Detect wrong object-to-string path usage",
+                        "evidence":  "hits=0",
+                        "suggestion":  "Ensure log path variables are strings only"
+                    },
+                    {
+                        "id":  "db.cover30",
+                        "name":  "Coverage30 \u003e=95%",
+                        "status":  "OK",
+                        "details":  "Existing pairs with coverage30\u003e=95%",
+                        "evidence":  "ok=57 / exists=77",
+                        "suggestion":  "Run backfill to raise coverage30"
+                    },
+                    {
+                        "id":  "db.cover90",
+                        "name":  "Coverage90 \u003e=95%",
+                        "status":  "OK",
+                        "details":  "Existing pairs with coverage90\u003e=95%",
+                        "evidence":  "ok=57 / exists=77",
+                        "suggestion":  "Backfill until \u003e=95% for core pairs"
+                    },
+                    {
+                        "id":  "db.cover365",
+                        "name":  "Coverage365 \u003e=95%",
+                        "status":  "OK",
+                        "details":  "Existing pairs with coverage365\u003e=95%",
+                        "evidence":  "ok=77 / exists=77",
+                        "suggestion":  "Target 365d coverage for full backtest"
+                    },
+                    {
+                        "id":  "db.futurek",
+                        "name":  "Future K guard",
+                        "status":  "OK",
+                        "details":  "Any table latest_ts \u003e now+120s",
+                        "evidence":  "future_k=0",
+                        "suggestion":  "Fix data source or drop future bars"
+                    },
+                    {
+                        "id":  "db.fresh5m",
+                        "name":  "5m freshness",
+                        "status":  "WARN",
+                        "details":  "5m last_age_sec \u003e 1800 count",
+                        "evidence":  "lag_count=7",
+                        "suggestion":  "Check realtime collector and API limits"
+                    },
+                    {
+                        "id":  "flow.fn1",
+                        "name":  "Function save_optimized_params_to_db",
+                        "status":  "WARN",
+                        "details":  "Check presence in codebase",
+                        "evidence":  "hits=0",
+                        "suggestion":  "Ensure utils/param_loader.py exports it"
+                    },
+                    {
+                        "id":  "flow.fn2",
+                        "name":  "strategy_func support",
+                        "status":  "OK",
+                        "details":  "Backtest engine should accept strategy_func",
+                        "evidence":  "hits=5",
+                        "suggestion":  "Upgrade backtest engine if missing"
+                    }
+                ]
+}

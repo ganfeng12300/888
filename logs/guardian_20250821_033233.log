@@ -1,0 +1,814 @@
+[A6-SHIM] pandas.DataFrame.to_csv 已安装修订钩子（仅拦截 a6_strategy_scores*）
+>>> collector start | symbols=5 | intervals=['5m', '15m', '30m', '1h', '2h', '4h', '1d']
+db: D:\quant_system_v2\data\market_data.db
+[progress] 1/35   2.9%  BNBUSDT_1h +0
+[progress] 2/35   5.7%  BNBUSDT_15m +0
+[progress] 3/35   8.6%  BNBUSDT_30m +0
+[progress] 4/35  11.4%  BNBUSDT_2h +0
+[progress] 5/35  14.3%  ETHUSDT_5m +0
+[progress] 6/35  17.1%  ETHUSDT_30m +0
+[progress] 7/35  20.0%  ETHUSDT_2h +0
+[progress] 8/35  22.9%  BTCUSDT_5m +0
+[progress] 9/35  25.7%  BTCUSDT_1d +0
+[progress] 10/35  28.6%  BNBUSDT_5m +0
+[progress] 11/35  31.4%  SOLUSDT_15m +0
+[progress] 12/35  34.3%  BTCUSDT_1h +0
+[progress] 13/35  37.1%  SOLUSDT_30m +0
+[progress] 14/35  40.0%  BTCUSDT_15m +0
+[progress] 15/35  42.9%  ETHUSDT_4h +0
+[progress] 16/35  45.7%  BTCUSDT_4h +0
+[progress] 17/35  48.6%  BNBUSDT_1d +0
+[progress] 18/35  51.4%  BNBUSDT_4h +0
+[progress] 19/35  54.3%  ETHUSDT_1d +0
+[progress] 20/35  57.1%  ETHUSDT_1h +0
+[progress] 21/35  60.0%  SOLUSDT_5m +0
+[progress] 22/35  62.9%  BTCUSDT_30m +0
+[progress] 23/35  65.7%  ETHUSDT_15m +0
+[progress] 24/35  68.6%  BTCUSDT_2h +0
+[progress] 25/35  71.4%  APTUSDT_1d +0
+[progress] 26/35  74.3%  APTUSDT_30m +0
+[progress] 27/35  77.1%  APTUSDT_1h +0
+[progress] 28/35  80.0%  SOLUSDT_1h +0
+[progress] 29/35  82.9%  SOLUSDT_2h +0
+[progress] 30/35  85.7%  APTUSDT_5m +0
+[progress] 31/35  88.6%  SOLUSDT_1d +0
+[progress] 32/35  91.4%  APTUSDT_15m +0
+[progress] 33/35  94.3%  SOLUSDT_4h +0
+[progress] 34/35  97.1%  APTUSDT_4h +0
+[progress] 35/35 100.0%  APTUSDT_2h +0
+[writer] stopped
+collector done
+>>> collector start | symbols=5 | intervals=['5m', '15m', '30m', '1h', '2h', '4h', '1d']
+db: D:\quant_system_v2\data\market_data.db
+[progress] 1/35   2.9%  ETHUSDT_2h +0
+[progress] 2/35   5.7%  ETHUSDT_1d +0
+[progress] 3/35   8.6%  ETHUSDT_5m +0
+[progress] 4/35  11.4%  BNBUSDT_30m +0
+[progress] 5/35  14.3%  ETHUSDT_15m +0
+[progress] 6/35  17.1%  BNBUSDT_5m +0
+[progress] 7/35  20.0%  SOLUSDT_5m +0
+[progress] 8/35  22.9%  BTCUSDT_1h +0
+[progress] 9/35  25.7%  BTCUSDT_15m +0
+[progress] 10/35  28.6%  BTCUSDT_1d +0
+[progress] 11/35  31.4%  ETHUSDT_4h +0
+[progress] 12/35  34.3%  ETHUSDT_30m +0
+[progress] 13/35  37.1%  BTCUSDT_4h +0
+[progress] 14/35  40.0%  ETHUSDT_1h +0
+[progress] 15/35  42.9%  BTCUSDT_5m +0
+[progress] 16/35  45.7%  BTCUSDT_30m +0
+[progress] 17/35  48.6%  SOLUSDT_15m +0
+[progress] 18/35  51.4%  BTCUSDT_2h +0
+[progress] 19/35  54.3%  SOLUSDT_30m +0
+[progress] 20/35  57.1%  BNBUSDT_4h +0
+[progress] 21/35  60.0%  BNBUSDT_15m +0
+[progress] 22/35  62.9%  BNBUSDT_2h +0
+[progress] 23/35  65.7%  BNBUSDT_1d +0
+[progress] 24/35  68.6%  BNBUSDT_1h +0
+[progress] 25/35  71.4%  APTUSDT_4h +0
+[progress] 26/35  74.3%  APTUSDT_1h +0
+[progress] 27/35  77.1%  APTUSDT_2h +0
+[progress] 28/35  80.0%  APTUSDT_15m +0
+[progress] 29/35  82.9%  SOLUSDT_1h +0
+[progress] 30/35  85.7%  APTUSDT_1d +0
+[progress] 31/35  88.6%  APTUSDT_30m +0
+[progress] 32/35  91.4%  APTUSDT_5m +0
+[progress] 33/35  94.3%  SOLUSDT_4h +0
+[progress] 34/35  97.1%  SOLUSDT_1d +0
+[progress] 35/35 100.0%  SOLUSDT_2h +0
+[writer] stopped
+collector done
+>>> collector start | symbols=5 | intervals=['5m', '15m', '30m', '1h', '2h', '4h', '1d']
+db: D:\quant_system_v2\data\market_data.db
+[progress] 1/35   2.9%  BNBUSDT_5m +0
+[progress] 2/35   5.7%  ETHUSDT_5m +0
+[progress] 3/35   8.6%  ETHUSDT_15m +0
+[progress] 4/35  11.4%  BTCUSDT_4h +0
+[progress] 5/35  14.3%  ETHUSDT_1d +0
+[progress] 6/35  17.1%  ETHUSDT_4h +0
+[progress] 7/35  20.0%  ETHUSDT_2h +0
+[progress] 8/35  22.9%  BTCUSDT_1d +0
+[progress] 9/35  25.7%  BNBUSDT_15m +0
+[progress] 10/35  28.6%  BTCUSDT_30m +0
+[progress] 11/35  31.4%  ETHUSDT_30m +0
+[progress] 12/35  34.3%  SOLUSDT_15m +0
+[progress] 13/35  37.1%  BTCUSDT_2h +0
+[progress] 14/35  40.0%  ETHUSDT_1h +0
+[progress] 15/35  42.9%  BNBUSDT_2h +0
+[progress] 16/35  45.7%  BTCUSDT_15m +0
+[progress] 17/35  48.6%  BNBUSDT_30m +0
+[progress] 18/35  51.4%  SOLUSDT_5m +0
+[progress] 19/35  54.3%  BTCUSDT_5m +0
+[progress] 20/35  57.1%  BTCUSDT_1h +0
+[progress] 21/35  60.0%  SOLUSDT_30m +0
+[progress] 22/35  62.9%  BNBUSDT_1h +0
+[progress] 23/35  65.7%  BNBUSDT_4h +0
+[progress] 24/35  68.6%  BNBUSDT_1d +0
+[progress] 25/35  71.4%  SOLUSDT_1d +0
+[progress] 26/35  74.3%  SOLUSDT_1h +0
+[progress] 27/35  77.1%  SOLUSDT_4h +0
+[progress] 28/35  80.0%  APTUSDT_5m +0
+[progress] 29/35  82.9%  SOLUSDT_2h +0
+[progress] 30/35  85.7%  APTUSDT_30m +0
+[progress] 31/35  88.6%  APTUSDT_15m +0
+[progress] 32/35  91.4%  APTUSDT_2h +0
+[progress] 33/35  94.3%  APTUSDT_1h +0
+[progress] 34/35  97.1%  APTUSDT_1d +0
+[progress] 35/35 100.0%  APTUSDT_4h +0
+[writer] stopped
+collector done
+>>> collector start | symbols=5 | intervals=['5m', '15m', '30m', '1h', '2h', '4h', '1d']
+db: D:\quant_system_v2\data\market_data.db
+[progress] 1/35   2.9%  ETHUSDT_15m +0
+[progress] 2/35   5.7%  ETHUSDT_5m +0
+[progress] 3/35   8.6%  ETHUSDT_1h +0
+[progress] 4/35  11.4%  ETHUSDT_30m +0
+[progress] 5/35  14.3%  ETHUSDT_4h +0
+[progress] 6/35  17.1%  BNBUSDT_2h +0
+[progress] 7/35  20.0%  BNBUSDT_1h +0
+[progress] 8/35  22.9%  BNBUSDT_5m +0
+[progress] 9/35  25.7%  BTCUSDT_1d +0
+[progress] 10/35  28.6%  BNBUSDT_1d +0
+[progress] 11/35  31.4%  BNBUSDT_4h +0
+[progress] 12/35  34.3%  BTCUSDT_30m +0
+[progress] 13/35  37.1%  ETHUSDT_2h +0
+[progress] 14/35  40.0%  BTCUSDT_1h +0
+[progress] 15/35  42.9%  BTCUSDT_4h +0
+[progress] 16/35  45.7%  BTCUSDT_15m +0
+[progress] 17/35  48.6%  SOLUSDT_30m +0
+[progress] 18/35  51.4%  BNBUSDT_30m +0
+[progress] 19/35  54.3%  BNBUSDT_15m +0
+[progress] 20/35  57.1%  ETHUSDT_1d +0
+[progress] 21/35  60.0%  SOLUSDT_15m +0
+[progress] 22/35  62.9%  BTCUSDT_2h +0
+[progress] 23/35  65.7%  BTCUSDT_5m +0
+[progress] 24/35  68.6%  SOLUSDT_5m +0
+[progress] 25/35  71.4%  SOLUSDT_4h +0
+[progress] 26/35  74.3%  SOLUSDT_1h +0
+[progress] 27/35  77.1%  SOLUSDT_2h +0
+[progress] 28/35  80.0%  APTUSDT_4h +0
+[progress] 29/35  82.9%  APTUSDT_1d +0
+[progress] 30/35  85.7%  APTUSDT_1h +0
+[progress] 31/35  88.6%  APTUSDT_30m +0
+[progress] 32/35  91.4%  APTUSDT_2h +0
+[progress] 33/35  94.3%  SOLUSDT_1d +0
+[progress] 34/35  97.1%  APTUSDT_5m +0
+[progress] 35/35 100.0%  APTUSDT_15m +0
+[writer] stopped
+collector done
+>>> collector start | symbols=5 | intervals=['5m', '15m', '30m', '1h', '2h', '4h', '1d']
+db: D:\quant_system_v2\data\market_data.db
+[progress] 1/35   2.9%  BNBUSDT_30m +0
+[progress] 2/35   5.7%  ETHUSDT_1d +0
+[progress] 3/35   8.6%  BTCUSDT_1d +0
+[progress] 4/35  11.4%  BTCUSDT_4h +0
+[progress] 5/35  14.3%  BTCUSDT_2h +0
+[progress] 6/35  17.1%  BTCUSDT_1h +0
+[progress] 7/35  20.0%  BNBUSDT_15m +0
+[progress] 8/35  22.9%  BNBUSDT_5m +0
+[progress] 9/35  25.7%  SOLUSDT_30m +0
+[progress] 10/35  28.6%  BNBUSDT_1h +0
+[progress] 11/35  31.4%  ETHUSDT_1h +0
+[progress] 12/35  34.3%  BTCUSDT_5m +0
+[progress] 13/35  37.1%  BTCUSDT_30m +0
+[progress] 14/35  40.0%  ETHUSDT_5m +0
+[progress] 15/35  42.9%  ETHUSDT_2h +0
+[progress] 16/35  45.7%  BNBUSDT_4h +0
+[progress] 17/35  48.6%  BNBUSDT_1d +0
+[progress] 18/35  51.4%  SOLUSDT_5m +0
+[progress] 19/35  54.3%  ETHUSDT_15m +0
+[progress] 20/35  57.1%  BTCUSDT_15m +0
+[progress] 21/35  60.0%  SOLUSDT_15m +0
+[progress] 22/35  62.9%  BNBUSDT_2h +0
+[progress] 23/35  65.7%  ETHUSDT_30m +0
+[progress] 24/35  68.6%  ETHUSDT_4h +0
+[progress] 25/35  71.4%  APTUSDT_1h +0
+[progress] 26/35  74.3%  APTUSDT_30m +0
+[progress] 27/35  77.1%  APTUSDT_15m +0
+[progress] 28/35  80.0%  APTUSDT_1d +0
+[progress] 29/35  82.9%  SOLUSDT_1d +0
+[progress] 30/35  85.7%  APTUSDT_4h +0
+[progress] 31/35  88.6%  APTUSDT_2h +0
+[progress] 32/35  91.4%  SOLUSDT_4h +0
+[progress] 33/35  94.3%  APTUSDT_5m +0
+[progress] 34/35  97.1%  SOLUSDT_1h +0
+[progress] 35/35 100.0%  SOLUSDT_2h +0
+[writer] stopped
+collector done
+>>> collector start | symbols=5 | intervals=['5m', '15m', '30m', '1h', '2h', '4h', '1d']
+db: D:\quant_system_v2\data\market_data.db
+[progress] 1/35   2.9%  BTCUSDT_4h +0
+[progress] 2/35   5.7%  BTCUSDT_5m +0
+[progress] 3/35   8.6%  BNBUSDT_1d +0
+[progress] 4/35  11.4%  ETHUSDT_1h +0
+[progress] 5/35  14.3%  BTCUSDT_2h +0
+[progress] 6/35  17.1%  BNBUSDT_2h +0
+[progress] 7/35  20.0%  BNBUSDT_1h +0
+[progress] 8/35  22.9%  BNBUSDT_30m +0
+[progress] 9/35  25.7%  BNBUSDT_15m +0
+[progress] 10/35  28.6%  ETHUSDT_4h +0
+[progress] 11/35  31.4%  BTCUSDT_30m +0
+[progress] 12/35  34.3%  BTCUSDT_1d +0
+[progress] 13/35  37.1%  BTCUSDT_1h +0
+[progress] 14/35  40.0%  SOLUSDT_5m +0
+[progress] 15/35  42.9%  ETHUSDT_30m +0
+[progress] 16/35  45.7%  ETHUSDT_1d +0
+[progress] 17/35  48.6%  BNBUSDT_4h +0
+[progress] 18/35  51.4%  ETHUSDT_2h +0
+[progress] 19/35  54.3%  BNBUSDT_5m +0
+[progress] 20/35  57.1%  BTCUSDT_15m +0
+[progress] 21/35  60.0%  SOLUSDT_15m +0
+[progress] 22/35  62.9%  SOLUSDT_30m +0
+[progress] 23/35  65.7%  ETHUSDT_5m +0
+[progress] 24/35  68.6%  ETHUSDT_15m +0
+[progress] 25/35  71.4%  SOLUSDT_1h +0
+[progress] 26/35  74.3%  SOLUSDT_4h +0
+[progress] 27/35  77.1%  SOLUSDT_2h +0
+[progress] 28/35  80.0%  SOLUSDT_1d +0
+[progress] 29/35  82.9%  APTUSDT_1d +0
+[progress] 30/35  85.7%  APTUSDT_2h +0
+[progress] 31/35  88.6%  APTUSDT_1h +0
+[progress] 32/35  91.4%  APTUSDT_5m +0
+[progress] 33/35  94.3%  APTUSDT_30m +0
+[progress] 34/35  97.1%  APTUSDT_15m +0
+[progress] 35/35 100.0%  APTUSDT_4h +0
+[writer] stopped
+collector done
+>>> collector start | symbols=5 | intervals=['5m', '15m', '30m', '1h', '2h', '4h', '1d']
+db: D:\quant_system_v2\data\market_data.db
+[progress] 1/35   2.9%  BNBUSDT_2h +0
+[progress] 2/35   5.7%  BNBUSDT_15m +0
+[progress] 3/35   8.6%  BNBUSDT_1h +0
+[progress] 4/35  11.4%  BTCUSDT_15m +0
+[progress] 5/35  14.3%  ETHUSDT_1h +0
+[progress] 6/35  17.1%  ETHUSDT_1d +0
+[progress] 7/35  20.0%  BNBUSDT_5m +0
+[progress] 8/35  22.9%  BNBUSDT_30m +0
+[progress] 9/35  25.7%  ETHUSDT_30m +0
+[progress] 10/35  28.6%  SOLUSDT_5m +0
+[progress] 11/35  31.4%  SOLUSDT_15m +0
+[progress] 12/35  34.3%  BTCUSDT_1h +0
+[progress] 13/35  37.1%  BTCUSDT_5m +0
+[progress] 14/35  40.0%  SOLUSDT_30m +0
+[progress] 15/35  42.9%  ETHUSDT_15m +0
+[progress] 16/35  45.7%  ETHUSDT_2h +0
+[progress] 17/35  48.6%  ETHUSDT_5m +0
+[progress] 18/35  51.4%  BNBUSDT_1d +0
+[progress] 19/35  54.3%  BTCUSDT_30m +0
+[progress] 20/35  57.1%  BTCUSDT_2h +0
+[progress] 21/35  60.0%  BTCUSDT_4h +0
+[progress] 22/35  62.9%  BNBUSDT_4h +0
+[progress] 23/35  65.7%  BTCUSDT_1d +0
+[progress] 24/35  68.6%  ETHUSDT_4h +0
+[progress] 25/35  71.4%  SOLUSDT_1h +0
+[progress] 26/35  74.3%  SOLUSDT_4h +0
+[progress] 27/35  77.1%  APTUSDT_30m +0
+[progress] 28/35  80.0%  SOLUSDT_1d +0
+[progress] 29/35  82.9%  APTUSDT_15m +0
+[progress] 30/35  85.7%  APTUSDT_1d +0
+[progress] 31/35  88.6%  APTUSDT_5m +0
+[progress] 32/35  91.4%  APTUSDT_2h +0
+[progress] 33/35  94.3%  APTUSDT_4h +0
+[progress] 34/35  97.1%  SOLUSDT_2h +0
+[progress] 35/35 100.0%  APTUSDT_1h +0
+[writer] stopped
+collector done
+>>> collector start | symbols=5 | intervals=['5m', '15m', '30m', '1h', '2h', '4h', '1d']
+db: D:\quant_system_v2\data\market_data.db
+[progress] 1/35   2.9%  ETHUSDT_15m +0
+[progress] 2/35   5.7%  BNBUSDT_1h +0
+[progress] 3/35   8.6%  BTCUSDT_1d +0
+[progress] 4/35  11.4%  BTCUSDT_4h +0
+[progress] 5/35  14.3%  ETHUSDT_30m +0
+[progress] 6/35  17.1%  BNBUSDT_5m +0
+[progress] 7/35  20.0%  ETHUSDT_1d +0
+[progress] 8/35  22.9%  ETHUSDT_1h +0
+[progress] 9/35  25.7%  ETHUSDT_2h +0
+[progress] 10/35  28.6%  ETHUSDT_5m +0
+[progress] 11/35  31.4%  BTCUSDT_2h +0
+[progress] 12/35  34.3%  SOLUSDT_30m +0
+[progress] 13/35  37.1%  ETHUSDT_4h +0
+[progress] 14/35  40.0%  BNBUSDT_2h +0
+[progress] 15/35  42.9%  BTCUSDT_1h +0
+[progress] 16/35  45.7%  BNBUSDT_15m +0
+[progress] 17/35  48.6%  BNBUSDT_30m +0
+[progress] 18/35  51.4%  SOLUSDT_5m +0
+[progress] 19/35  54.3%  BTCUSDT_15m +0
+[progress] 20/35  57.1%  BNBUSDT_1d +0
+[progress] 21/35  60.0%  SOLUSDT_15m +0
+[progress] 22/35  62.9%  BNBUSDT_4h +0
+[progress] 23/35  65.7%  BTCUSDT_5m +0
+[progress] 24/35  68.6%  BTCUSDT_30m +0
+[progress] 25/35  71.4%  SOLUSDT_1h +0
+[progress] 26/35  74.3%  APTUSDT_2h +0
+[progress] 27/35  77.1%  APTUSDT_4h +0
+[progress] 28/35  80.0%  APTUSDT_1d +0
+[progress] 29/35  82.9%  SOLUSDT_1d +0
+[progress] 30/35  85.7%  SOLUSDT_2h +0
+[progress] 31/35  88.6%  APTUSDT_30m +0
+[progress] 32/35  91.4%  SOLUSDT_4h +0
+[progress] 33/35  94.3%  APTUSDT_5m +0
+[progress] 34/35  97.1%  APTUSDT_15m +0
+[progress] 35/35 100.0%  APTUSDT_1h +0
+[writer] stopped
+collector done
+>>> collector start | symbols=5 | intervals=['5m', '15m', '30m', '1h', '2h', '4h', '1d']
+db: D:\quant_system_v2\data\market_data.db
+[progress] 1/35   2.9%  ETHUSDT_1d +0
+[progress] 2/35   5.7%  ETHUSDT_2h +0
+[progress] 3/35   8.6%  ETHUSDT_4h +0
+[progress] 4/35  11.4%  BNBUSDT_5m +0
+[progress] 5/35  14.3%  BTCUSDT_30m +0
+[progress] 6/35  17.1%  BTCUSDT_4h +0
+[progress] 7/35  20.0%  SOLUSDT_5m +0
+[progress] 8/35  22.9%  BNBUSDT_1h +0
+[progress] 9/35  25.7%  BTCUSDT_1d +0
+[progress] 10/35  28.6%  SOLUSDT_15m +0
+[progress] 11/35  31.4%  ETHUSDT_1h +0
+[progress] 12/35  34.3%  SOLUSDT_30m +0
+[progress] 13/35  37.1%  BTCUSDT_15m +0
+[progress] 14/35  40.0%  BTCUSDT_1h +0
+[progress] 15/35  42.9%  ETHUSDT_15m +0
+[progress] 16/35  45.7%  BNBUSDT_30m +0
+[progress] 17/35  48.6%  BNBUSDT_4h +0
+[progress] 18/35  51.4%  BNBUSDT_15m +0
+[progress] 19/35  54.3%  ETHUSDT_5m +0
+[progress] 20/35  57.1%  BTCUSDT_2h +0
+[progress] 21/35  60.0%  BNBUSDT_1d +0
+[progress] 22/35  62.9%  BNBUSDT_2h +0
+[progress] 23/35  65.7%  ETHUSDT_30m +0
+[progress] 24/35  68.6%  BTCUSDT_5m +0
+[progress] 25/35  71.4%  APTUSDT_30m +0
+[progress] 26/35  74.3%  SOLUSDT_1h +0
+[progress] 27/35  77.1%  APTUSDT_15m +0
+[progress] 28/35  80.0%  APTUSDT_5m +0
+[progress] 29/35  82.9%  SOLUSDT_1d +0
+[progress] 30/35  85.7%  APTUSDT_2h +0
+[progress] 31/35  88.6%  SOLUSDT_2h +0
+[progress] 32/35  91.4%  APTUSDT_1h +0
+[progress] 33/35  94.3%  APTUSDT_4h +0
+[progress] 34/35  97.1%  APTUSDT_1d +0
+[progress] 35/35 100.0%  SOLUSDT_4h +0
+[writer] stopped
+collector done
+>>> collector start | symbols=5 | intervals=['5m', '15m', '30m', '1h', '2h', '4h', '1d']
+db: D:\quant_system_v2\data\market_data.db
+[progress] 1/35   2.9%  ETHUSDT_1h +0
+[progress] 2/35   5.7%  ETHUSDT_15m +0
+[progress] 3/35   8.6%  ETHUSDT_5m +0
+[progress] 4/35  11.4%  ETHUSDT_4h +0
+[progress] 5/35  14.3%  ETHUSDT_30m +0
+[progress] 6/35  17.1%  ETHUSDT_2h +0
+[progress] 7/35  20.0%  SOLUSDT_5m +0
+[progress] 8/35  22.9%  BTCUSDT_4h +0
+[progress] 9/35  25.7%  BTCUSDT_15m +0
+[progress] 10/35  28.6%  BNBUSDT_5m +0
+[progress] 11/35  31.4%  BTCUSDT_1h +0
+[progress] 12/35  34.3%  BNBUSDT_15m +0
+[progress] 13/35  37.1%  SOLUSDT_15m +0
+[progress] 14/35  40.0%  BTCUSDT_1d +0
+[progress] 15/35  42.9%  BNBUSDT_30m +0
+[progress] 16/35  45.7%  BTCUSDT_2h +0
+[progress] 17/35  48.6%  ETHUSDT_1d +0
+[progress] 18/35  51.4%  BNBUSDT_4h +0
+[progress] 19/35  54.3%  BNBUSDT_2h +0
+[progress] 20/35  57.1%  SOLUSDT_30m +0
+[progress] 21/35  60.0%  BNBUSDT_1h +0
+[progress] 22/35  62.9%  BNBUSDT_1d +0
+[progress] 23/35  65.7%  BTCUSDT_30m +0
+[progress] 24/35  68.6%  BTCUSDT_5m +0
+[progress] 25/35  71.4%  SOLUSDT_2h +0
+[progress] 26/35  74.3%  SOLUSDT_1h +0
+[progress] 27/35  77.1%  SOLUSDT_4h +0
+[progress] 28/35  80.0%  APTUSDT_1d +0
+[progress] 29/35  82.9%  APTUSDT_5m +0
+[progress] 30/35  85.7%  APTUSDT_4h +0
+[progress] 31/35  88.6%  APTUSDT_30m +0
+[progress] 32/35  91.4%  APTUSDT_1h +0
+[progress] 33/35  94.3%  APTUSDT_15m +0
+[progress] 34/35  97.1%  SOLUSDT_1d +0
+[progress] 35/35 100.0%  APTUSDT_2h +0
+[writer] stopped
+collector done
+>>> collector start | symbols=5 | intervals=['5m', '15m', '30m', '1h', '2h', '4h', '1d']
+db: D:\quant_system_v2\data\market_data.db
+[progress] 1/35   2.9%  BTCUSDT_1d +0
+[progress] 2/35   5.7%  BTCUSDT_4h +0
+[progress] 3/35   8.6%  BTCUSDT_1h +0
+[progress] 4/35  11.4%  SOLUSDT_30m +0
+[progress] 5/35  14.3%  BTCUSDT_30m +0
+[progress] 6/35  17.1%  BTCUSDT_2h +0
+[progress] 7/35  20.0%  ETHUSDT_1h +0
+[progress] 8/35  22.9%  ETHUSDT_5m +0
+[progress] 9/35  25.7%  BNBUSDT_4h +0
+[progress] 10/35  28.6%  SOLUSDT_15m +0
+[progress] 11/35  31.4%  ETHUSDT_30m +0
+[progress] 12/35  34.3%  BTCUSDT_5m +0
+[progress] 13/35  37.1%  BNBUSDT_15m +0
+[progress] 14/35  40.0%  BNBUSDT_2h +0
+[progress] 15/35  42.9%  ETHUSDT_15m +0
+[progress] 16/35  45.7%  BNBUSDT_1h +0
+[progress] 17/35  48.6%  BNBUSDT_1d +0
+[progress] 18/35  51.4%  BNBUSDT_30m +0
+[progress] 19/35  54.3%  ETHUSDT_1d +0
+[progress] 20/35  57.1%  ETHUSDT_2h +0
+[progress] 21/35  60.0%  ETHUSDT_4h +0
+[progress] 22/35  62.9%  BTCUSDT_15m +0
+[progress] 23/35  65.7%  SOLUSDT_5m +0
+[progress] 24/35  68.6%  BNBUSDT_5m +0
+[progress] 25/35  71.4%  APTUSDT_1d +0
+[progress] 26/35  74.3%  APTUSDT_1h +0
+[progress] 27/35  77.1%  APTUSDT_4h +0
+[progress] 28/35  80.0%  APTUSDT_2h +0
+[progress] 29/35  82.9%  APTUSDT_15m +0
+[progress] 30/35  85.7%  APTUSDT_30m +0
+[progress] 31/35  88.6%  SOLUSDT_1d +0
+[progress] 32/35  91.4%  APTUSDT_5m +0
+[progress] 33/35  94.3%  SOLUSDT_1h +0
+[progress] 34/35  97.1%  SOLUSDT_2h +0
+[progress] 35/35 100.0%  SOLUSDT_4h +0
+[writer] stopped
+collector done
+>>> collector start | symbols=5 | intervals=['5m', '15m', '30m', '1h', '2h', '4h', '1d']
+db: D:\quant_system_v2\data\market_data.db
+[progress] 1/35   2.9%  ETHUSDT_1h +0
+[progress] 2/35   5.7%  ETHUSDT_30m +0
+[progress] 3/35   8.6%  BTCUSDT_1d +0
+[progress] 4/35  11.4%  BNBUSDT_2h +0
+[progress] 5/35  14.3%  BNBUSDT_15m +0
+[progress] 6/35  17.1%  BTCUSDT_4h +0
+[progress] 7/35  20.0%  ETHUSDT_15m +0
+[progress] 8/35  22.9%  BTCUSDT_1h +0
+[progress] 9/35  25.7%  BNBUSDT_1h +0
+[progress] 10/35  28.6%  ETHUSDT_2h +0
+[progress] 11/35  31.4%  SOLUSDT_30m +0
+[progress] 12/35  34.3%  BTCUSDT_15m +0
+[progress] 13/35  37.1%  BTCUSDT_2h +0
+[progress] 14/35  40.0%  BTCUSDT_30m +0
+[progress] 15/35  42.9%  ETHUSDT_5m +0
+[progress] 16/35  45.7%  BNBUSDT_30m +0
+[progress] 17/35  48.6%  ETHUSDT_4h +0
+[progress] 18/35  51.4%  BNBUSDT_1d +0
+[progress] 19/35  54.3%  BNBUSDT_4h +0
+[progress] 20/35  57.1%  BTCUSDT_5m +0
+[progress] 21/35  60.0%  ETHUSDT_1d +0
+[progress] 22/35  62.9%  SOLUSDT_5m +0
+[progress] 23/35  65.7%  SOLUSDT_15m +0
+[progress] 24/35  68.6%  BNBUSDT_5m +0
+[progress] 25/35  71.4%  SOLUSDT_1h +0
+[progress] 26/35  74.3%  SOLUSDT_4h +0
+[progress] 27/35  77.1%  SOLUSDT_2h +0
+[progress] 28/35  80.0%  APTUSDT_5m +0
+[progress] 29/35  82.9%  APTUSDT_1d +0
+[progress] 30/35  85.7%  APTUSDT_2h +0
+[progress] 31/35  88.6%  APTUSDT_4h +0
+[progress] 32/35  91.4%  APTUSDT_30m +0
+[progress] 33/35  94.3%  APTUSDT_1h +0
+[progress] 34/35  97.1%  SOLUSDT_1d +0
+[progress] 35/35 100.0%  APTUSDT_15m +0
+[writer] stopped
+collector done
+>>> collector start | symbols=5 | intervals=['5m', '15m', '30m', '1h', '2h', '4h', '1d']
+db: D:\quant_system_v2\data\market_data.db
+[progress] 1/35   2.9%  ETHUSDT_30m +0
+[progress] 2/35   5.7%  BTCUSDT_1d +0
+[progress] 3/35   8.6%  BTCUSDT_4h +0
+[progress] 4/35  11.4%  ETHUSDT_5m +0
+[progress] 5/35  14.3%  BNBUSDT_5m +0
+[progress] 6/35  17.1%  ETHUSDT_2h +0
+[progress] 7/35  20.0%  BNBUSDT_4h +0
+[progress] 8/35  22.9%  ETHUSDT_1d +0
+[progress] 9/35  25.7%  BNBUSDT_30m +0
+[progress] 10/35  28.6%  BNBUSDT_1h +0
+[progress] 11/35  31.4%  BNBUSDT_2h +0
+[progress] 12/35  34.3%  BNBUSDT_15m +0
+[progress] 13/35  37.1%  SOLUSDT_30m +0
+[progress] 14/35  40.0%  BNBUSDT_1d +0
+[progress] 15/35  42.9%  ETHUSDT_4h +0
+[progress] 16/35  45.7%  BTCUSDT_5m +0
+[progress] 17/35  48.6%  ETHUSDT_1h +0
+[progress] 18/35  51.4%  ETHUSDT_15m +0
+[progress] 19/35  54.3%  SOLUSDT_5m +0
+[progress] 20/35  57.1%  SOLUSDT_15m +0
+[progress] 21/35  60.0%  BTCUSDT_15m +0
+[progress] 22/35  62.9%  BTCUSDT_30m +0
+[progress] 23/35  65.7%  BTCUSDT_2h +0
+[progress] 24/35  68.6%  BTCUSDT_1h +0
+[progress] 25/35  71.4%  SOLUSDT_1h +0
+[progress] 26/35  74.3%  SOLUSDT_1d +0
+[progress] 27/35  77.1%  SOLUSDT_4h +0
+[progress] 28/35  80.0%  APTUSDT_5m +0
+[progress] 29/35  82.9%  APTUSDT_4h +0
+[progress] 30/35  85.7%  SOLUSDT_2h +0
+[progress] 31/35  88.6%  APTUSDT_1d +0
+[progress] 32/35  91.4%  APTUSDT_15m +0
+[progress] 33/35  94.3%  APTUSDT_30m +0
+[progress] 34/35  97.1%  APTUSDT_1h +0
+[progress] 35/35 100.0%  APTUSDT_2h +0
+[writer] stopped
+collector done
+>>> collector start | symbols=5 | intervals=['5m', '15m', '30m', '1h', '2h', '4h', '1d']
+db: D:\quant_system_v2\data\market_data.db
+[progress] 1/35   2.9%  BNBUSDT_2h +0
+[progress] 2/35   5.7%  BNBUSDT_1h +0
+[progress] 3/35   8.6%  ETHUSDT_1d +0
+[progress] 4/35  11.4%  ETHUSDT_2h +0
+[progress] 5/35  14.3%  ETHUSDT_15m +0
+[progress] 6/35  17.1%  ETHUSDT_4h +0
+[progress] 7/35  20.0%  BNBUSDT_1d +0
+[progress] 8/35  22.9%  SOLUSDT_30m +0
+[progress] 9/35  25.7%  BTCUSDT_1h +0
+[progress] 10/35  28.6%  BNBUSDT_30m +0
+[progress] 11/35  31.4%  BNBUSDT_5m +0
+[progress] 12/35  34.3%  BTCUSDT_15m +0
+[progress] 13/35  37.1%  BTCUSDT_30m +0
+[progress] 14/35  40.0%  ETHUSDT_5m +0
+[progress] 15/35  42.9%  BTCUSDT_4h +0
+[progress] 16/35  45.7%  BTCUSDT_2h +0
+[progress] 17/35  48.6%  ETHUSDT_1h +0
+[progress] 18/35  51.4%  BNBUSDT_15m +0
+[progress] 19/35  54.3%  BTCUSDT_1d +0
+[progress] 20/35  57.1%  BNBUSDT_4h +0
+[progress] 21/35  60.0%  BTCUSDT_5m +0
+[progress] 22/35  62.9%  SOLUSDT_15m +0
+[progress] 23/35  65.7%  ETHUSDT_30m +0
+[progress] 24/35  68.6%  SOLUSDT_5m +0
+[progress] 25/35  71.4%  APTUSDT_4h +0
+[progress] 26/35  74.3%  SOLUSDT_4h +0
+[progress] 27/35  77.1%  APTUSDT_2h +0
+[progress] 28/35  80.0%  APTUSDT_1h +0
+[progress] 29/35  82.9%  APTUSDT_30m +0
+[progress] 30/35  85.7%  APTUSDT_1d +0
+[progress] 31/35  88.6%  SOLUSDT_1h +0
+[progress] 32/35  91.4%  APTUSDT_15m +0
+[progress] 33/35  94.3%  SOLUSDT_2h +0
+[progress] 34/35  97.1%  APTUSDT_5m +0
+[progress] 35/35 100.0%  SOLUSDT_1d +0
+[writer] stopped
+collector done
+>>> collector start | symbols=5 | intervals=['5m', '15m', '30m', '1h', '2h', '4h', '1d']
+db: D:\quant_system_v2\data\market_data.db
+[progress] 1/35   2.9%  BNBUSDT_30m +0
+[progress] 2/35   5.7%  BNBUSDT_15m +0
+[progress] 3/35   8.6%  BNBUSDT_5m +0
+[progress] 4/35  11.4%  ETHUSDT_2h +0
+[progress] 5/35  14.3%  BTCUSDT_30m +0
+[progress] 6/35  17.1%  ETHUSDT_4h +0
+[progress] 7/35  20.0%  BNBUSDT_1h +0
+[progress] 8/35  22.9%  BNBUSDT_1d +0
+[progress] 9/35  25.7%  BTCUSDT_5m +0
+[progress] 10/35  28.6%  BTCUSDT_15m +0
+[progress] 11/35  31.4%  ETHUSDT_1d +0
+[progress] 12/35  34.3%  ETHUSDT_5m +0
+[progress] 13/35  37.1%  BTCUSDT_1h +0
+[progress] 14/35  40.0%  BNBUSDT_4h +0
+[progress] 15/35  42.9%  BTCUSDT_1d +0
+[progress] 16/35  45.7%  BTCUSDT_2h +0
+[progress] 17/35  48.6%  SOLUSDT_5m +0
+[progress] 18/35  51.4%  ETHUSDT_15m +0
+[progress] 19/35  54.3%  SOLUSDT_15m +0
+[progress] 20/35  57.1%  BTCUSDT_4h +0
+[progress] 21/35  60.0%  BNBUSDT_2h +0
+[progress] 22/35  62.9%  SOLUSDT_30m +0
+[progress] 23/35  65.7%  ETHUSDT_1h +0
+[progress] 24/35  68.6%  ETHUSDT_30m +0
+[progress] 25/35  71.4%  APTUSDT_1h +0
+[progress] 26/35  74.3%  SOLUSDT_4h +0
+[progress] 27/35  77.1%  APTUSDT_2h +0
+[progress] 28/35  80.0%  SOLUSDT_1d +0
+[progress] 29/35  82.9%  APTUSDT_5m +0
+[progress] 30/35  85.7%  APTUSDT_30m +0
+[progress] 31/35  88.6%  APTUSDT_15m +0
+[progress] 32/35  91.4%  SOLUSDT_1h +0
+[progress] 33/35  94.3%  APTUSDT_1d +0
+[progress] 34/35  97.1%  SOLUSDT_2h +0
+[progress] 35/35 100.0%  APTUSDT_4h +0
+[writer] stopped
+collector done
+>>> collector start | symbols=5 | intervals=['5m', '15m', '30m', '1h', '2h', '4h', '1d']
+db: D:\quant_system_v2\data\market_data.db
+[progress] 1/35   2.9%  BNBUSDT_15m +0
+[progress] 2/35   5.7%  BTCUSDT_5m +0
+[progress] 3/35   8.6%  BNBUSDT_4h +0
+[progress] 4/35  11.4%  BNBUSDT_1d +0
+[progress] 5/35  14.3%  BNBUSDT_2h +0
+[progress] 6/35  17.1%  BTCUSDT_30m +0
+[progress] 7/35  20.0%  BTCUSDT_2h +0
+[progress] 8/35  22.9%  BTCUSDT_1h +0
+[progress] 9/35  25.7%  BNBUSDT_1h +0
+[progress] 10/35  28.6%  BNBUSDT_30m +0
+[progress] 11/35  31.4%  BTCUSDT_15m +0
+[progress] 12/35  34.3%  BNBUSDT_5m +0
+[progress] 13/35  37.1%  BTCUSDT_4h +0
+[progress] 14/35  40.0%  ETHUSDT_15m +0
+[progress] 15/35  42.9%  SOLUSDT_15m +0
+[progress] 16/35  45.7%  SOLUSDT_5m +0
+[progress] 17/35  48.6%  ETHUSDT_5m +0
+[progress] 18/35  51.4%  ETHUSDT_4h +0
+[progress] 19/35  54.3%  SOLUSDT_30m +0
+[progress] 20/35  57.1%  BTCUSDT_1d +0
+[progress] 21/35  60.0%  ETHUSDT_1h +0
+[progress] 22/35  62.9%  ETHUSDT_1d +0
+[progress] 23/35  65.7%  ETHUSDT_2h +0
+[progress] 24/35  68.6%  ETHUSDT_30m +0
+[progress] 25/35  71.4%  APTUSDT_1h +0
+[progress] 26/35  74.3%  APTUSDT_2h +0
+[progress] 27/35  77.1%  APTUSDT_30m +0
+[progress] 28/35  80.0%  APTUSDT_15m +0
+[progress] 29/35  82.9%  APTUSDT_4h +0
+[progress] 30/35  85.7%  APTUSDT_1d +0
+[progress] 31/35  88.6%  APTUSDT_5m +0
+[progress] 32/35  91.4%  SOLUSDT_2h +0
+[progress] 33/35  94.3%  SOLUSDT_4h +0
+[progress] 34/35  97.1%  SOLUSDT_1d +0
+[progress] 35/35 100.0%  SOLUSDT_1h +0
+[writer] stopped
+collector done
+>>> collector start | symbols=5 | intervals=['5m', '15m', '30m', '1h', '2h', '4h', '1d']
+db: D:\quant_system_v2\data\market_data.db
+[progress] 1/35   2.9%  ETHUSDT_2h +0
+[progress] 2/35   5.7%  ETHUSDT_4h +0
+[progress] 3/35   8.6%  BTCUSDT_15m +0
+[progress] 4/35  11.4%  SOLUSDT_15m +0
+[progress] 5/35  14.3%  BTCUSDT_30m +0
+[progress] 6/35  17.1%  BNBUSDT_4h +0
+[progress] 7/35  20.0%  BTCUSDT_5m +0
+[progress] 8/35  22.9%  SOLUSDT_5m +0
+[progress] 9/35  25.7%  BNBUSDT_1d +0
+[progress] 10/35  28.6%  BNBUSDT_30m +0
+[progress] 11/35  31.4%  BTCUSDT_1h +0
+[progress] 12/35  34.3%  SOLUSDT_30m +0
+[progress] 13/35  37.1%  ETHUSDT_1h +0
+[progress] 14/35  40.0%  BTCUSDT_1d +0
+[progress] 15/35  42.9%  ETHUSDT_30m +0
+[progress] 16/35  45.7%  BTCUSDT_2h +0
+[progress] 17/35  48.6%  BTCUSDT_4h +0
+[progress] 18/35  51.4%  ETHUSDT_1d +0
+[progress] 19/35  54.3%  BNBUSDT_2h +0
+[progress] 20/35  57.1%  BNBUSDT_5m +0
+[progress] 21/35  60.0%  BNBUSDT_1h +0
+[progress] 22/35  62.9%  ETHUSDT_15m +0
+[progress] 23/35  65.7%  BNBUSDT_15m +0
+[progress] 24/35  68.6%  ETHUSDT_5m +0
+[progress] 25/35  71.4%  SOLUSDT_1h +0
+[progress] 26/35  74.3%  SOLUSDT_2h +0
+[progress] 27/35  77.1%  SOLUSDT_4h +0
+[progress] 28/35  80.0%  APTUSDT_5m +0
+[progress] 29/35  82.9%  APTUSDT_30m +0
+[progress] 30/35  85.7%  SOLUSDT_1d +0
+[progress] 31/35  88.6%  APTUSDT_15m +0
+[progress] 32/35  91.4%  APTUSDT_4h +0
+[progress] 33/35  94.3%  APTUSDT_1h +0
+[progress] 34/35  97.1%  APTUSDT_2h +0
+[progress] 35/35 100.0%  APTUSDT_1d +0
+[writer] stopped
+collector done
+>>> collector start | symbols=5 | intervals=['5m', '15m', '30m', '1h', '2h', '4h', '1d']
+db: D:\quant_system_v2\data\market_data.db
+[progress] 1/35   2.9%  ETHUSDT_15m +0
+[progress] 2/35   5.7%  ETHUSDT_1h +0
+[progress] 3/35   8.6%  BTCUSDT_5m +0
+[progress] 4/35  11.4%  BNBUSDT_2h +0
+[progress] 5/35  14.3%  BNBUSDT_1h +0
+[progress] 6/35  17.1%  BNBUSDT_1d +0
+[progress] 7/35  20.0%  BNBUSDT_5m +0
+[progress] 8/35  22.9%  ETHUSDT_30m +0
+[progress] 9/35  25.7%  ETHUSDT_1d +0
+[progress] 10/35  28.6%  ETHUSDT_5m +0
+[progress] 11/35  31.4%  BTCUSDT_4h +0
+[progress] 12/35  34.3%  BNBUSDT_4h +0
+[progress] 13/35  37.1%  ETHUSDT_2h +0
+[progress] 14/35  40.0%  BTCUSDT_30m +0
+[progress] 15/35  42.9%  ETHUSDT_4h +0
+[progress] 16/35  45.7%  BTCUSDT_1h +0
+[progress] 17/35  48.6%  SOLUSDT_15m +0
+[progress] 18/35  51.4%  BTCUSDT_15m +0
+[progress] 19/35  54.3%  SOLUSDT_30m +0
+[progress] 20/35  57.1%  BTCUSDT_2h +0
+[progress] 21/35  60.0%  BTCUSDT_1d +0
+[progress] 22/35  62.9%  BNBUSDT_30m +0
+[progress] 23/35  65.7%  BNBUSDT_15m +0
+[progress] 24/35  68.6%  SOLUSDT_5m +0
+[progress] 25/35  71.4%  SOLUSDT_1d +0
+[progress] 26/35  74.3%  SOLUSDT_4h +0
+[progress] 27/35  77.1%  APTUSDT_5m +0
+[progress] 28/35  80.0%  APTUSDT_15m +0
+[progress] 29/35  82.9%  APTUSDT_1d +0
+[progress] 30/35  85.7%  SOLUSDT_2h +0
+[progress] 31/35  88.6%  SOLUSDT_1h +0
+[progress] 32/35  91.4%  APTUSDT_1h +0
+[progress] 33/35  94.3%  APTUSDT_2h +0
+[progress] 34/35  97.1%  APTUSDT_4h +0
+[progress] 35/35 100.0%  APTUSDT_30m +0
+[writer] stopped
+collector done
+>>> collector start | symbols=5 | intervals=['5m', '15m', '30m', '1h', '2h', '4h', '1d']
+db: D:\quant_system_v2\data\market_data.db
+[progress] 1/35   2.9%  ETHUSDT_1h +0
+[progress] 2/35   5.7%  ETHUSDT_2h +0
+[progress] 3/35   8.6%  ETHUSDT_30m +0
+[progress] 4/35  11.4%  ETHUSDT_5m +0
+[progress] 5/35  14.3%  ETHUSDT_4h +0
+[progress] 6/35  17.1%  ETHUSDT_1d +0
+[progress] 7/35  20.0%  BNBUSDT_1h +0
+[progress] 8/35  22.9%  BNBUSDT_2h +0
+[progress] 9/35  25.7%  ETHUSDT_15m +0
+[progress] 10/35  28.6%  BNBUSDT_15m +0
+[progress] 11/35  31.4%  BNBUSDT_30m +0
+[progress] 12/35  34.3%  BNBUSDT_5m +0
+[progress] 13/35  37.1%  BTCUSDT_1d +0
+[progress] 14/35  40.0%  SOLUSDT_30m +0
+[progress] 15/35  42.9%  BTCUSDT_2h +0
+[progress] 16/35  45.7%  BTCUSDT_1h +0
+[progress] 17/35  48.6%  BTCUSDT_4h +0
+[progress] 18/35  51.4%  BNBUSDT_1d +0
+[progress] 19/35  54.3%  SOLUSDT_15m +0
+[progress] 20/35  57.1%  BTCUSDT_15m +0
+[progress] 21/35  60.0%  BTCUSDT_30m +0
+[progress] 22/35  62.9%  SOLUSDT_5m +0
+[progress] 23/35  65.7%  BTCUSDT_5m +0
+[progress] 24/35  68.6%  BNBUSDT_4h +0
+[progress] 25/35  71.4%  SOLUSDT_4h +0
+[progress] 26/35  74.3%  APTUSDT_5m +0
+[progress] 27/35  77.1%  APTUSDT_30m +0
+[progress] 28/35  80.0%  APTUSDT_15m +0
+[progress] 29/35  82.9%  SOLUSDT_1h +0
+[progress] 30/35  85.7%  APTUSDT_1h +0
+[progress] 31/35  88.6%  APTUSDT_2h +0
+[progress] 32/35  91.4%  SOLUSDT_2h +0
+[progress] 33/35  94.3%  SOLUSDT_1d +0
+[progress] 34/35  97.1%  APTUSDT_1d +0
+[progress] 35/35 100.0%  APTUSDT_4h +0
+[writer] stopped
+collector done
+>>> collector start | symbols=5 | intervals=['5m', '15m', '30m', '1h', '2h', '4h', '1d']
+db: D:\quant_system_v2\data\market_data.db
+[progress] 1/35   2.9%  BNBUSDT_15m +0
+[progress] 2/35   5.7%  ETHUSDT_1d +0
+[progress] 3/35   8.6%  BNBUSDT_1h +0
+[progress] 4/35  11.4%  BTCUSDT_4h +0
+[progress] 5/35  14.3%  BTCUSDT_1d +0
+[progress] 6/35  17.1%  SOLUSDT_30m +0
+[progress] 7/35  20.0%  ETHUSDT_5m +0
+[progress] 8/35  22.9%  BNBUSDT_5m +0
+[progress] 9/35  25.7%  ETHUSDT_4h +0
+[progress] 10/35  28.6%  ETHUSDT_1h +0
+[progress] 11/35  31.4%  ETHUSDT_15m +0
+[progress] 12/35  34.3%  ETHUSDT_2h +0
+[progress] 13/35  37.1%  BTCUSDT_2h +0
+[progress] 14/35  40.0%  BNBUSDT_2h +0
+[progress] 15/35  42.9%  ETHUSDT_30m +0
+[progress] 16/35  45.7%  BNBUSDT_30m +0
+[progress] 17/35  48.6%  BTCUSDT_5m +0
+[progress] 18/35  51.4%  SOLUSDT_5m +0
+[progress] 19/35  54.3%  BNBUSDT_1d +0
+[progress] 20/35  57.1%  BTCUSDT_1h +0
+[progress] 21/35  60.0%  BTCUSDT_15m +0
+[progress] 22/35  62.9%  SOLUSDT_15m +0
+[progress] 23/35  65.7%  BTCUSDT_30m +0
+[progress] 24/35  68.6%  BNBUSDT_4h +0
+[progress] 25/35  71.4%  APTUSDT_4h +0
+[progress] 26/35  74.3%  APTUSDT_2h +0
+[progress] 27/35  77.1%  APTUSDT_30m +0
+[progress] 28/35  80.0%  APTUSDT_1h +0
+[progress] 29/35  82.9%  SOLUSDT_1d +0
+[progress] 30/35  85.7%  APTUSDT_15m +0
+[progress] 31/35  88.6%  APTUSDT_1d +0
+[progress] 32/35  91.4%  SOLUSDT_1h +0
+[progress] 33/35  94.3%  APTUSDT_5m +0
+[progress] 34/35  97.1%  SOLUSDT_2h +0
+[progress] 35/35 100.0%  SOLUSDT_4h +0
+[writer] stopped
+collector done
+>>> collector start | symbols=5 | intervals=['5m', '15m', '30m', '1h', '2h', '4h', '1d']
+db: D:\quant_system_v2\data\market_data.db
+[progress] 1/35   2.9%  BTCUSDT_30m +0
+[progress] 2/35   5.7%  SOLUSDT_5m +0
+[progress] 3/35   8.6%  BTCUSDT_1d +0
+[progress] 4/35  11.4%  SOLUSDT_15m +0
+[progress] 5/35  14.3%  BTCUSDT_15m +0
+[progress] 6/35  17.1%  BTCUSDT_4h +0
+[progress] 7/35  20.0%  ETHUSDT_1h +0
+[progress] 8/35  22.9%  BNBUSDT_1d +0
+[progress] 9/35  25.7%  BTCUSDT_1h +0
+[progress] 10/35  28.6%  BTCUSDT_2h +0
+[progress] 11/35  31.4%  SOLUSDT_30m +0
+[progress] 12/35  34.3%  BNBUSDT_5m +0
+[progress] 13/35  37.1%  ETHUSDT_4h +0
+[progress] 14/35  40.0%  BNBUSDT_4h +0
+[progress] 15/35  42.9%  BTCUSDT_5m +0
+[progress] 16/35  45.7%  ETHUSDT_5m +0
+[progress] 17/35  48.6%  ETHUSDT_2h +0
+[progress] 18/35  51.4%  BNBUSDT_1h +0
+[progress] 19/35  54.3%  ETHUSDT_30m +0
+[progress] 20/35  57.1%  ETHUSDT_1d +0
+[progress] 21/35  60.0%  ETHUSDT_15m +0
+[progress] 22/35  62.9%  BNBUSDT_15m +0
+[progress] 23/35  65.7%  BNBUSDT_30m +0
+[progress] 24/35  68.6%  BNBUSDT_2h +0
+[progress] 25/35  71.4%  SOLUSDT_2h +0
+[progress] 26/35  74.3%  APTUSDT_1h +0
+[progress] 27/35  77.1%  APTUSDT_4h +0
+[2025-08-20 19:37:44Z] [GUARD] Exit code=
+[2025-08-20 19:37:44Z] [GUARD] Abnormal exit. Retry #1 after 2s
+[2025-08-20 19:37:46Z] Stop signal detected
+[2025-08-20 19:37:46Z] [GUARD] Stopped and cleaned PID.

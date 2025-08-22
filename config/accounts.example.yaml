@@ -1,0 +1,14 @@
+# 濉ソ鍚庡鍒朵负 accounts.yaml锛堜笌鏈枃浠跺悓鐩綍锛?bitget:
+  apiKey: "YOUR_BITGET_KEY"
+  secret: "YOUR_BITGET_SECRET"
+  password: "YOUR_BITGET_PASSPHRASE"
+  testnet: false
+okx:
+  apiKey: ""
+  secret: ""
+  password: ""
+  testnet: false
+bybit:
+  apiKey: ""
+  secret: ""
+  testnet: false

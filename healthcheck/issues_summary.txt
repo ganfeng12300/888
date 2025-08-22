@@ -1,0 +1,17 @@
+﻿[WARN] Bitget_Time_Mix  -- Unreachable or slow
+  evidence: err=远程服务器返回错误: (404) 未找到。
+  fix: Check network or regional blocking
+
+[WARN] Guardian PID  -- PID status
+  evidence: PID file absent (may be stopped or not created)
+  fix: If running, ensure it writes PID atomically; if stopped, ignore
+
+[WARN] 5m freshness  -- 5m last_age_sec > 1800 count
+  evidence: lag_count=7
+  fix: Check realtime collector and API limits
+
+[WARN] Function save_optimized_params_to_db  -- Check presence in codebase
+  evidence: hits=0
+  fix: Ensure utils/param_loader.py exports it
+
+

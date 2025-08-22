@@ -1,0 +1,209 @@
+﻿#requires -Version 5.1
+using namespace System.IO
+using namespace System.Net
+Set-StrictMode -Version Latest
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
+function Get-TimeframeSec {
+  param([ValidateSet('5m','15m','1h','4h','1d')] [string]$Interval)
+  switch ($Interval) { '5m' {300} '15m' {900} '1h' {3600} '4h' {14400} '1d' {86400} }
+}
+function Get-Cutoff { param([int]$TfSec) [int64]([math]::Floor([DateTimeOffset]::UtcNow.ToUnixTimeSeconds() / $TfSec) * $TfSec - 1) }
+function Get-LastClosedOpenSec { param([int]$TfSec, [int64]$CutoffSec) [int64]([math]::Floor(($CutoffSec + 1) / $TfSec) * $TfSec - $TfSec) }
+
+function Invoke-Binance {
+  param([string]$Path, [hashtable]$Query, [int]$MaxRetry=8, [int]$BaseSleepMs=500)
+  $base = "https://fapi.binance.com"
+  for($i=0; $i -lt $MaxRetry; $i++){
+    try{
+      $qs = ($Query.GetEnumerator() | %{"$($_.Key)=$([uri]::EscapeDataString([string]$_.Value))"} -join "&")
+      $uri = $base + $Path + "?" + $qs
+      return Invoke-RestMethod -Method Get -Uri $uri -TimeoutSec 30
+    }catch{
+      $code = $_.Exception.Response.StatusCode.Value__ 2>$null
+      if($code -in @(418,429) -or $code -ge 500){
+        Start-Sleep -Milliseconds ([math]::Min($BaseSleepMs * [math]::Pow(1.8,$i), 6000))
+        continue
+      }
+      throw
+    }
+  }
+  throw "Invoke-Binance failed after $MaxRetry"
+}
+
+function Get-KlinesBatch {
+  param([string]$Symbol,[string]$Interval,[int64]$StartOpenSec,[int64]$EndOpenSec,[int]$Limit=1000)
+  $q = @{ symbol=$Symbol; interval=$Interval; startTime=($StartOpenSec*1000); endTime=($EndOpenSec*1000); limit=$Limit }
+  $arr = Invoke-Binance -Path "/fapi/v1/klines" -Query $q
+  $rows = foreach($k in $arr){
+    $ts = [int64]([int64]$k[6] / 1000)  # closeTime (秒)
+    [pscustomobject]@{
+      ts=$ts; symbol=$Symbol
+      open=[double]$k[1]; high=[double]$k[2]; low=[double]$k[3]; close=[double]$k[4]
+      volume=[double]$k[5]; quote_volume=[double]$k[7]; trade_count=[int]$k[8]
+      taker_buy_base=[double]$k[9]; taker_buy_quote=[double]$k[10]
+    }
+  }
+  ,$rows
+}
+
+function Write-KlinesCsv {
+  param([string]$Root,[string]$Interval,[string]$Symbol,[object[]]$Rows,[int]$TfSec,[int64]$CutoffSec)
+  if(-not $Rows -or $Rows.Count -eq 0){ return 0 }
+  # 只收盘 + O/H/L/C 合法性
+  $rows = $Rows | ? { $_.ts -le $CutoffSec -and $_.high -ge [Math]::Max($_.open,$_.close) -and $_.low -le [Math]::Min($_.open,$_.close) }
+  if($rows.Count -eq 0){ return 0 }
+  $dir = Join-Path $Root ("data\klines\{0}" -f $Interval); New-Item -ItemType Directory -Force -Path $dir | Out-Null
+  $csv = Join-Path $dir ("{0}.csv" -f $Symbol); $tmp = $csv + ".tmp"
+
+  $existing = @{}
+  if(Test-Path $csv){ Import-Csv $csv | % { $existing[[int64]$_.ts] = $_ } }
+  foreach($r in $rows){ $existing[[int64]$r.ts] = $r }
+  $ordered = $existing.GetEnumerator() | Sort-Object Name | % { $_.Value }
+  $ordered | Export-Csv -Path $tmp -NoTypeInformation -Encoding UTF8
+  Move-Item $tmp $csv -Force
+  return $rows.Count
+}
+
+function Invoke-Backfill {
+  [CmdletBinding()]
+  param(
+    [string]$Root="D:\SQuant_Pro",
+    [ValidateSet('5m','15m','1h','4h','1d')] [string[]]$Intervals=@('1h','15m','5m','4h','1d'),
+    [string]$SymbolsFile = (Join-Path $Root "universe\active.txt"),
+    [int]$SinceDays = 270
+  )
+  $symbols = Get-Content $SymbolsFile | ? { $_ -and $_.Trim() -ne "" } | % { $_.Trim().ToUpper() } | Select-Object -Unique
+  foreach($iv in $Intervals){
+    $tf = Get-TimeframeSec $iv
+    $cut = Get-Cutoff $tf
+    $lastOpen = Get-LastClosedOpenSec -TfSec $tf -CutoffSec $cut
+    $startOpen = $lastOpen - ($SinceDays * 86400)
+    Write-Host "== Backfill $iv cutoff=$cut lastOpen=$lastOpen fromOpen>=$startOpen symbols=$($symbols.Count)"
+    foreach($sym in $symbols){
+      $cursor = $startOpen; $batch=1000; $total=0
+      while($cursor -le $lastOpen){
+        $end = [int64][Math]::Min($cursor + $tf * ($batch-1), $lastOpen)
+        $rows = Get-KlinesBatch -Symbol $sym -Interval $iv -StartOpenSec $cursor -EndOpenSec $end -Limit $batch
+        $w = Write-KlinesCsv -Root $Root -Interval $iv -Symbol $sym -Rows $rows -TfSec $tf -CutoffSec $cut
+        $total += $w; $cursor = $end + $tf; Start-Sleep -Milliseconds 300
+      }
+      Write-Host ("[OK] {0} {1} wrote={2}" -f $iv,$sym,$total)
+    }
+  }
+}
+
+function Test-KlineCoverage {
+  [CmdletBinding()]
+  param([string]$Root="D:\SQuant_Pro",[ValidateSet('5m','15m','1h','4h','1d')] [string]$Interval,[string]$SymbolsFile = (Join-Path $Root "universe\active.txt"))
+  $tf = Get-TimeframeSec $Interval; $cut = Get-Cutoff $tf
+  $dir = Join-Path $Root ("data\klines\{0}" -f $Interval)
+  $symbols = Get-Content $SymbolsFile | ? { $_ } | % { $_.Trim().ToUpper() } | Select-Object -Unique
+  $gapRows = @(); $covRows = @()
+  foreach($sym in $symbols){
+    $csv = Join-Path $dir ("{0}.csv" -f $sym)
+    if(-not (Test-Path $csv)){ $covRows += [pscustomobject]@{symbol=$sym; expected=0; actual=0; ratio=0}; continue }
+    $data = Import-Csv $csv | % { [int64]$_.ts } | Sort-Object
+    if($data.Count -eq 0){ $covRows += [pscustomobject]@{symbol=$sym; expected=0; actual=0; ratio=0}; continue }
+    $firstClose=$data[0]; $firstOpen=$firstClose-($tf-1)
+    $firstAlignedOpen=[int64]([math]::Floor($firstOpen / $tf) * $tf)
+    $firstAlignedClose=$firstAlignedOpen + $tf - 1
+    $lastOpen = Get-LastClosedOpenSec -TfSec $tf -CutoffSec $cut
+    $lastClose= $lastOpen + $tf - 1
+    $expectedSet = New-Object System.Collections.Generic.HashSet[int64]
+    for($t=$firstAlignedClose; $t -le $lastClose; $t += $tf){ [void]$expectedSet.Add($t) }
+    $actualSet = New-Object System.Collections.Generic.HashSet[int64]
+    foreach($t in $data){ if($t -le $cut){ [void]$actualSet.Add($t) } }
+    $miss = New-Object System.Collections.Generic.List[int64]
+    foreach($t in $expectedSet){ if(-not $actualSet.Contains($t)){ [void]$miss.Add($t) } }
+    $miss = $miss | Sort-Object
+    $i=0; while($i -lt $miss.Count){
+      $start=$miss[$i]; $j=$i; while($j+1 -lt $miss.Count -and $miss[$j+1] -eq $miss[$j] + $tf){ $j++ }
+      $end=$miss[$j]
+      $gapRows += [pscustomobject]@{symbol=$sym; tf=$Interval; ts_missing_start=$start; ts_missing_end=$end; missing_n=[int](($end-$start)/$tf + 1)}
+      $i = $j + 1
+    }
+    $covRows += [pscustomobject]@{symbol=$sym; expected=$expectedSet.Count; actual=$actualSet.Count; ratio=("{0:N4}" -f ($(if($expectedSet.Count -eq 0){1}else{$actualSet.Count/$expectedSet.Count})))}
+  }
+  $day = (Get-Date).ToString("yyyyMMdd_HHmmss")
+  $outDir = Join-Path $Root ("data\gap_report\{0}" -f $day); New-Item -ItemType Directory -Force -Path $outDir | Out-Null
+  $gapRows | Export-Csv (Join-Path $outDir ("gaps_{0}.csv" -f $Interval)) -NoTypeInformation -Encoding UTF8
+  $covRows | Export-Csv (Join-Path $outDir ("coverage_{0}.csv" -f $Interval)) -NoTypeInformation -Encoding UTF8
+  Write-Host "[COVERAGE]" $Interval
+  ($covRows | Sort-Object ratio | Select-Object -First 5) | Format-Table -AutoSize
+  if($gapRows.Count -gt 0){ Write-Warning ("Gaps found: {0} rows (see {1})" -f $gapRows.Count, $outDir) } else { Write-Host "No gaps." }
+}
+
+function Start-RealtimeCloseOnly {
+  [CmdletBinding()]
+  param(
+    [string]$Root="D:\SQuant_Pro",
+    [ValidateSet('5m','15m','1h','4h','1d')] [string[]]$Intervals=@('5m','15m','1h','4h','1d'),
+    [string]$SymbolsFile = (Join-Path $Root "universe\active.txt"),
+    [int]$PollMs = 2500
+  )
+  $symbols = Get-Content $SymbolsFile | ? { $_ } | % { $_.Trim().ToUpper() } | Select-Object -Unique
+  $statePath = Join-Path $Root "data\state\last_committed.json"
+  New-Item -ItemType Directory -Force -Path (Split-Path $statePath -Parent) | Out-Null
+
+  # 用 hashtable 管状态（键里有 | ，不能点号访问）
+  $state = @{}
+  if(Test-Path $statePath){
+    try{
+      $obj = Get-Content $statePath -Raw | ConvertFrom-Json
+      foreach($p in $obj.PSObject.Properties){ $state[$p.Name] = [int64]$p.Value }
+    }catch{}
+  }
+
+  Write-Host ("[RT] CloseOnly start intervals={0} symbols={1}" -f ($Intervals -join ","), $symbols.Count)
+
+  while($true){
+    foreach($iv in $Intervals){
+      $tf = Get-TimeframeSec $iv
+      $cut = Get-Cutoff $tf
+      $lastOpen = Get-LastClosedOpenSec -TfSec $tf -CutoffSec $cut
+      $lastClose= $lastOpen + $tf - 1
+      foreach($sym in $symbols){
+        $key = "$sym|$iv"
+        $lastCommitted = 0
+        if($state.ContainsKey($key)){ $lastCommitted = [int64]$state[$key] }
+
+        # 拉“目标收盘根”自身（open==lastOpen），确认 closeTime==lastClose
+        $rows = Get-KlinesBatch -Symbol $sym -Interval $iv -StartOpenSec $lastOpen -EndOpenSec $lastOpen -Limit 2
+        if($rows){
+          $row = $rows | Sort-Object ts -Descending | Select-Object -First 1
+          if($null -ne $row -and $row.ts -eq $lastClose -and $row.ts -gt $lastCommitted){
+            [void](Write-KlinesCsv -Root $Root -Interval $iv -Symbol $sym -Rows @($row) -TfSec $tf -CutoffSec $cut)
+            $state[$key] = $row.ts
+          }
+        }
+      }
+    }
+    ($state | ConvertTo-Json -Depth 5) | Set-Content $statePath -Encoding UTF8
+    Start-Sleep -Milliseconds $PollMs
+  }
+}
+
+function Start-RealtimePrice {
+  [CmdletBinding()]
+  param([string]$Root="D:\SQuant_Pro",[string]$SymbolsFile = (Join-Path $Root "universe\active.txt"),[int]$PollMs = 800)
+  $symbols = Get-Content $SymbolsFile | ? { $_ } | % { $_.Trim().ToUpper() } | Select-Object -Unique
+  $outDir = Join-Path $Root "logs\price"; New-Item -ItemType Directory -Force -Path $outDir | Out-Null
+  $file = Join-Path $outDir ("ticks_{0}.csv" -f ((Get-Date).ToString("yyyyMMdd")))
+  if(-not (Test-Path $file)){ "ts_utc,symbol,mark_price,last_price" | Out-File -FilePath $file -Encoding ascii }
+
+  while($true){
+    $arr = Invoke-Binance -Path "/fapi/v1/premiumIndex" -Query @{}
+    $map = @{}; foreach($x in $arr){ $map[$x.symbol] = $x }
+    $now = (Get-Date).ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")
+    foreach($sym in $symbols){
+      $mark = $map[$sym].markPrice
+      $tp = Invoke-Binance -Path "/fapi/v1/ticker/price" -Query @{symbol=$sym}
+      $line = "{0},{1},{2},{3}" -f $now,$sym,$mark,$tp.price
+      Add-Content -Path $file -Value $line -Encoding ascii
+    }
+    Start-Sleep -Milliseconds $PollMs
+  }
+}
+
+Export-ModuleMember -Function Get-TimeframeSec,Get-Cutoff,Get-LastClosedOpenSec,Invoke-Binance,Get-KlinesBatch,Write-KlinesCsv,Invoke-Backfill,Test-KlineCoverage,Start-RealtimeCloseOnly,Start-RealtimePrice

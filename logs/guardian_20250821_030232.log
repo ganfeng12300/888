@@ -1,0 +1,1 @@
+[2025-08-20 19:02:32Z] Launch: C:\Users\Administrator\AppData\Local\Programs\Python\Python39\python.exe D:\SQuant_Pro\bin\collector_rt.py --db D:\quant_system_v2\data\market_data.db --symbols BTCUSDT,ETHUSDT,BNBUSDT,SOLUSDT,APTUSDT --intervals 5m,15m,30m,1h,2h,4h,1d --loop 1

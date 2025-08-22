@@ -1,0 +1,291 @@
+# -*- coding: utf-8 -*-
+# ?strategy_scores_*.csv
+import os, sys, time, math, sqlite3, importlib
+import numpy as np
+import pandas as pd
+from datetime import datetime, timedelta
+
+ROOT = r"D:\SQuant_Pro"
+DB   = r"D:\quant_system_v2\data\market_data.db"
+CFG  = os.path.join(ROOT, "config")
+OUTD = os.path.join(ROOT, "data", "scores"); os.makedirs(OUTD, exist_ok=True)
+if ROOT not in sys.path: sys.path.insert(0, ROOT)
+
+def load_yaml(path):
+    import yaml
+    with open(path, 'r', encoding='utf-8') as f:
+        return yaml.safe_load(f)
+
+def _read_df(con, sql, params=None):
+    try: return pd.read_sql(sql, con, params=params or [])
+    except: return pd.DataFrame()
+
+def load_close(db, sym, tf="1h", lookback_days=180):
+    con = sqlite3.connect(db)
+    since = int((datetime.utcnow()-timedelta(days=lookback_days)).timestamp())
+    tbl = f"{sym}_{tf}"
+    df  = _read_df(con, f'SELECT * FROM "{tbl}" ORDER BY 1', [])
+    if not df.empty:
+        if "timestamp" in df.columns:
+            ts = pd.to_datetime(df["timestamp"], unit="s", utc=True)
+        elif "ts" in df.columns:
+            try: ts = pd.to_datetime(df["ts"], utc=True)
+            except: ts = pd.to_datetime(df["ts"], unit="s", utc=True)
+        else:
+            con.close(); return pd.DataFrame()
+        out = pd.DataFrame({"ts": ts, "close": pd.to_numeric(df["close"], errors="coerce")})
+        out = out[out["ts"].astype("int64")//10**9 >= since]
+        con.close(); return out
+    # line
+    exist = _read_df(con, "SELECT name FROM sqlite_master WHERE type='table' AND name='kline'", [])
+    if not exist.empty:
+        cols = [c[1] for c in con.execute("PRAGMA table_info(kline)").fetchall()]
+        ts_col = 'timestamp' if 'timestamp' in cols else ('ts' if 'ts' in cols else None)
+        if ts_col:
+            df = _read_df(con, f"SELECT {ts_col} as ts, close FROM kline WHERE symbol=? AND interval=? AND {ts_col}>=? ORDER BY ts", [sym, tf, since])
+            if not df.empty:
+                try: df["ts"] = pd.to_datetime(df["ts"], utc=True)
+                except: df["ts"] = pd.to_datetime(df["ts"], unit="s", utc=True)
+                con.close(); return df[["ts","close"]]
+    con.close(); return pd.DataFrame()
+
+def merge_and_pnl(sig_df, close_df):
+    #  + ?    s = sig_df.sort_values("ts")[["ts","signal"]]
+    c = close_df.sort_values("ts")[["ts","close"]]
+    df = pd.merge_asof(s, c, on="ts", direction="backward")
+    df["ret"]  = df["close"].pct_change().fillna(0.0)
+    df["pnl"]  = df["signal"].shift(1).fillna(0.0) * df["ret"]
+    df["pnl"] = df["pnl"].replace([np.inf, -np.inf], 0.0)
+    return df[["ts","pnl","signal","close"]]
+
+# ======  ======
+ANN = 365*24  # 1h 
+
+def equity_curve(pnl):
+    return (1.0 + pnl).cumprod()
+
+def cagr(pnl):
+    n = len(pnl)
+    if n < 2: return 0.0
+    g = float((1.0 + pnl).prod())
+    years = n / ANN
+    return (g ** (1.0/years) - 1.0) if years > 0 else 0.0
+
+def vol_ann(pnl):
+    return float(pnl.std(ddof=0) * math.sqrt(ANN))
+
+def sharpe(pnl):
+    v = pnl.std(ddof=0)
+    return float((pnl.mean()*ANN) / (v*math.sqrt(ANN)) ) if v>1e-12 else 0.0
+
+def sortino(pnl):
+    d = pnl[pnl<0].std(ddof=0)
+    mu = pnl.mean()*ANN
+    return float(mu / (d*math.sqrt(ANN))) if d>1e-12 else 0.0
+
+def max_drawdown(pnl):
+    eq = equity_curve(pnl)
+    dd = eq/eq.cummax() - 1.0
+    return float(dd.min())  # 
+
+def ulcer_index(pnl):
+    eq = equity_curve(pnl)
+    dd = 100.0*(1.0 - eq/eq.cummax())  # %
+    return float(np.sqrt(np.mean(np.square(dd))))
+
+def ulcer_performance_index(pnl):
+    ui = ulcer_index(pnl)
+    return float(cagr(pnl) / (ui/100.0 + 1e-12))
+
+def var_cvar(pnl, q=0.05):
+    if len(pnl)<5: return 0.0, 0.0
+    x = pnl.values
+    var = np.quantile(x, q)
+    cvar = float(x[x<=var].mean()) if (x<=var).any() else var
+    return float(var), float(cvar)
+
+def hit_ratio(pnl):
+    return float((pnl>0).mean()) if len(pnl)>0 else 0.0
+
+def payoff_ratio(pnl):
+    pos = pnl[pnl>0]; neg = -pnl[pnl<0]
+    if len(pos)==0 or len(neg)==0: return 0.0
+    return float(pos.mean()/neg.mean())
+
+def profit_factor(pnl):
+    pos = pnl[pnl>0].sum(); neg = -pnl[pnl<0].sum()
+    return float(pos/neg) if neg>1e-12 else float('inf') if pos>0 else 0.0
+
+def flip_rate(sig):
+    s = sig.fillna(0).astype(int)
+    return float((s.diff().fillna(0)!=0).mean()) if len(s)>1 else 0.0
+
+def avg_holding_bars(sig):
+    s = sig.fillna(0).astype(int)
+    if len(s)<2: return 0.0
+    runs = []
+    cur = s.iloc[0]; cnt = 1
+    for v in s.iloc[1:]:
+        if v==cur:
+            cnt += 1
+        else:
+            runs.append(cnt)
+            cnt = 1; cur = v
+    runs.append(cnt)
+    # 
+    nz = [r for v,r in zip(s[s.diff().fillna(0)!=0].shift(-1, fill_value=s.iloc[-1]), runs) if v!=0]
+    return float(np.mean(nz)) if nz else 0.0
+
+# ====== ======
+def block_bootstrap_pval(pnl, B=2000, block=24):
+    
+    x = pnl.values.astype(float)
+    n = len(x)
+    if n < block*2: return 1.0
+    obs = x.mean()
+    # B?    rng = np.random.default_rng(12345)
+    sums = []
+    for _ in range(B):
+        idx = rng.integers(0, n-block+1, size=int(np.ceil(n/block)))
+        bs = np.concatenate([x[i:i+block] for i in idx])[:n]
+        sums.append(bs.mean())
+    sums = np.array(sums)
+    # ?obs ?    p = float((sums >= obs).mean())
+    return p
+
+def purged_kfold_oos_mean(pnl, k=6, embargo=1):
+    pass
+
+    x = pnl.values
+    n = len(x)
+    if n < 30: return 0.0
+    sr = sharpe(pnl)
+    skew = float(pd.Series(x).skew())
+    kurt = float(pd.Series(x).kurt()) + 3.0
+    # LoP Sharpe
+    adj = sr * (1 - skew*sr/6 + (kurt-3)*(sr**2)/24)
+    # ?    p = 0.5*(1+math.erf(adj/np.sqrt(2)))
+    return float(p)
+
+# ====== ?======
+def main():
+    reg = load_yaml(os.path.join(CFG, "strategy_registry.yaml"))
+    gov = load_yaml(os.path.join(CFG, "governance.yaml")) if os.path.exists(os.path.join(CFG, "governance.yaml")) else {}
+    eval_cfg = (gov.get('evaluation') or {})
+
+    # universe
+    path_t1 = os.path.join(ROOT,'data','universe','T1.txt')
+    path_top50 = os.path.join(ROOT,'data','universe','Top50.txt')
+    uni_path = path_t1 if os.path.exists(path_t1) else path_top50
+    if not os.path.exists(uni_path):
+        print('universe list missing, run ops_refresh_universe.ps1 first.'); return
+    symbols = [x.strip() for x in open(uni_path,'r',encoding='ascii').read().splitlines() if x.strip()]
+
+    rows = []
+    for ent in reg.get('strategies', []):
+        if not ent.get('enabled', True): continue
+        name, module, params = ent['name'], ent['module'], dict(ent.get('params', {}))
+        tf = params.get('tf', '1h')
+        # 
+        try:
+            mod = importlib.import_module(module)
+            sig = mod.generate_signals(DB, symbols, params)
+        except Exception:
+            # 
+            p = os.path.join(ROOT,'data','signals',f'{name}.csv')
+            sig = pd.read_csv(p, parse_dates=['ts']) if os.path.exists(p) else pd.DataFrame()
+        if sig is None or sig.empty: continue
+
+        #  PnL
+        pnl_cols = []
+        flip_list, hold_list = [], []
+        for sym in symbols:
+            s = sig[sig['symbol']==sym][['ts','signal']]
+            if s.empty: continue
+            c = load_close(DB, sym, tf=tf, lookback_days=180)
+            if c.empty: continue
+            df = merge_and_pnl(s, c)
+            pnl_cols.append(df.set_index('ts')['pnl'].rename(sym))
+            flip_list.append(flip_rate(df['signal']))
+            hold_list.append(avg_holding_bars(df['signal']))
+        if not pnl_cols: continue
+
+        pnl_mat = pd.concat(pnl_cols, axis=1).fillna(0.0)
+        pnl_eq  = pnl_mat.mean(axis=1)  # 
+        if len(pnl_eq) < 50:  # ?            continue
+
+        # 
+        met = {}
+        met['CAGR']     = cagr(pnl_eq)
+        met['Vol']      = vol_ann(pnl_eq)
+        met['Sharpe']   = sharpe(pnl_eq)
+        met['Sortino']  = sortino(pnl_eq)
+        met['MaxDD']    = max_drawdown(pnl_eq)
+        met['Ulcer']    = ulcer_index(pnl_eq)
+        met['UPI']      = ulcer_performance_index(pnl_eq)
+        met['VaR95'], met['CVaR95'] = var_cvar(pnl_eq, q=0.05)
+        met['Hit']      = hit_ratio(pnl_eq)
+        met['Payoff']   = payoff_ratio(pnl_eq)
+        met['PF']       = profit_factor(pnl_eq)
+        met['Flip']     = float(np.mean(flip_list)) if flip_list else 0.0
+        met['HoldBars'] = float(np.mean(hold_list)) if hold_list else 0.0
+
+        # 
+        #  gov['evaluation']['cost'] ?pnl_eq ?
+        # ?        spa_cfg = (eval_cfg.get('spa') or {})
+        pSpa = block_bootstrap_pval(pnl_eq, B=int(spa_cfg.get('B',2000)), block=int(spa_cfg.get('block',24))) if (eval_cfg.get('spa',{}).get('enabled',True)) else 1.0
+        cv_cfg  = (eval_cfg.get('cv') or {})
+        oos = purged_kfold_oos_mean(pnl_eq, k=int(cv_cfg.get('k',6)), embargo=int(cv_cfg.get('embargo',1))) if (cv_cfg.get('enabled',True)) else np.array([])
+        pbo = pbo_from_oos(oos) if oos.size>0 else 1.0
+        dsr_prob = deflated_sharpe_prob(pnl_eq) if (eval_cfg.get('dsr',{}).get('enabled',True)) else 0.0
+
+        met['DSR_prob'] = dsr_prob
+        met['SPA_p']    = pSpa
+        met['PBO']      = pbo
+        met['SPA_OK']   = '? if pSpa<=0.05 else '?
+        met['Robust_OK']= '? if (pSpa<=0.05 and pbo<=0.5 and dsr_prob>=0.5) else '?
+
+        # 
+        base = 30*met['Sharpe'] + 20*met['Sortino'] + 30*(-met['MaxDD']) + 20*met['Hit']
+        base *= max(0.0, 1.0 - met['PBO'])
+        if met['SPA_OK']=='? or met['DSR_prob']<0.0:
+            base *= 0.5
+        score = float(base)
+
+        rows.append({
+            'name': name, 'module': module, 'tf': tf,
+            'CAGR': round(met['CAGR'],6),
+            'Vol': round(met['Vol'],6),
+            'Sharpe': round(met['Sharpe'],6),
+            'Sortino': round(met['Sortino'],6),
+            'Calmar': round((met['CAGR']/abs(met['MaxDD'])) if met['MaxDD']<0 else 0.0, 6),
+            'MaxDD(%)': round(100*met['MaxDD'],4),
+            'Ulcer': round(met['Ulcer'],6),
+            'UPI': round(met['UPI'],6),
+            'VaR95': round(met['VaR95'],6),
+            'CVaR95': round(met['CVaR95'],6),
+            '(%)': round(100*met['Hit'],2),
+            '?: round(met['Payoff'],4),
+            'ProfitFactor': round(met['PF'],4),
+            '?: round(met['Flip'],4),
+            '(?': round(met['HoldBars'],2),
+            'DSR()': round(met['DSR_prob'],4),
+            'SPA?p)': round(met['SPA_p'],4),
+            'PBO(?': round(met['PBO'],4),
+            '(??': met['Robust_OK'],
+            'score': round(score,6)
+        })
+
+    if not rows:
+        print('no strategy scored.')
+        return
+
+    df = pd.DataFrame(rows).sort_values('score', ascending=False)
+    ts = time.strftime('%Y%m%d_%H%M%S')
+    out = os.path.join(OUTD, f"strategy_scores_{ts}.csv")
+    df.to_csv(out, index=False)   #  A6 
+    print('scores ->', out)
+
+if __name__=='__main__':
+    main()
+

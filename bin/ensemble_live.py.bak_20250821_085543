@@ -1,0 +1,152 @@
+# -*- coding: utf-8 -*-
+# 从最新评分挑选策略并配权 -> data/signals/live/ensemble_weights.csv
+import os, sys, glob, time
+import numpy as np
+import pandas as pd
+
+ROOT = r"D:\SQuant_Pro"
+CFG  = os.path.join(ROOT, "config")
+OUTD = os.path.join(ROOT, "data", "signals", "live"); os.makedirs(OUTD, exist_ok=True)
+if ROOT not in sys.path: sys.path.insert(0, ROOT)
+
+def load_yaml(path):
+    import yaml
+    with open(path, 'r', encoding='utf-8') as f:
+        return yaml.safe_load(f)
+
+def latest_score_csv():
+    path = os.path.join(ROOT, "data", "scores", "strategy_scores_*.csv")
+    files = sorted(glob.glob(path))
+    return files[-1] if files else None
+
+def shrink_diag(vol):
+    # 对角协方差（方差 = vol^2）
+    v2 = np.square(np.maximum(vol, 1e-8))
+    return np.diag(v2)
+
+def project_nonneg_cap(weights, cap=0.25):
+    w = np.maximum(weights, 0.0)
+    # 单策略上限
+    w = np.minimum(w, cap)
+    s = w.sum()
+    if s<=0: return w
+    return w / s
+
+def cap_by_group(names, groups, w, cap_per_group=0.5):
+    # 若某一组（module或tf）权重超限，则按比例缩放该组
+    w = w.copy()
+    df = pd.DataFrame({'name':names, 'group':groups, 'w':w})
+    for g, sub in df.groupby('group'):
+        tot = sub['w'].sum()
+        if tot > cap_per_group and tot>0:
+            ratio = cap_per_group / tot
+            w[sub.index] *= ratio
+    # 重新归一化，保持非负
+    s = w.sum()
+    return (w/s) if s>0 else w
+
+def mv_weight(mu, Sigma, nonneg=True, cap=0.25, cap_group=None, group_ids=None):
+    # 目标：w ∝ Σ⁻¹ μ，随后投影到非负+上限
+    try:
+        inv = np.linalg.pinv(Sigma)
+        w = inv.dot(mu)
+    except Exception:
+        w = mu.copy()
+    w = np.maximum(w, 0.0) if nonneg else w
+    if np.allclose(w, 0): w = np.ones_like(w)
+    w = w / np.sum(np.abs(w))  # 归一化
+    if nonneg:
+        w = project_nonneg_cap(w, cap=cap)
+        if cap_group is not None and group_ids is not None:
+            w = cap_by_group(names=None, groups=group_ids, w=w, cap_per_group=cap_group)
+    return w
+
+def ewma_smooth(w_new, old_path, halflife=30):
+    if halflife<=0 or (not os.path.exists(old_path)): return w_new
+    try:
+        old = pd.read_csv(old_path)
+        w_old = old.set_index('name')['weight'].reindex(w_new.index).fillna(0.0).values
+    except Exception:
+        return w_new
+    alpha = 1 - 0.5**(1.0/halflife)
+    w = alpha*w_new.values + (1-alpha)*w_old
+    w = np.maximum(w, 0.0)
+    s = w.sum()
+    return pd.Series(w/s if s>0 else w, index=w_new.index)
+
+def main():
+    gov = load_yaml(os.path.join(CFG, "governance.yaml")) if os.path.exists(os.path.join(CFG, "governance.yaml")) else {}
+    ens = (gov.get('ensemble') or {})
+    nonneg = bool(ens.get('nonneg', True))
+    cap_ps = float(ens.get('cap_per_strategy', 0.25))
+    cap_pg = float(ens.get('cap_per_group', 0.5))
+    shrink = str(ens.get('shrink', 'diag')).lower()
+    halflife = int(ens.get('ewma_halflife', 30))
+
+    sc_path = latest_score_csv()
+    if sc_path is None:
+        print("no scores csv found."); return
+    df = pd.read_csv(sc_path)
+
+    # 兼容列名
+    col_name   = 'name'
+    col_mod    = 'module'
+    col_tf     = 'tf'
+    col_cagr   = 'CAGR' if 'CAGR' in df.columns else None
+    col_vol    = 'Vol' if 'Vol' in df.columns else None
+    col_score  = 'score'
+    col_pbo    = 'PBO(过拟合概率)' if 'PBO(过拟合概率)' in df.columns else 'PBO'
+    col_spaok  = '稳健性通过(是/否)' if '稳健性通过(是/否)' in df.columns else None
+    col_spap   = 'SPA显著性(p)' if 'SPA显著性(p)' in df.columns else None
+    col_dsrp   = 'DSR(概率)' if 'DSR(概率)' in df.columns else None
+
+    # 过滤规则
+    if col_spaok and col_spaok in df.columns:
+        df = df[df[col_spaok]=='是'].copy()
+    if col_pbo and col_pbo in df.columns:
+        df = df[df[col_pbo] <= 0.5].copy()
+    if col_dsrp and col_dsrp in df.columns:
+        df = df[df[col_dsrp] >= 0.5].copy()
+
+    if df.empty:
+        print("no strategy after filters; fallback to top by score (non-negative).")
+        df = pd.read_csv(sc_path)
+        df = df.sort_values(col_score, ascending=False).head(8)
+
+    names  = df[col_name].tolist()
+    mods   = df[col_mod].tolist()
+    tfs    = df[col_tf].tolist()
+    score  = df[col_score].values.astype(float)
+
+    # 期望收益向量 μ：优先用 CAGR；没有就用 score 的正向缩放
+    if col_cagr and col_cagr in df.columns:
+        mu = df[col_cagr].values.astype(float)
+    else:
+        mu = score / (np.max(np.abs(score))+1e-12)
+
+    # 协方差 Σ：默认对角（波动^2）
+    if col_vol and col_vol in df.columns:
+        vol = np.maximum(df[col_vol].values.astype(float), 1e-8)
+    else:
+        vol = np.ones(len(df))*0.2  # 兜底
+
+    if shrink == 'diag':
+        Sigma = shrink_diag(vol)
+    else:
+        # 没有时间序列矩阵时，退化为对角
+        Sigma = shrink_diag(vol)
+
+    w = mv_weight(mu, Sigma, nonneg=nonneg, cap=cap_ps, cap_group=cap_pg, group_ids=mods)
+
+    out = pd.Series(w, index=names)
+    out = ewma_smooth(out, os.path.join(OUTD, "ensemble_weights.csv"), halflife=halflife)
+    out = out.clip(lower=0.0)
+    out = out / out.sum() if out.sum()>0 else out
+
+    out_df = pd.DataFrame({'name': out.index, 'weight': out.values})
+    out_path = os.path.join(OUTD, "ensemble_weights.csv")
+    out_df.to_csv(out_path, index=False)
+    print("ensemble weights ->", out_path)
+
+if __name__ == "__main__":
+    main()
