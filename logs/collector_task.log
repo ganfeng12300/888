@@ -16045,4 +16045,34 @@ db: D:\quant_system_v2\data\market_data.db
 ^C[A6-SHIM] pandas.DataFrame.to_csv 已安装修订钩子（仅拦截 a6_strategy_scores*）
 [36m>>> collector start | symbols=5 | intervals=['5m', '15m', '30m', '1h', '2h', '4h', '1d'][0m
 db: D:\quant_system_v2\data\market_data.db
+^C[A6-SHIM] pandas.DataFrame.to_csv 已安装修订钩子（仅拦截 a6_strategy_scores*）
+[36m>>> collector start | symbols=5 | intervals=['5m', '15m', '30m', '1h', '2h', '4h', '1d'][0m
+db: D:\quant_system_v2\data\market_data.db
+^C[A6-SHIM] pandas.DataFrame.to_csv 已安装修订钩子（仅拦截 a6_strategy_scores*）
+[36m>>> collector start | symbols=5 | intervals=['5m', '15m', '30m', '1h', '2h', '4h', '1d'][0m
+db: D:\quant_system_v2\data\market_data.db
+[progress] 1/35   2.9%  SOLUSDT_1d +0
+[progress] 2/35   5.7%  ETHUSDT_1d +0
+[progress] 3/35   8.6%  SOLUSDT_2h +11
+[progress] 4/35  11.4%  BTCUSDT_5m +287
+[progress] 5/35  14.3%  SOLUSDT_15m +95
+[progress] 6/35  17.1%  SOLUSDT_4h +5
+[progress] 7/35  20.0%  SOLUSDT_5m +287
+[progress] 8/35  22.9%  ETHUSDT_2h +11
+[progress] 9/35  25.7%  ETHUSDT_1h +23
+[progress] 10/35  28.6%  BTCUSDT_2h +11
+[progress] 11/35  31.4%  BTCUSDT_1d +0
+[progress] 12/35  34.3%  BNBUSDT_15m +95
+[progress] 13/35  37.1%  BNBUSDT_5m +287
+[progress] 14/35  40.0%  BTCUSDT_1h +23
+[progress] 15/35  42.9%  BTCUSDT_30m +47
+[progress] 16/35  45.7%  BTCUSDT_15m +95
+[progress] 17/35  48.6%  SOLUSDT_1h +23
+[progress] 18/35  51.4%  ETHUSDT_30m +47
+[progress] 19/35  54.3%  BTCUSDT_4h +5
+[progress] 20/35  57.1%  ETHUSDT_5m +287
+[progress] 21/35  60.0%  ETHUSDT_4h +5
+[progress] 22/35  62.9%  ETHUSDT_15m +95
+[progress] 23/35  65.7%  SOLUSDT_30m +47
+[progress] 24/35  68.6%  BNBUSDT_30m +47
 ^C
