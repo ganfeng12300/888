@@ -16075,4 +16075,6 @@ db: D:\quant_system_v2\data\market_data.db
 [progress] 22/35  62.9%  ETHUSDT_15m +95
 [progress] 23/35  65.7%  SOLUSDT_30m +47
 [progress] 24/35  68.6%  BNBUSDT_30m +47
-^C
+^C[A6-SHIM] pandas.DataFrame.to_csv 已安装修订钩子（仅拦截 a6_strategy_scores*）
+[36m>>> collector start | symbols=5 | intervals=['5m', '15m', '30m', '1h', '2h', '4h', '1d'][0m
+db: D:\quant_system_v2\data\market_data.db
