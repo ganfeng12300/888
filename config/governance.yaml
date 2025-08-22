@@ -1,17 +1,21 @@
-﻿mode: paper
-fee_rate: 0.0005
+# 椋庢帶涓庤祫閲戞不鐞嗭紙鏈€缁堝彛寰勶級
+mode: paper   # paper | live
+fee_rate: 0.0005        # 0.05% 鍗曡竟
 leverage: 10
-margin_mode: cross
-per_order_budget_pct: 0.05
+margin_mode: cross      # cross | isolated
+per_order_budget_pct: 0.05   # 鍗曠瑪=璐︽埛鏉冪泭脳5%
 safe_brake_enabled: true
-safe_brake_threshold: 0.60
+safe_brake_threshold: 0.60   # 宸茬敤淇濊瘉閲?/ 鏉冪泭 >= 60% 闄愭祦鏂板崟
 daily_dd_enabled: false
-kill_switch: { enabled: true, threshold: -0.25, cooldown_hours: 24 }
-allocation: { bitget: 1.0, okx: 0.0, bybit: 0.0 }
-paper: { initial_balance_usdt: 1000 }
-ui: { chinese_names: true }
-ensemble:
-  filters:
-    spa_alpha: 0.10   # 允许更宽的显著性阈值
-    pbo_max:   0.70   # PBO 上限放宽
-    dsr_min:   0.40   # DSR 下限放宽
+kill_switch:
+  enabled: true
+  threshold: -0.25       # 绱鍥炴挙 -25%
+  cooldown_hours: 24
+allocation:
+  bitget: 1.0
+  okx: 0.0
+  bybit: 0.0
+paper:
+  initial_balance_usdt: 1000
+ui:
+  chinese_names: true

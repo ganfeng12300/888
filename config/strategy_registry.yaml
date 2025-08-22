@@ -1,4 +1,4 @@
-﻿strategies:
+strategies:
   - name: ma_cross_fast
     module: strategies.ma_cross
     params: { fast: 9, slow: 21, tf: "1h" }

@@ -1,8 +1,8 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 import sqlite3, pandas as pd
 def _load(con, symbol, tf):
     tbl=f"{symbol}_{tf}"
-    try: df=pd.read_sql(f'SELECT * FROM "{tbl}" ORDER BY 1', con)
+    try: df=pd.read_sql(f'SELECT * FROM \"{tbl}\" ORDER BY 1', con)
     except: return pd.DataFrame()
     if df.empty: return df
     if "timestamp" in df.columns: ts=pd.to_datetime(df["timestamp"], unit="s", utc=True)
