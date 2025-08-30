@@ -1,18 +1,5 @@
-﻿# 忽略虚拟环境
-.venv/
-D:/SHUJU888DB/
-venv888/
-
-# 忽略数据库
-*.db
-
-# 忽略回测结果与缓存
-__pycache__/
-results/
+﻿.venv/
 logs/
-*.log
-*.html
-
-# 忽略 Jupyter、VSCode 缓存等
-.ipynb_checkpoints/
-.vscode/
+results/
+*.db
+__pycache__/
