@@ -1,0 +1,25 @@
+﻿# 忽略虚拟环境
+.venv/
+
+# 忽略 Python 缓存
+__pycache__/
+*.py[cod]
+
+# 忽略日志与中间输出
+logs/
+*.log
+*.tmp
+
+# 忽略数据库/模型等中间结果（非代码）
+*.db
+*.sqlite3
+*.hdf5
+*.pkl
+*.pt
+*.csv
+*.json
+
+# 明确保留重要脚本（需后续视情况保留）
+!*.py
+!*.ps1
+!*.bat
