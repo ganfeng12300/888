@@ -1,0 +1,16 @@
+﻿# === 数据文件 ===
+*.db
+*.sqlite
+*.parquet
+*.log
+
+# === Python 临时文件与虚拟环境 ===
+__pycache__/
+.venv/
+.env
+
+# === 本地数据路径（确保不进 Git）===
+D:/SHUJU888DB/
+
+# === MacOS垃圾文件 ===
+.DS_Store
