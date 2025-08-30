@@ -1,0 +1,40 @@
+﻿name: Test and Report
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  test-and-report:
+    runs-on: ubuntu-latest
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+
+    - name: 📦 Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: 📂 Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest pydeps
+
+    - name: 🧪 Run tests (pytest)
+      continue-on-error: true
+      run: |
+        pytest > pytest_report.txt || true
+
+    - name: 🔍 Generate dependency graph (pydeps)
+      run: |
+        pydeps . --output=deps.svg --max-bacon=3 || true
+
+    - name: ☁️ Upload test report and dependency graph
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-artifacts
+        path: |
+          pytest_report.txt
+          deps.svg
