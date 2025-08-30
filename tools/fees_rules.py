@@ -29,7 +29,7 @@ def apply_costs(ret_series, pos_series, taker_fee=0.0005, slippage=0.0003,
     turns = pos.diff().abs().fillna(0.0)
     trading_cost = (taker_fee + slippage) * turns
     ret = ret - trading_cost
-    # 冲击成本（bps → 小数）
+    # 冲击成本（bps �?小数�?
     if impact_bps_series is not None:
         ret = ret - (impact_bps_series.fillna(0.0)/10000.0) * turns
     # 资金费率在结算点计入
@@ -44,7 +44,7 @@ def apply_costs(ret_series, pos_series, taker_fee=0.0005, slippage=0.0003,
         ret = ret + add
     return ret
 
-# -------- 交易所规则（Binance/OKX/Bitget） --------
+# -------- 交易所规则（Binance/OKX/Bitget�?--------
 def _round_step(x, step):
     if step is None or step==0: return float(x)
     n = round(float(x)/float(step))
@@ -141,7 +141,7 @@ def to_okx(inst:str)->str:
 def to_binance(inst:str)->str: return inst.upper().replace("-","").replace("_","")
 def to_bitget(inst:str)->str: return inst.upper().replace("-","").replace("_","")
 
-# -------- 冲击成本（平方根冲击 + 体量/ADV） --------
+# -------- 冲击成本（平方根冲击 + 体量/ADV�?--------
 def estimate_impact_bps(notional_series_usdt: pd.Series, adv_usdt: float, kappa: float=15.0):
     adv = max(1.0, float(adv_usdt))
     x = (notional_series_usdt.fillna(0.0).abs()/adv).clip(lower=0.0)

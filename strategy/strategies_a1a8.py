@@ -26,7 +26,7 @@ def _atr(df, n=14):
     tr = (h-l).combine((h-c.shift()).abs(), max).combine((l-c.shift()).abs(), max)
     return tr.rolling(_toi(n), min_periods=_toi(n)).mean()
 
-# ---- A1: 布林带 ----
+# ---- A1: 布林�?----
 def strat_bbands(df, period=20, n=2.0):
     c = pd.to_numeric(df["close"], errors="coerce")
     period = _toi(period); n = float(n)
@@ -136,7 +136,7 @@ def strat_rf(df, lookback=24, n_estimators=300, max_depth=6):
     out.iloc[L:L+len(sig)] = sig
     return out
 
-# ---- A7: LSTM（可选CUDA） ----
+# ---- A7: LSTM（可选CUDA�?----
 def strat_lstm(df, lookback=30, hidden=32, epochs=2):
     try:
         import torch, torch.nn as nn
@@ -191,7 +191,7 @@ def strat_rsi_atr(df, rsi_n=14, rsi_low=25, atr_n=14, k=1.2):
 
 # ---- 统一导出 ----
 STRATS = {
-    "A1": ("布林带", strat_bbands),
+    "A1": ("布林�?, strat_bbands),
     "A2": ("均线交叉", strat_ma_cross),
     "A3": ("RSI反转", strat_rsi_rev),
     "A4": ("ATR突破", strat_atr_break),

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # File: tools/patch_only_strategy.py
 """
-为 backtest/backtest_pro.py 注入 --only-strategy 支持（A1..A8 映射到 MA/BOLL/ATR/REVERSAL/LGBM/XGB/LSTM/ENSEMBLE）
-用法：
+�?backtest/backtest_pro.py 注入 --only-strategy 支持（A1..A8 映射�?MA/BOLL/ATR/REVERSAL/LGBM/XGB/LSTM/ENSEMBLE�?
+用法�?
     python -u tools/patch_only_strategy.py
 """
 import io, re
@@ -15,7 +15,7 @@ assert TARGET.exists(), f"未找到：{TARGET}"
 code = io.open(TARGET, 'r', encoding='utf-8', errors='ignore').read()
 
 if "--only-strategy" in code and "STRATEGIES_TO_RUN" in code and "_STRAT_ALIASES" in code:
-    print("✅ 检测到补丁已存在，无需重复注入。")
+    print("�?检测到补丁已存在，无需重复注入�?)
     raise SystemExit(0)
 
 backup = TARGET.with_suffix(".py.bak")
@@ -41,7 +41,7 @@ def _normalize_strategy(tag: str) -> str:
 # --- [PATCH only-strategy] end ---
 '''
 
-# 1) 尝试在 import 块后注入映射
+# 1) 尝试�?import 块后注入映射
 m = re.search(r"(?ms)^(?:from\s+\S+?\s+import\s+.*\n|import\s+.*\n)+", code)
 if m:
     code = code[:m.end()] + aliases_block + code[m.end():]
@@ -54,14 +54,14 @@ add_arg = r'''
 try:
     parser.add_argument(
         "--only-strategy", dest="only_strategy", default="",
-        help="仅运行指定策略：A1..A8 或 MA/BOLL/ATR/REVERSAL/LGBM/XGB/LSTM/ENSEMBLE"
+        help="仅运行指定策略：A1..A8 �?MA/BOLL/ATR/REVERSAL/LGBM/XGB/LSTM/ENSEMBLE"
     )
 except Exception:
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--only-strategy", dest="only_strategy", default="",
-        help="仅运行指定策略：A1..A8 或 MA/BOLL/ATR/REVERSAL/LGBM/XGB/LSTM/ENSEMBLE"
+        help="仅运行指定策略：A1..A8 �?MA/BOLL/ATR/REVERSAL/LGBM/XGB/LSTM/ENSEMBLE"
     )
 # --- [PATCH only-strategy arg] end ---
 '''
@@ -70,7 +70,7 @@ if "argparse" in code:
 else:
     code += "\n" + add_arg
 
-# 3) 注入选择逻辑（生成 STRATEGIES_TO_RUN）
+# 3) 注入选择逻辑（生�?STRATEGIES_TO_RUN�?
 selector = r'''
 # --- [PATCH only-strategy select] begin ---
 try:
@@ -93,9 +93,9 @@ else:
 '''
 code += "\n" + selector + "\n"
 
-# 4) for 循环替换为使用 STRATEGIES_TO_RUN（两种常见写法）
+# 4) for 循环替换为使�?STRATEGIES_TO_RUN（两种常见写法）
 code = re.sub(r"for\s+strat\s+in\s+ALL_STRATEGIES\s*:", "for strat in STRATEGIES_TO_RUN:", code)
 code = re.sub(r"for\s+strat\s+in\s+strategies\s*:", "for strat in STRATEGIES_TO_RUN:", code)
 
 io.open(TARGET, 'w', encoding='utf-8').write(code)
-print(f"✅ 已注入 --only-strategy 至：{TARGET}")
+print(f"�?已注�?--only-strategy 至：{TARGET}")

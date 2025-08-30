@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-一次性为 strategies_a1a8 中常见整数超参加入口整型化（lookback/period/atr_n/...）
+一次性为 strategies_a1a8 中常见整数超参加入口整型化（lookback/period/atr_n/...�?
 运行：cd /d D:\quant_system_pro && python fix_strategies_casts.py
 """
 import io, os, datetime, textwrap
@@ -46,7 +46,7 @@ except Exception:
 
 def main():
     if not os.path.exists(TARGET):
-        print(f"[ERR] 未找到 {TARGET}")
+        print(f"[ERR] 未找�?{TARGET}")
         return
     with io.open(TARGET, "r", encoding="utf-8") as f:
         s=f.read()

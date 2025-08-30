@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 """
-1币快速验证 / 多组完整版 · 全功能尽量开启 · 出错跳过
-→ 兜底导出 → 喂实盘（PAPER/LIVE）→ 动作清单彩色展示 → 大字提示（含“优秀策略已筛选/已喂入实盘”）
-用法：
+1币快速验�?/ 多组完整�?· 全功能尽量开�?· 出错跳过
+�?兜底导出 �?喂实盘（PAPER/LIVE）→ 动作清单彩色展示 �?大字提示（含“优秀策略已筛�?已喂入实盘”）
+用法�?
   快速验证（只跑一组）：python -u tools/run_1symbol_with_full_features_safe.py --fast
   完整版（多组）：      python -u tools/run_1symbol_with_full_features_safe.py
 """
 import argparse, subprocess, sys, os, json, glob, csv
 from pathlib import Path
 
-# ===================== 彩色输出：rich 优先，其次 colorama，无则黑白 =====================
+# ===================== 彩色输出：rich 优先，其�?colorama，无则黑�?=====================
 HAS_RICH = False
 try:
     from rich.console import Console
@@ -40,7 +40,7 @@ except Exception:
         class _C: green=red=yellow=cyan=mag=rst=""
         C=_C()
 
-# ===================== 可选功能集合（能开尽量开，报错就跳过） =====================
+# ===================== 可选功能集合（能开尽量开，报错就跳过�?=====================
 ALL_FEATURES = {
     "--spa": ["on"], "--spa-alpha": ["0.05"],
     "--pbo": ["on"], "--pbo-bins": ["10"],
@@ -84,7 +84,7 @@ def read_csv_rows(path_pattern: str):
 # ===================== 兜底导出 =====================
 def synthesize_exports(run_dir: Path, topk: int = 10):
     """
-    从 final_portfolio / a7 / a6 / a5 合成导出：
+    �?final_portfolio / a7 / a6 / a5 合成导出�?
     live_best_params.json / top_symbols.txt
     """
     symbols = []
@@ -127,7 +127,7 @@ def synthesize_exports(run_dir: Path, topk: int = 10):
                 if len(symbols) >= topk: break
             break
 
-    # 4) a5_optimized_params*.csv → 组合参数
+    # 4) a5_optimized_params*.csv �?组合参数
     for _, rows in read_csv_rows(str(run_dir / "a5_optimized_params*.csv")):
         for r in rows:
             sym = r.get("symbol") or r.get("Symbol")
@@ -151,7 +151,7 @@ def synthesize_exports(run_dir: Path, topk: int = 10):
 def start_paper_console(project_root: Path, db_path: str):
     engine = project_root / "live_trading" / "execution_engine_binance_ws.py"
     if not engine.exists():
-        RCON.print("[WARN] 未找到纸面执行器：", engine); return False
+        RCON.print("[WARN] 未找到纸面执行器�?, engine); return False
     subprocess.call([
         "cmd","/c","start","", "powershell","-NoExit","-Command",
         f"& {{ Set-Location -LiteralPath '{project_root}'; "
@@ -161,7 +161,7 @@ def start_paper_console(project_root: Path, db_path: str):
     return True
 
 def start_live_console_if_ready(project_root: Path, db_path: str):
-    # 条件：环境变量 QS_LIVE_BITGET=1 且存在密钥文件（configs/keys.yaml 或 .env）
+    # 条件：环境变�?QS_LIVE_BITGET=1 且存在密钥文件（configs/keys.yaml �?.env�?
     if os.environ.get("QS_LIVE_BITGET","0") != "1":
         return False
     key_yaml = project_root / "configs" / "keys.yaml"
@@ -179,64 +179,64 @@ def start_live_console_if_ready(project_root: Path, db_path: str):
     ])
     return True
 
-# ===================== 报告（功能诊断/动作清单/大字提示） =====================
+# ===================== 报告（功能诊�?动作清单/大字提示�?=====================
 def render_feature_report(help_txt: str, verdict: dict):
     if HAS_RICH:
         table = Table(title="功能诊断报告（容错模式）", box=box.SIMPLE_HEAVY)
         table.add_column("功能参数", justify="left", style="cyan", no_wrap=True)
-        table.add_column("状态", justify="center", style="magenta")
+        table.add_column("状�?, justify="center", style="magenta")
         table.add_column("说明", justify="left", style="white")
         for k in ALL_FEATURES.keys():
             st = verdict.get(k, "unsupported" if k not in help_txt else "kept_error")
-            if st == "ok": table.add_row(k, "[green]✔ 正常[/green]", "功能启用并跑通")
-            elif st == "skipped": table.add_row(k, "[yellow]⚠ 自动禁用[/yellow]", "触发报错，临时移除")
-            elif st == "unsupported": table.add_row(k, "[red]✘ 不支持[/red]", "-h 中无此参数")
-            else: table.add_row(k, "[red]✘ 依旧报错[/red]", "移除此项也未修复/与其他项相关")
+            if st == "ok": table.add_row(k, "[green]�?正常[/green]", "功能启用并跑�?)
+            elif st == "skipped": table.add_row(k, "[yellow]�?自动禁用[/yellow]", "触发报错，临时移�?)
+            elif st == "unsupported": table.add_row(k, "[red]�?不支持[/red]", "-h 中无此参�?)
+            else: table.add_row(k, "[red]�?依旧报错[/red]", "移除此项也未修复/与其他项相关")
         RCON.print(Panel(table, border_style="magenta"))
     else:
-        RCON.print("┌──── 功能诊断报告 ────┐")
+        RCON.print("┌──── 功能诊断报告 ────�?)
         for k in ALL_FEATURES.keys():
             st = verdict.get(k, "unsupported" if k not in help_txt else "kept_error")
-            tag = {"ok":"✔ 正常","skipped":"⚠ 自动禁用","unsupported":"✘ 不支持","kept_error":"✘ 依旧报错"}[st]
+            tag = {"ok":"�?正常","skipped":"�?自动禁用","unsupported":"�?不支�?,"kept_error":"�?依旧报错"}[st]
             RCON.print(f" {k:<20} {tag}")
-        RCON.print("└─────────────────────┘")
+        RCON.print("└─────────────────────�?)
 
 def render_action_checklist(actions: dict):
     if HAS_RICH:
         table = Table(title="执行动作清单", box=box.SIMPLE_HEAVY)
         table.add_column("步骤", style="cyan", no_wrap=True)
-        table.add_column("状态", style="magenta", justify="center")
+        table.add_column("状�?, style="magenta", justify="center")
         table.add_column("说明", style="white")
         table.add_row("导出参数/标的",
                       "[green]✔[/green]" if actions.get("export") else "[red]✘[/red]",
                       f"目录: {actions.get('export_dir')} | symbols: {', '.join(actions.get('symbols', [])) or '-'}")
         table.add_row("启动 PAPER",
                       "[green]✔[/green]" if actions.get("paper") else "[yellow]—[/yellow]",
-                      "已尝试打开独立 PowerShell 窗口" if actions.get("paper") else "未启动/执行器缺失")
+                      "已尝试打开独立 PowerShell 窗口" if actions.get("paper") else "未启�?执行器缺�?)
         table.add_row("启动 LIVE",
                       "[green]✔[/green]" if actions.get("live") else "[yellow]—[/yellow]",
-                      "QS_LIVE_BITGET=1 且密钥就绪才会启动" if not actions.get("live") else "已尝试打开独立 PowerShell 窗口")
+                      "QS_LIVE_BITGET=1 且密钥就绪才会启�? if not actions.get("live") else "已尝试打开独立 PowerShell 窗口")
         RCON.print(Panel(table, border_style="cyan"))
     else:
         def flag(b):
             if "C" in globals():
-                return (C.green+"✔"+C.rst) if b else (C.yellow+"—"+C.rst)
-            return "✔" if b else "—"
-        RCON.print("┌──── 执行动作清单 ────┐")
+                return (C.green+"�?+C.rst) if b else (C.yellow+"�?+C.rst)
+            return "�? if b else "�?
+        RCON.print("┌──── 执行动作清单 ────�?)
         RCON.print(f" 导出参数/标的  {flag(actions.get('export'))}  目录: {actions.get('export_dir')}")
         RCON.print(f" 启动 PAPER    {flag(actions.get('paper'))}")
         RCON.print(f" 启动 LIVE     {flag(actions.get('live'))}")
-        RCON.print("└─────────────────────┘")
+        RCON.print("└─────────────────────�?)
 
 def big_ok_banner(symbols, mode="PAPER"):
-    """最终彩色大字提示：回测完成 + 优秀策略已筛选 + 已喂入实盘"""
+    """最终彩色大字提示：回测完成 + 优秀策略已筛�?+ 已喂入实�?""
     try:
         from colorama import init as _i, Fore, Style
         _i(autoreset=True, convert=True)
         print()
         print(Fore.GREEN + Style.BRIGHT + "=" * 95)
-        print(Fore.GREEN + Style.BRIGHT + "🎉 [OK] 回测完成！优秀策略已筛选 ✅")
-        print(Fore.CYAN  + Style.BRIGHT + f"🚀 已喂入实盘 ({mode}) → {', '.join(symbols) if symbols else '无'}")
+        print(Fore.GREEN + Style.BRIGHT + "🎉 [OK] 回测完成！优秀策略已筛�?�?)
+        print(Fore.CYAN  + Style.BRIGHT + f"🚀 已喂入实�?({mode}) �?{', '.join(symbols) if symbols else '�?}")
         print(Fore.GREEN + Style.BRIGHT + "📂 输出文件：live_best_params.json / top_symbols.txt")
         print(Fore.GREEN + Style.BRIGHT + "=" * 95)
         print()
@@ -252,7 +252,7 @@ def big_banner_fail(msg: str):
         _i(autoreset=True, convert=True)
         print()
         print(Fore.RED + Style.BRIGHT + "=" * 92)
-        print(Fore.RED + Style.BRIGHT + f"✘ [FAIL] {msg}")
+        print(Fore.RED + Style.BRIGHT + f"�?[FAIL] {msg}")
         print(Fore.RED + Style.BRIGHT + "=" * 92)
         print()
     except Exception:
@@ -267,7 +267,7 @@ def run_one_group(backtest_py: Path, base_args: list):
 
     code = try_run(backtest_py, base_args, avail)
     if code != 0:
-        RCON.print("[WARN] 全开失败，逐项排查…")
+        RCON.print("[WARN] 全开失败，逐项排查�?)
         for k in list(avail.keys()):
             test_feat = {kk:vv for kk,vv in avail.items() if kk != k}
             code = try_run(backtest_py, base_args, test_feat)
@@ -287,10 +287,10 @@ def run_one_group(backtest_py: Path, base_args: list):
     render_feature_report(help_txt, verdict)
     return {"ok": True, "verdict": verdict, "help": help_txt}
 
-# ===================== 主流程 =====================
+# ===================== 主流�?=====================
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--fast", action="store_true", help="只跑一组用于快速验证")
+    parser.add_argument("--fast", action="store_true", help="只跑一组用于快速验�?)
     parser.add_argument("--symbol", default="BTCUSDT")
     parser.add_argument("--days", type=int, default=90)
     parser.add_argument("--topk", type=int, default=10)
@@ -312,14 +312,14 @@ def main():
             (args.symbol, 365, 40),
         ]
 
-    # 跑每一组
+    # 跑每一�?
     for sym, days, topk in groups:
         RCON.print(f"[INFO] 开始分组：symbol={sym} days={days} topk={topk}")
         base_args = ["--db", db, "--days", str(days), "--topk", str(topk),
                      "--outdir", str(outdir), "--symbols", sym]
         res = run_one_group(backtest_py, base_args)
         if not res.get("ok"):
-            big_banner_fail(f"分组失败：symbol={sym} days={days}，请查回测日志")
+            big_banner_fail(f"分组失败：symbol={sym} days={days}，请查回测日�?)
             return
 
     # 兜底导出
@@ -336,18 +336,18 @@ def main():
     if HAS_RICH:
         render_action_checklist(actions)
     else:
-        # 简化打印
+        # 简化打�?
         pass
 
     if ok:
         mode = "LIVE" if actions.get("live") else "PAPER"
         big_ok_banner(syms, mode=mode)
     else:
-        big_banner_fail("未生成导出文件（检查 a6/a7/a5 产物）")
+        big_banner_fail("未生成导出文件（检�?a6/a7/a5 产物�?)
 
 if __name__ == "__main__":
     try:
-        os.system("")  # Windows 控制台启用 ANSI
+        os.system("")  # Windows 控制台启�?ANSI
     except Exception:
         pass
     main()

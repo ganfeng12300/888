@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""LSTM GPU 策略（次日方向分类）——自动用 CUDA；无 Torch/CUDA 则回退 CPU/空仓。"""
+"""LSTM GPU 策略（次日方向分类）——自动用 CUDA；无 Torch/CUDA 则回退 CPU/空仓�?""
 import numpy as np, pandas as pd
 from utils.gpu_accel import torch, torch_device
 
@@ -20,7 +20,7 @@ def strat_lstm(df: 'pd.DataFrame', lookback:int=5000, seq_len:int=32, train_rati
     y = (np.roll(X,-1) > threshold).astype('float32')
     y[-1] = y[-2]  # 尾巴对齐
 
-    # 构造序列样本
+    # 构造序列样�?
     xs, ys, idx = [], [], []
     for i in range(seq_len, len(X)):
         xs.append(X[i-seq_len:i])

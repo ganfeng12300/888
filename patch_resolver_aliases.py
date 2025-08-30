@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-patch_resolver_aliases.py —— 重写 backtest_pro._resolve_fn 以支持 A1~A8 等别名（机构级）
+patch_resolver_aliases.py —�?重写 backtest_pro._resolve_fn 以支�?A1~A8 等别名（机构级）
 运行：cd /d D:\quant_system_pro && python patch_resolver_aliases.py
 """
 import io, os, re, datetime
@@ -17,11 +17,11 @@ def _resolve_fn(strat_key):
     S = _imp("strategy.strategies_a1a8")
     key = str(strat_key)
 
-    # 1) 直接模块属性
+    # 1) 直接模块属�?
     if hasattr(S, key):
         return getattr(S, key)
 
-    # 2) 常见注册表/字典
+    # 2) 常见注册�?字典
     for k in ("STRATEGIES","STRATEGY_FUNCS","STRAT_TABLE","REGISTRY","ALIASES","ALIAS"):
         if hasattr(S, k):
             M = getattr(S, k)
@@ -41,7 +41,7 @@ def _resolve_fn(strat_key):
         "A6": ["strat_meanrev","strat_a6","A6","a6"],
         "A7": ["strat_trend","strat_a7","A7","a7"],
         "A8": ["strat_mix","strat_a8","A8","a8"],
-        # 便捷别名（GPU）
+        # 便捷别名（GPU�?
         "XGB": ["strat_xgb_gpu"],
         "LGBM": ["strat_lgbm_gpu"],
         "LSTM": ["strat_lstm_gpu"],
@@ -62,7 +62,7 @@ def _resolve_fn(strat_key):
 
 def main():
     if not os.path.exists(TARGET):
-        print(f"[ERR] 未找到 {TARGET}")
+        print(f"[ERR] 未找�?{TARGET}")
         return
     s = io.open(TARGET, "r", encoding="utf-8").read()
 
@@ -75,14 +75,14 @@ def main():
     except Exception as e:
         print(f"[WARN] 备份失败: {e}")
 
-    # 用正则替换整段 def _resolve_fn(...) 函数体（若已有）
+    # 用正则替换整�?def _resolve_fn(...) 函数体（若已有）
     pat = re.compile(r"(?ms)^def\s+_resolve_fn\s*\([^)]*\)\s*:\s*.*?(?=^\w|^#|\Z)")
     if pat.search(s):
         s2 = pat.sub(NEW_RESOLVER.strip()+"\n", s)
         changed = True
     else:
         # 没找到就插到文件顶部 import 之后
-        # 尝试在第一次出现 'import numpy as np' 后插入
+        # 尝试在第一次出�?'import numpy as np' 后插�?
         idx = s.find('import numpy as np')
         if idx != -1:
             insert_at = idx + len('import numpy as np')
@@ -93,9 +93,9 @@ def main():
 
     if changed:
         io.open(TARGET, "w", encoding="utf-8").write(s2)
-        print("[PATCH] 已写入新的 _resolve_fn（支持 A1~A8/GPU 别名）")
+        print("[PATCH] 已写入新�?_resolve_fn（支�?A1~A8/GPU 别名�?)
     else:
-        print("[SKIP] 无变更")
+        print("[SKIP] 无变�?)
 
 if __name__ == "__main__":
     main()

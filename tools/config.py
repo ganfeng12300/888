@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 import os, json
 
-def get_db_path(default=r"D:/quant_system_v2/data/market_data.db"):
+def get_db_path(default=r"D:/quant_system_v2/D:\\SHUJU888\\data\\market_data.db"):
     return os.environ.get("QS_DB", default)
 
-def get_results_db(default=r"D:/quant_system_pro/data/backtest_results.db"):
+def get_results_db(default=r"D:/quant_system_pro/D:\\SHUJU888\\data\\backtest_results.db"):
     return os.environ.get("QS_RESULTS_DB", default)
 
-def load_keys(path=r"D:/quant_system_v2/data/keys.json"):
+def load_keys(path=r"D:/quant_system_v2/D:\\SHUJU888\\data\\keys.json"):
     if os.path.exists(path):
         try:
             with open(path,"r",encoding="utf-8") as f: j=json.load(f)

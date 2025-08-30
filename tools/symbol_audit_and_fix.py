@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-symbol_audit_and_fix.py — 币种体检 + 缺洞修复（Binance USDT 永续，表名 {SYMBOL}_{TF}）
-功能：
-1) 自动从 DB 识别已存在的币种（扫描 *_5m 表名得到 SYMBOL 清单）
+symbol_audit_and_fix.py �?币种体检 + 缺洞修复（Binance USDT 永续，表�?{SYMBOL}_{TF}�?
+功能�?
+1) 自动�?DB 识别已存在的币种（扫�?*_5m 表名得到 SYMBOL 清单�?
 2) 体检：各周期(5m/15m/30m/1h/2h/4h/1d) 行数、最新时间戳、新鲜度(分钟)、近N根是否有缺洞
-3) --autofix：按需要拉取 REST 历史补洞；并用 5m → 聚合出其余周期（稳健版聚合）
-4) 输出彩色终端报告 + 保存 CSV 到 results/health/yyyymmdd-hhmmss/
+3) --autofix：按需要拉�?REST 历史补洞；并�?5m �?聚合出其余周期（稳健版聚合）
+4) 输出彩色终端报告 + 保存 CSV �?D:\\SHUJU888\\results\\health/yyyymmdd-hhmmss/
 """
 import argparse, os, sqlite3, time, datetime as dt
 import requests, pandas as pd
@@ -80,15 +80,15 @@ def write_batch(con, tb, df):
 
 def aggregate_from_5m(df5, target_tf):
     """
-    稳健版聚合：严格 1D，避免 'Per-column arrays must each be 1-dimensional'
-    - df5: 包含 ts/open/high/low/close/volume 的 5m 数据，ts 为毫秒
-    - target_tf: 目标周期字符串（如 '15m','30m','1h','2h','4h','1d'）
+    稳健版聚合：严格 1D，避�?'Per-column arrays must each be 1-dimensional'
+    - df5: 包含 ts/open/high/low/close/volume �?5m 数据，ts 为毫�?
+    - target_tf: 目标周期字符串（�?'15m','30m','1h','2h','4h','1d'�?
     """
     if df5 is None or len(df5) == 0:
         return df5.iloc[0:0].copy()
 
     df = df5.copy()
-    # 强制类型与清洗
+    # 强制类型与清�?
     for c in ["ts", "open", "high", "low", "close", "volume"]:
         df[c] = pd.to_numeric(df[c], errors="coerce")
     df = df.dropna(subset=["ts", "open", "high", "low", "close", "volume"])
@@ -130,7 +130,7 @@ def audit_and_fix(db, symbols=None, backfill_days=7, autofix=False, out_dir=None
     with sqlite3.connect(db) as con, Progress() as prog:
         con.execute("PRAGMA journal_mode=WAL;"); con.execute("PRAGMA synchronous=NORMAL;")
         sym_list = symbols or list_symbols_from_db(db)
-        task = prog.add_task("[cyan]体检中...", total=len(sym_list)*len(TFS))
+        task = prog.add_task("[cyan]体检�?..", total=len(sym_list)*len(TFS))
         rows=[]
         for s in sym_list:
             for tf in TFS:
@@ -159,7 +159,7 @@ def audit_and_fix(db, symbols=None, backfill_days=7, autofix=False, out_dir=None
                                 start = int(df["ts"].iloc[-1])+1
                                 if len(df)<1500: break
                         else:
-                            # 从 5m 聚合
+                            # �?5m 聚合
                             src=f"{s}_5m"
                             if table_exists(con, src):
                                 tgt_last = get_last_ts(con, tb)
@@ -184,13 +184,13 @@ def audit_and_fix(db, symbols=None, backfill_days=7, autofix=False, out_dir=None
     csv_path=os.path.join(out_dir,"audit.csv")
     df.to_csv(csv_path, index=False, encoding="utf-8-sig")
 
-    tbl=Table(title=f"覆盖率体检（写入：{csv_path}）", show_lines=False)
+    tbl=Table(title=f"覆盖率体检（写入：{csv_path}�?, show_lines=False)
     tbl.add_column("Symbol", style="bold")
     tbl.add_column("TF")
     tbl.add_column("Rows", justify="right")
     tbl.add_column("Last TS", justify="right")
     tbl.add_column("Stale(min)", justify="right")
-    tbl.add_column("Gaps(近200)", justify="right")
+    tbl.add_column("Gaps(�?00)", justify="right")
     tbl.add_column("Status", style="bold")
     for _,r in df.sort_values(["symbol","tf"]).iterrows():
         color = "green"

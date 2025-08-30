@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-write_gpu_strategies.py — 一次性写入/注册 GPU 策略 + 注入回测解析/日志（机构级）
+write_gpu_strategies.py �?一次性写�?注册 GPU 策略 + 注入回测解析/日志（机构级�?
 运行：cd /d D:\quant_system_pro && python write_gpu_strategies.py
 """
 
@@ -50,7 +50,7 @@ def patch_file(path, patcher, desc):
 # 1) utils/gpu_accel.py
 # ==========================
 GPU_ACCEL = r'''# -*- coding: utf-8 -*-
-"""GPU 加速工具：Torch/XGBoost/LightGBM 自动检测与参数适配（机构级）"""
+"""GPU 加速工具：Torch/XGBoost/LightGBM 自动检测与参数适配（机构级�?""
 import os
 
 def _try_import(name):
@@ -108,7 +108,7 @@ def log_env():
     print("\n".join(lines))
 
 def xgb_params(params=None):
-    """给 XGBoost 参数打上 GPU 适配（自动回退 CPU）。"""
+    """�?XGBoost 参数打上 GPU 适配（自动回退 CPU）�?""
     p=dict(params or {})
     if xgb and has_cuda():
         p.setdefault('tree_method','gpu_hist')
@@ -118,7 +118,7 @@ def xgb_params(params=None):
     return p
 
 def lgbm_params(params=None):
-    """给 LightGBM 参数打上 GPU 适配（若为 GPU 版 LightGBM）。"""
+    """�?LightGBM 参数打上 GPU 适配（若�?GPU �?LightGBM）�?""
     p=dict(params or {})
     if lgb and has_cuda():
         p.setdefault('device_type','gpu')   # 新版 LightGBM
@@ -132,7 +132,7 @@ def lgbm_params(params=None):
 # 2) strategy/model_xgb_gpu.py
 # ==========================
 MODEL_XGB = r'''# -*- coding: utf-8 -*-
-"""XGBoost GPU 策略（分类）——自动用 GPU，无 GPU 时回退 CPU。"""
+"""XGBoost GPU 策略（分类）——自动用 GPU，无 GPU 时回退 CPU�?""
 import numpy as np, pandas as pd
 from utils.gpu_accel import xgb_params
 try:
@@ -162,7 +162,7 @@ def _features(df: pd.DataFrame):
         'ret1':ret1,'ret5':ret5,'ema12':ema12,'ema26':ema26,
         'macd':macd,'hist':hist,'rsi14':rsi14,'volz':volz
     }, index=df.index).replace([np.inf,-np.inf], np.nan).dropna()
-    # 目标：下一根收益是否为正（0/1）
+    # 目标：下一根收益是否为正（0/1�?
     y = (c.pct_change().shift(-1).reindex(X.index)>0).astype(int)
     return X, y
 
@@ -170,7 +170,7 @@ def strat_xgb(df: 'pd.DataFrame', lookback:int=3000, train_ratio:float=0.7,
               n_estimators:int=400, max_depth:int=6, learning_rate:float=0.05,
               subsample:float=0.8, colsample_bytree:float=0.8, threshold:float=0.5):
     if xgb is None:
-        # 没安装 xgboost → 返回全 0（空仓）
+        # 没安�?xgboost �?返回�?0（空仓）
         return pd.Series(0, index=df.index, dtype=int)
     X, y = _features(df)
     if len(X) < max(300, int(lookback*0.6)):
@@ -205,7 +205,7 @@ def strat_xgb(df: 'pd.DataFrame', lookback:int=3000, train_ratio:float=0.7,
 # 3) strategy/model_lgbm_gpu.py
 # ==========================
 MODEL_LGBM = r'''# -*- coding: utf-8 -*-
-"""LightGBM GPU 策略（分类）——device_type=gpu（若为 GPU 版 LightGBM）。"""
+"""LightGBM GPU 策略（分类）——device_type=gpu（若�?GPU �?LightGBM）�?""
 import numpy as np, pandas as pd
 from utils.gpu_accel import lgbm_params
 try:
@@ -270,7 +270,7 @@ def strat_lgbm(df: 'pd.DataFrame', lookback:int=3000, train_ratio:float=0.7,
 # 4) strategy/model_lstm_gpu.py
 # ==========================
 MODEL_LSTM = r'''# -*- coding: utf-8 -*-
-"""LSTM GPU 策略（次日方向分类）——自动用 CUDA；无 Torch/CUDA 则回退 CPU/空仓。"""
+"""LSTM GPU 策略（次日方向分类）——自动用 CUDA；无 Torch/CUDA 则回退 CPU/空仓�?""
 import numpy as np, pandas as pd
 from utils.gpu_accel import torch, torch_device
 
@@ -291,7 +291,7 @@ def strat_lstm(df: 'pd.DataFrame', lookback:int=5000, seq_len:int=32, train_rati
     y = (np.roll(X,-1) > threshold).astype('float32')
     y[-1] = y[-2]  # 尾巴对齐
 
-    # 构造序列样本
+    # 构造序列样�?
     xs, ys, idx = [], [], []
     for i in range(seq_len, len(X)):
         xs.append(X[i-seq_len:i])
@@ -346,7 +346,7 @@ def strat_lstm(df: 'pd.DataFrame', lookback:int=5000, seq_len:int=32, train_rati
 '''
 
 # ==========================
-# 5) 注册到 strategies_a1a8.py
+# 5) 注册�?strategies_a1a8.py
 # ==========================
 def patch_register_gpu_strats(s: str):
     MARK = "auto-registered GPU strategies (do not edit)"
@@ -369,17 +369,17 @@ except Exception as _e:
     return s + patch, True
 
 # ==========================
-# 6) 给 backtest/backtest_pro.py 注入：GPU日志 + 策略解析器
+# 6) �?backtest/backtest_pro.py 注入：GPU日志 + 策略解析�?
 # ==========================
 def patch_backtest_gpu_log_and_resolver(s: str):
     changed = False
-    # 注入 log_env() 调用（进入 main 即打印）
+    # 注入 log_env() 调用（进�?main 即打印）
     if "log_env()" not in s and re.search(r"def\s+main\s*\(", s):
         s = re.sub(r"(?m)^def\s+main\s*\([^)]*\)\s*:\s*\n",
                    "def main():\n    from utils.gpu_accel import log_env\n    log_env()\n",
                    s, count=1)
         changed = True
-    # 注入解析器
+    # 注入解析�?
     if "_resolve_fn(" not in s:
         s = s.replace(
             "import numpy as np",
@@ -403,28 +403,28 @@ def main():
     print("=== write_gpu_strategies.py: START ===")
     ensure_dir(STRATEGY_DIR); ensure_dir(UTILS_DIR); ensure_dir(BACKTEST_DIR)
 
-    # 1) 写入/覆盖工具与策略
+    # 1) 写入/覆盖工具与策�?
     write_file(os.path.join(UTILS_DIR, "gpu_accel.py"), GPU_ACCEL)
     write_file(os.path.join(STRATEGY_DIR, "model_xgb_gpu.py"), MODEL_XGB)
     write_file(os.path.join(STRATEGY_DIR, "model_lgbm_gpu.py"), MODEL_LGBM)
     write_file(os.path.join(STRATEGY_DIR, "model_lstm_gpu.py"), MODEL_LSTM)
 
-    # 2) 注册 GPU 策略到 strategies_a1a8.py
+    # 2) 注册 GPU 策略�?strategies_a1a8.py
     strat_a1a8 = os.path.join(STRATEGY_DIR, "strategies_a1a8.py")
     if not os.path.exists(strat_a1a8):
-        print(f"[ERR] 未找到 {strat_a1a8}，请确认路径。")
+        print(f"[ERR] 未找�?{strat_a1a8}，请确认路径�?)
     else:
         patch_file(strat_a1a8, patch_register_gpu_strats, "register GPU strategies")
 
-    # 3) 给 backtest_pro 注入 GPU 日志+解析器
+    # 3) �?backtest_pro 注入 GPU 日志+解析�?
     bt_pro = os.path.join(BACKTEST_DIR, "backtest_pro.py")
     if not os.path.exists(bt_pro):
-        print(f"[ERR] 未找到 {bt_pro}，请确认路径。")
+        print(f"[ERR] 未找�?{bt_pro}，请确认路径�?)
     else:
         patch_file(bt_pro, patch_backtest_gpu_log_and_resolver, "backtest_pro gpu_log + resolver")
 
     print("=== write_gpu_strategies.py: DONE ===")
-    print("\n后续运行：")
+    print("\n后续运行�?)
     print("  set PYTHONPATH=D:\\quant_system_pro")
     print("  python -m backtest.backtest_pro --db D:\\quant_system_v2\\data\\market_data.db --days 365 --topk 40 --outdir results")
     print("\n回测启动时会输出 [GPU] 开头的环境信息；包含这些新策略：strat_xgb_gpu / strat_lgbm_gpu / strat_lstm_gpu")

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""XGBoost GPU 策略（分类）——自动用 GPU，无 GPU 时回退 CPU。"""
+"""XGBoost GPU 策略（分类）——自动用 GPU，无 GPU 时回退 CPU�?""
 import numpy as np, pandas as pd
 from utils.gpu_accel import xgb_params
 try:
@@ -29,7 +29,7 @@ def _features(df: pd.DataFrame):
         'ret1':ret1,'ret5':ret5,'ema12':ema12,'ema26':ema26,
         'macd':macd,'hist':hist,'rsi14':rsi14,'volz':volz
     }, index=df.index).replace([np.inf,-np.inf], np.nan).dropna()
-    # 目标：下一根收益是否为正（0/1）
+    # 目标：下一根收益是否为正（0/1�?
     y = (c.pct_change().shift(-1).reindex(X.index)>0).astype(int)
     return X, y
 
@@ -37,7 +37,7 @@ def strat_xgb(df: 'pd.DataFrame', lookback:int=3000, train_ratio:float=0.7,
               n_estimators:int=400, max_depth:int=6, learning_rate:float=0.05,
               subsample:float=0.8, colsample_bytree:float=0.8, threshold:float=0.5):
     if xgb is None:
-        # 没安装 xgboost → 返回全 0（空仓）
+        # 没安�?xgboost �?返回�?0（空仓）
         return pd.Series(0, index=df.index, dtype=int)
     X, y = _features(df)
     if len(X) < max(300, int(lookback*0.6)):

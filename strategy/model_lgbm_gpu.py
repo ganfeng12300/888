@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""LightGBM GPU 策略（分类）。若检测到 GPU 版 LightGBM 自动启用 device_type=gpu。"""
+"""LightGBM GPU 策略（分类）。若检测到 GPU �?LightGBM 自动启用 device_type=gpu�?""
 import numpy as np, pandas as pd
 from utils.gpu_accel import lgbm_params
 

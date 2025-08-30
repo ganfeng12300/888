@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-tools/auto_indent_fix.py — 通用缩进自愈器
-用法：
+tools/auto_indent_fix.py �?通用缩进自愈�?
+用法�?
   python -m tools.auto_indent_fix --path "D:\\quant_system_pro\\strategy\\strategies_a1a8.py"
   python -m tools.auto_indent_fix --path "D:\\quant_system_pro\\tools\\collector_pro.py"
 """
@@ -50,7 +50,7 @@ def auto_fix(path, max_rounds=30):
         ok,msg=try_compile(path)
 
     if ok:
-        print(f"✅ 缩进自愈完成：{path}  修复轮次={rounds}  🗄️ 备份={bak}")
+        print(f"�?缩进自愈完成：{path}  修复轮次={rounds}  🗄�?备份={bak}")
     else:
         print(f"⚠️ 仍未通过编译：{path}\n最后错误：\n{msg}\n已保留备份：{bak}")
         raise SystemExit(1)

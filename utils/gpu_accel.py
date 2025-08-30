@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""GPU 加速工具：Torch/XGBoost/LightGBM 自动检测与参数适配（机构级）"""
+"""GPU 加速工具：Torch/XGBoost/LightGBM 自动检测与参数适配（机构级�?""
 import os
 
 def _try_import(name):
@@ -57,7 +57,7 @@ def log_env():
     print("\n".join(lines))
 
 def xgb_params(params=None):
-    """给 XGBoost 参数打上 GPU 适配（自动回退 CPU）。"""
+    """�?XGBoost 参数打上 GPU 适配（自动回退 CPU）�?""
     p=dict(params or {})
     if xgb and has_cuda():
         p.setdefault('tree_method','gpu_hist')
@@ -67,7 +67,7 @@ def xgb_params(params=None):
     return p
 
 def lgbm_params(params=None):
-    """给 LightGBM 参数打上 GPU 适配（若为 GPU 版 LightGBM）。"""
+    """�?LightGBM 参数打上 GPU 适配（若�?GPU �?LightGBM）�?""
     p=dict(params or {})
     if lgb and has_cuda():
         p.setdefault('device_type','gpu')   # 新版 LightGBM

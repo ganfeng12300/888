@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # File: tools/run_1symbol_parallel_strategies_safe.py
 """
-单币种机构级外层总控：
+单币种机构级外层总控�?
 - A1..A4(指标: MA/BOLL/ATR/REVERSAL) 并行
-- A5..A8(模型: LGBM/XGB/LSTM/ENSEMBLE) 串行（防 GPU 抢占）
+- A5..A8(模型: LGBM/XGB/LSTM/ENSEMBLE) 串行（防 GPU 抢占�?
 - 容错不中断、彩色进度、结束大字、自动喂实盘
-依赖：
+依赖�?
     pip install colorama pyfiglet
 """
 import os, sys, time, subprocess
@@ -42,12 +42,12 @@ def banner_big(msg, color=Fore.GREEN):
 
 def print_hdr(db, symbol, days, topk, outdir, workers):
     msg = f"""
-┌{'─'*88}┐
-│  {Style.BRIGHT}机构级回测总控（单币种并行）{Style.RESET_ALL}                                         │
-│  Symbol: {Fore.CYAN}{symbol}{Style.RESET_ALL}   Days: {days}   TopK: {topk}   并行(指标): {workers:<2}       │
-│  DB    : {db:<74}│
-│  OutDir: {outdir:<74}│
-└{'─'*88}┘
+┌{'─'*88}�?
+�? {Style.BRIGHT}机构级回测总控（单币种并行）{Style.RESET_ALL}                                         �?
+�? Symbol: {Fore.CYAN}{symbol}{Style.RESET_ALL}   Days: {days}   TopK: {topk}   并行(指标): {workers:<2}       �?
+�? DB    : {db:<74}�?
+�? OutDir: {outdir:<74}�?
+└{'─'*88}�?
 """.rstrip("\n")
     print(msg)
 
@@ -98,9 +98,9 @@ def feed_to_live(outdir):
     if p_params.exists() and p_syms.exists() and ws_script.exists():
         ps = f'Start-Process powershell -ArgumentList "-NoExit","-Command","python -u \\"{ws_script}\\" --params \\"{p_params}\\" --symbols \\"{p_syms}\\""'
         subprocess.Popen(["powershell","-Command", ps], creationflags=subprocess.CREATE_NO_WINDOW)
-        print(Fore.GREEN + "→ 已尝试启动纸面实盘窗口（独立 PowerShell）。" + Style.RESET_ALL)
+        print(Fore.GREEN + "�?已尝试启动纸面实盘窗口（独立 PowerShell）�? + Style.RESET_ALL)
     else:
-        print(Fore.YELLOW + "未自动启动实盘（缺喂入脚本或产物），路径已展示，可手动喂入。" + Style.RESET_ALL)
+        print(Fore.YELLOW + "未自动启动实盘（缺喂入脚本或产物），路径已展示，可手动喂入�? + Style.RESET_ALL)
 
 def set_num_threads_env(num=16):
     os.environ.setdefault("OMP_NUM_THREADS", str(num))
@@ -118,7 +118,7 @@ def main():
     ap.add_argument("--outdir", default=str(RESULTS_DIR_DEFAULT))
     ap.add_argument("--workers", type=int, default=3, help="指标类策略并行进程数")
     ap.add_argument("--no-feed", action="store_true", help="只导出，不启动喂实盘")
-    # 强功能（如回测内核无对应参数，忽略无影响）
+    # 强功能（如回测内核无对应参数，忽略无影响�?
     ap.add_argument("--spa", default="on", choices=["on","off"])
     ap.add_argument("--spa-alpha", default="0.05")
     ap.add_argument("--pbo", default="on", choices=["on","off"])
@@ -140,7 +140,7 @@ def main():
 
     errors = []
 
-    # 1) 指标类策略 并行
+    # 1) 指标类策�?并行
     from functools import partial
     task = partial(run_one_strategy, args.db, args.days, args.symbol, args.topk, args.outdir, extra_flags=extra_flags)
     with ProcessPoolExecutor(max_workers=max(1, args.workers)) as ex:
@@ -154,29 +154,29 @@ def main():
                 errors.append((s, -1, f"exception: {e}"))
                 print_row("ERR", s, rc=-1)
 
-    # 2) 模型类策略 串行（避免显存争抢）
+    # 2) 模型类策�?串行（避免显存争抢）
     for s in MODEL_STRATS:
         strat, rc, logf, best = run_one_strategy(args.db, args.days, args.symbol, args.topk, args.outdir, s, extra_flags)
         if rc != 0: errors.append((strat, rc, logf))
 
-    # 3) 汇总
-    print("\n" + Fore.CYAN + "═"*72 + Style.RESET_ALL)
+    # 3) 汇�?
+    print("\n" + Fore.CYAN + "�?*72 + Style.RESET_ALL)
     if errors:
-        print(Fore.YELLOW + "完成（含报错策略已跳过）：" + Style.RESET_ALL)
+        print(Fore.YELLOW + "完成（含报错策略已跳过）�? + Style.RESET_ALL)
         for s, rc, lf in errors:
             print(f"  {Fore.RED}{s}{Style.RESET_ALL} rc={rc}  日志：{lf}")
     else:
-        print(Fore.GREEN + "全部策略已完成，无错误。" + Style.RESET_ALL)
+        print(Fore.GREEN + "全部策略已完成，无错误�? + Style.RESET_ALL)
 
     # 4) 大字
     banner_big("回測完成!", color=Fore.GREEN)
 
-    # 5) 自动喂实盘
+    # 5) 自动喂实�?
     if not args.no_feed:
         feed_to_live(args.outdir)
-        banner_big("已喂入 / 已啟動", color=Fore.CYAN)
+        banner_big("已喂�?/ 已啟�?, color=Fore.CYAN)
     else:
-        print(Fore.YELLOW + "按需启动实盘：已跳过自动喂入（--no-feed）。" + Style.RESET_ALL)
+        print(Fore.YELLOW + "按需启动实盘：已跳过自动喂入�?-no-feed）�? + Style.RESET_ALL)
 
 if __name__ == "__main__":
     main()

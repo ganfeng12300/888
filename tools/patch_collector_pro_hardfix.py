@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
 tools/patch_collector_pro_hardfix.py
-- 注入去重写入：仅写 ts>MAX(ts) + ts 去重 + 空集短路（替换所有 _write_df(con,tb,df) 调用点）
-- 规范缩进：tab→4空格、去行尾空白
-- 结构扫描：把“不在 for/while 里的 break” → 函数内改 return；非函数内改 pass（多处一次性修复）
-- 自愈编译：若仍有 unexpected indent 自动消除该行前导空白并重试，直到通过（最多 50 轮）
+- 注入去重写入：仅�?ts>MAX(ts) + ts 去重 + 空集短路（替换所�?_write_df(con,tb,df) 调用点）
+- 规范缩进：tab�?空格、去行尾空白
+- 结构扫描：把“不�?for/while 里的 break�?�?函数内改 return；非函数内改 pass（多处一次性修复）
+- 自愈编译：若仍有 unexpected indent 自动消除该行前导空白并重试，直到通过（最�?50 轮）
 """
 import io, os, re, time, py_compile, traceback
 
@@ -57,17 +57,17 @@ def compute_indent(line:str)->int:
     return len(line) - len(line.lstrip(" "))
 
 def fix_break_outside_loop_structural(s:str)->str:
-    """一次性结构扫描，把不在任何 for/while 块内的 独立 break 改成 return/pass"""
+    """一次性结构扫描，把不在任�?for/while 块内�?独立 break 改成 return/pass"""
     lines = s.splitlines()
     stack = []  # list of (indent, kind)
     for i, line in enumerate(lines):
         if COMMENT_ONLY_RE.match(line):
             continue
         cur_indent = compute_indent(line)
-        # 出栈：当前缩进 <= 栈顶缩进
+        # 出栈：当前缩�?<= 栈顶缩进
         while stack and cur_indent <= stack[-1][0]:
             stack.pop()
-        # 是否块起始
+        # 是否块起�?
         m = BLOCK_START_RE.match(line)
         if m:
             kind = m.group(1)
@@ -79,7 +79,7 @@ def fix_break_outside_loop_structural(s:str)->str:
             in_loop = any(k in ("for","while") for _,k in stack)
             in_def  = any(k == "def"           for _,k in stack)
             if not in_loop:
-                # 替换为 return/pass，保留原来缩进与注释
+                # 替换�?return/pass，保留原来缩进与注释
                 indent = " " * cur_indent
                 comment = ""
                 if "#" in line:
@@ -131,9 +131,9 @@ def main():
         ok, msg = try_compile(TARGET)
 
     if ok:
-        print(f"✅ collector_pro.py 硬核修复完成并可编译。\n🗄️ 备份：{bak}")
+        print(f"�?collector_pro.py 硬核修复完成并可编译。\n🗄�?备份：{bak}")
     else:
-        print(f"⚠️ 仍未通过编译：{TARGET}\n最后错误：\n{msg}\n🗄️ 备份：{bak}")
+        print(f"⚠️ 仍未通过编译：{TARGET}\n最后错误：\n{msg}\n🗄�?备份：{bak}")
         raise SystemExit(1)
 
 if __name__ == "__main__":

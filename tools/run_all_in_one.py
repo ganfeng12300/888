@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-一窗到底 · 机构级并行总控
-- 指标类 A1–A4 并行（同一窗口内）
-- 模型类 A5–A8 串行（避免 GPU 抢占）
+一窗到�?· 机构级并行总控
+- 指标�?A1–A4 并行（同一窗口内）
+- 模型�?A5–A8 串行（避�?GPU 抢占�?
 - 彩色状态行 + 关键输出回显
 - 结束大字 + 策略汇总表 + best_combo 预览
 
-依赖：
+依赖�?
     pip install colorama pyfiglet
-可选（仅用于 best_combo 预览，不装也不影响运行）：
+可选（仅用�?best_combo 预览，不装也不影响运行）�?
     pip install pandas
 """
 
@@ -27,11 +27,11 @@ BACKTEST_PY = ROOT / "backtest" / "backtest_pro.py"
 PYEXE       = sys.executable
 RESULTS_DIR = ROOT / "results" / "parallel_run"
 
-# A1-A8 分组（按你当前映射：A1→MA, A2→BOLL, A3→ATR, A4→REVERSAL, A5→LGBM, A6→XGB, A7→LSTM, A8→ENSEMBLE）
-INDICATOR = ["A1", "A2", "A3", "A4"]   # 指标类并行
-MODEL     = ["A5", "A6", "A7", "A8"]   # 模型类串行（防 GPU 抢占）
+# A1-A8 分组（按你当前映射：A1→MA, A2→BOLL, A3→ATR, A4→REVERSAL, A5→LGBM, A6→XGB, A7→LSTM, A8→ENSEMBLE�?
+INDICATOR = ["A1", "A2", "A3", "A4"]   # 指标类并�?
+MODEL     = ["A5", "A6", "A7", "A8"]   # 模型类串行（�?GPU 抢占�?
 
-SUMMARY = []  # 收集每个策略的执行摘要
+SUMMARY = []  # 收集每个策略的执行摘�?
 
 def set_threads_env(num=16):
     os.environ.setdefault("OMP_NUM_THREADS", str(num))
@@ -52,12 +52,12 @@ def banner_big(msg, color=Fore.GREEN):
 def print_hdr(db, symbol, days, topk, outdir, workers):
     box = 96
     print(f"""
-┌{'─'*(box-2)}┐
-│  {Style.BRIGHT}机构级一窗并行总控{Style.RESET_ALL}  |  指标: 并行 {workers}  |  模型: 串行
-│  Symbol: {Fore.CYAN}{symbol}{Style.RESET_ALL}   Days: {days}   TopK: {topk}
-│  DB    : {db}
-│  OutDir: {outdir}
-└{'─'*(box-2)}┘
+┌{'─'*(box-2)}�?
+�? {Style.BRIGHT}机构级一窗并行总控{Style.RESET_ALL}  |  指标: 并行 {workers}  |  模型: 串行
+�? Symbol: {Fore.CYAN}{symbol}{Style.RESET_ALL}   Days: {days}   TopK: {topk}
+�? DB    : {db}
+�? OutDir: {outdir}
+└{'─'*(box-2)}�?
 """.rstrip("\n"))
 
 def row(status, strat, extra=""):
@@ -72,10 +72,10 @@ def stream_proc(cmd, log_file):
     for line in iter(p.stdout.readline, ""):
         lf.write(line)
         low = line.lower()
-        # 轻量回显关键行（提神但不刷屏）
+        # 轻量回显关键行（提神但不刷屏�?
         if ("best loss" in low) or ("best score" in low) or ("trial/s" in low) or (line.strip().endswith("%")):
             last_line = line.strip()
-            print(Fore.WHITE + "  ↳ " + last_line[:110] + Style.RESET_ALL)
+            print(Fore.WHITE + "  �?" + last_line[:110] + Style.RESET_ALL)
     p.wait()
     lf.close()
     return p.returncode, last_line
@@ -96,7 +96,7 @@ def run_one(db, days, symbol, topk, outdir, strat):
     if rc == 0: row("OK", strat, extra=extra)
     else:       row("ERR", strat, extra=f"rc={rc}  log={logf}")
 
-    # —— 收集摘要（尽量从 last 中提取 best loss 浮点数）——
+    # —�?收集摘要（尽量从 last 中提�?best loss 浮点数）—�?
     best_loss = None
     if last:
         import re
@@ -118,7 +118,7 @@ def main():
     ap.add_argument("--topk", type=int, default=40)
     ap.add_argument("--outdir", default=str(RESULTS_DIR))
     ap.add_argument("--workers", type=int, default=3, help="指标类并行进程数")
-    ap.add_argument("--threads", type=int, default=16, help="数值库线程数")
+    ap.add_argument("--threads", type=int, default=16, help="数值库线程�?)
     args = ap.parse_args()
 
     set_threads_env(args.threads)
@@ -138,7 +138,7 @@ def main():
                 row("ERR", s, extra=str(e))
                 errors.append((s, -1, f"exception: {e}"))
 
-    # === 2) 模型类串行（防止 GPU 抢占）
+    # === 2) 模型类串行（防止 GPU 抢占�?
     for s in MODEL:
         strat, rc, logf, last = run_one(args.db, args.days, args.symbol, args.topk, args.outdir, s)
         if rc != 0: errors.append((strat, rc, logf))
@@ -150,15 +150,15 @@ def main():
     order = INDICATOR + MODEL
     by_tag = {r["strat"]: r for r in SUMMARY}
     print("\n" + Fore.CYAN + "策略执行汇总：" + Style.RESET_ALL)
-    print("┌────────┬────────┬───────────────┬──────────────────────────────────────────────┐")
-    print("│ 策略    │ 状态   │ best loss     │ 日志                                         │")
-    print("├────────┼────────┼───────────────┼──────────────────────────────────────────────┤")
+    print("┌────────┬────────┬───────────────┬──────────────────────────────────────────────�?)
+    print("�?策略    �?状�?  �?best loss     �?日志                                         �?)
+    print("├────────┼────────┼───────────────┼──────────────────────────────────────────────�?)
     for tag in order:
         r = by_tag.get(tag, {"status":"-", "best_loss":None, "log":"-"})
-        print("│ {:<6} │ {:<6} │ {:>13} │ {:<44} │".format(
+        print("�?{:<6} �?{:<6} �?{:>13} �?{:<44} �?.format(
             tag, color_status(r["status"]), fmt_loss(r.get("best_loss")), Path(r.get("log","-")).name[:44]
         ))
-    print("└────────┴────────┴───────────────┴──────────────────────────────────────────────┘")
+    print("└────────┴────────┴───────────────┴──────────────────────────────────────────────�?)
 
     # === 4) best_combo 预览（可选） ===
     try:
@@ -166,20 +166,20 @@ def main():
         combo = Path("data") / "best_combo.csv"
         if combo.exists():
             df = pd.read_csv(combo, nrows=8)
-            print("\n" + Fore.CYAN + "best_combo.csv 预览（前 8 行）：" + Style.RESET_ALL)
+            print("\n" + Fore.CYAN + "best_combo.csv 预览（前 8 行）�? + Style.RESET_ALL)
             cols = [c for c in df.columns if c not in ("参数JSON",)]
             print(df[cols].to_string(index=False))
     except Exception:
         pass
 
-    # === 5) 完成大字与错误回顾 ===
-    print("\n" + Fore.CYAN + "═"*78 + Style.RESET_ALL)
+    # === 5) 完成大字与错误回�?===
+    print("\n" + Fore.CYAN + "�?*78 + Style.RESET_ALL)
     if errors:
-        print(Fore.YELLOW + "完成（含报错策略已记录）：" + Style.RESET_ALL)
+        print(Fore.YELLOW + "完成（含报错策略已记录）�? + Style.RESET_ALL)
         for s, rc, lf in errors:
             print(f"  {Fore.RED}{s}{Style.RESET_ALL} rc={rc}  日志：{lf}")
     else:
-        print(Fore.GREEN + "全部策略完成，无错误。" + Style.RESET_ALL)
+        print(Fore.GREEN + "全部策略完成，无错误�? + Style.RESET_ALL)
 
     banner_big("回測完成!", color=Fore.GREEN)
 

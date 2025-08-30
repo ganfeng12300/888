@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-采集层（Binance USDT 永续连续合约）：覆盖率体检、历史补齐、可选守护。
-- 历史：REST continuousKlines 分页拉取（每批<=1500）
-- 存储：SQLite WAL，表名 {SYMBOL}_{TF}，字段 [ts, open, high, low, close, volume]
+采集层（Binance USDT 永续连续合约）：覆盖率体检、历史补齐、可选守护�?
+- 历史：REST continuousKlines 分页拉取（每�?=1500�?
+- 存储：SQLite WAL，表�?{SYMBOL}_{TF}，字�?[ts, open, high, low, close, volume]
 """
 import argparse, time, os, math, requests, pandas as pd
 from tools.db_util import connect_ro, connect_rw, ensure_index, table_exists, console, count_rows
@@ -60,7 +60,7 @@ def backfill(db, symbols=None, days=365):
         for s in symbols:
             for tf in TFS:
                 tb = f"{s}_{tf}"
-                # 读最新 ts
+                # 读最�?ts
                 try:
                     if table_exists(con, tb):
                         last = con.execute(f'SELECT IFNULL(MAX(ts),0) FROM "{tb}"').fetchone()[0]
@@ -69,7 +69,7 @@ def backfill(db, symbols=None, days=365):
                 except Exception:
                     last = 0
                 start = max(since, int(last) + 1)
-                console.print(f"[cyan][Backfill][/cyan] {s} {tf} 从 {start} 开始回补…")
+                console.print(f"[cyan][Backfill][/cyan] {s} {tf} �?{start} 开始回补�?)
                 total = 0
                 while True:
                     df = _fetch_klines(s, tf, start_ms=start, limit=1500)
@@ -88,7 +88,7 @@ def backfill(db, symbols=None, days=365):
                     # 如果不到满批次，说明已到末尾
                     if len(df) < 1500:
                         break
-                console.print(f"[green]完成[/green] {s} {tf} 累计新增 {total} 行")
+                console.print(f"[green]完成[/green] {s} {tf} 累计新增 {total} �?)
 
 def coverage_report(db, days=365, symbols=None):
     symbols = symbols or SYMBOLS_DEFAULT
@@ -103,7 +103,7 @@ def coverage_report(db, days=365, symbols=None):
             console.print("  ".join(line))
 
 def daemon(db, sleep=30):
-    # 简易守护：每次仅补齐最近一批
+    # 简易守护：每次仅补齐最近一�?
     console.print("[bold yellow]实时守护启动[/bold yellow]（每 %ss 补齐一次）" % sleep)
     while True:
         try:

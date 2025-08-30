@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-统一实盘路由（Binance/OKX/Bitget）
-- 读取 data/best_combo.csv（回测最优组合）
+统一实盘路由（Binance/OKX/Bitget�?
+- 读取 D:\\SHUJU888\\data\\best_combo.csv（回测最优组合）
 - 从同一数据库读取最新K线计算信号（口径一致）
-- 名义按“每笔风险%%”预算；**冰山分单**执行；Prometheus 指标
+- 名义按“每笔风�?%”预算；**冰山分单**执行；Prometheus 指标
 """
 import os, time, json, pandas as pd, numpy as np
 from tools.config import get_db_path, runtime_params, load_keys
@@ -13,8 +13,8 @@ from live.executors import BinanceExec, OkxExec, BitgetExec
 from prometheus_client import Counter, Gauge, start_http_server
 
 DB=get_db_path()
-BEST="data/best_combo.csv"
-ROUTE="data/route_map.csv"
+BEST="D:\\SHUJU888\\data\\best_combo.csv"
+ROUTE="D:\\SHUJU888\\data\\route_map.csv"
 TFS=["5m","15m","30m","1h","2h","4h","1d"]
 
 # 指标
@@ -73,7 +73,7 @@ def iceberg_plan(total_notional, last_px, max_child=500.0, parts=5):
     weights=np.linspace(1.0,0.6,n)  # 前重后轻
     weights=weights/weights.sum()
     slots=(total_notional*weights).tolist()
-    return [max(5.0, s) for s in slots]  # 每单最少 5 USDT
+    return [max(5.0, s) for s in slots]  # 每单最�?5 USDT
 
 def main():
     rp=runtime_params()
@@ -81,7 +81,7 @@ def main():
     console.print(f"[blue]Metrics on :{rp['metrics_port']}[/blue]")
 
     if not os.path.exists(BEST):
-        console.print("[red]缺少 data/best_combo.csv，请先运行回测[/red]"); return
+        console.print("[red]缺少 D:\\SHUJU888\\data\\best_combo.csv，请先运行回测[/red]"); return
     best=pd.read_csv(BEST)
     symbols=sorted(set(best["Symbol"].astype(str)))
     route=_load_route_map(symbols)
@@ -123,10 +123,10 @@ def main():
                     EXPO.labels(symbol=sym, exchange=ex).set(child)
                     time.sleep(0.2)
                 positions[sym]={"pos":1,"entry":last,"qty":notional/last,"ex":ex}
-                console.print(f"[green]开多[/] {sym} @{last:.4f} notional≈{notional:.2f} → {ex}")
+                console.print(f"[green]开多[/] {sym} @{last:.4f} notional≈{notional:.2f} �?{ex}")
 
             elif sig==-1 and st["pos"]==1:
-                # 平仓（同样可冰山）
+                # 平仓（同样可冰山�?
                 child_notional=st["qty"]*last/3.0
                 for _ in range(3):
                     if ex=="BINANCE":
@@ -144,7 +144,7 @@ def main():
                 pnl=gross - cost
                 daily_pnl += pnl; PNL.set(daily_pnl)
                 positions[sym]={"pos":0,"entry":0.0,"qty":0.0,"ex":ex}
-                console.print(f"[red]平多[/] {sym} @{last:.4f} pnl={pnl:.4f} 累计={daily_pnl:.4f} → {ex}")
+                console.print(f"[red]平多[/] {sym} @{last:.4f} pnl={pnl:.4f} 累计={daily_pnl:.4f} �?{ex}")
 
             if daily_pnl <= -abs(rp["max_daily_loss"]):
                 console.print("[red]当日回撤触发停机[/red]"); return

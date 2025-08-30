@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-满血机构版 · 一窗到底并行总控（单窗口）
-- 任务调度：总并发 W、模型并发 M（默认 M=1 防显存抢占）
-- 指标 A1~A4 / 模型 A5~A8 混合流水，自动保持“槽位满载”
+满血机构�?· 一窗到底并行总控（单窗口�?
+- 任务调度：总并�?W、模型并�?M（默�?M=1 防显存抢占）
+- 指标 A1~A4 / 模型 A5~A8 混合流水，自动保持“槽位满载�?
 - 同一窗口彩色输出（带策略前缀），实时捕捉 best loss / trial 速率 / ETA
 - 结束：彩色汇总表 + best_combo 预览 + 大字 banner
 
-依赖：
+依赖�?
     pip install colorama pyfiglet
-（best_combo 预览可选 pandas：pip install pandas）
+（best_combo 预览可�?pandas：pip install pandas�?
 """
 
 import os, sys, time, subprocess, threading, queue, math, re
@@ -31,13 +31,13 @@ MODEL     = ["A5","A6","A7","A8"]
 
 SUMMARY = []  # {strat,status,rc,best_loss,log,dur_sec}
 RUNSTAT = {}  # tag -> {"done":int, "total":int, "rate":float, "eta_sec":float, "start":float}
-TOTAL_TRIALS_DEFAULT = 25  # 若无法从输出解析总试验数，按此估算
+TOTAL_TRIALS_DEFAULT = 25  # 若无法从输出解析总试验数，按此估�?
 
 def set_threads_env(total_hw_threads:int, total_workers:int, manual_omp:int=None):
     """
-    合理分配数值库线程，避免过度超订阅。
-    - 若用户指定 --omp-threads 则使用之；
-    - 否则按 total_threads / total_workers 估算单进程线程数（取区间 [2,16]）。
+    合理分配数值库线程，避免过度超订阅�?
+    - 若用户指�?--omp-threads 则使用之�?
+    - 否则�?total_threads / total_workers 估算单进程线程数（取区间 [2,16]）�?
     """
     if manual_omp is not None and manual_omp > 0:
         per = manual_omp
@@ -73,12 +73,12 @@ def fmt_eta(sec: float) -> str:
 def hdr(db, symbol, days, topk, outdir, workers, model_workers):
     box = 104
     print(f"""
-┌{'─'*(box-2)}┐
-│  {Style.BRIGHT}满血机构版 · 一窗并行总控{Style.RESET_ALL}  |  总并发: {workers}  |  模型并发上限: {model_workers}
-│  Symbol: {Fore.CYAN}{symbol}{Style.RESET_ALL}   Days: {days}   TopK: {topk}
-│  DB    : {db}
-│  OutDir: {outdir}
-└{'─'*(box-2)}┘
+┌{'─'*(box-2)}�?
+�? {Style.BRIGHT}满血机构�?· 一窗并行总控{Style.RESET_ALL}  |  总并�? {workers}  |  模型并发上限: {model_workers}
+�? Symbol: {Fore.CYAN}{symbol}{Style.RESET_ALL}   Days: {days}   TopK: {topk}
+�? DB    : {db}
+�? OutDir: {outdir}
+└{'─'*(box-2)}�?
 """.rstrip("\n"))
 
 # 彩色前缀
@@ -94,9 +94,9 @@ def log_line(tag, msg):
 
 def stream_proc(p:subprocess.Popen, logf:Path, tag:str):
     """
-    持续读取子进程输出，写日志并在主窗打印关键行，返回最后一条关键行文本。
-    解析形如： 19/25 [00:09<00:03, 1.92trial/s, best loss: 0.28]
-    更新 RUNSTAT[tag] 的 done/total/rate/eta。
+    持续读取子进程输出，写日志并在主窗打印关键行，返回最后一条关键行文本�?
+    解析形如�?19/25 [00:09<00:03, 1.92trial/s, best loss: 0.28]
+    更新 RUNSTAT[tag] �?done/total/rate/eta�?
     """
     last_key = None
     RUNSTAT[tag] = RUNSTAT.get(tag, {"done":0,"total":TOTAL_TRIALS_DEFAULT,"rate":0.0,"eta_sec":0.0,"start":time.time()})
@@ -118,20 +118,20 @@ def stream_proc(p:subprocess.Popen, logf:Path, tag:str):
                     m2 = re.search(r"([0-9.]+)\s*trial/s", low)
                     rate = float(m2.group(1)) if m2 else RUNSTAT[tag]["rate"] or 0.0
 
-                    # 估算 ETA（按剩余 trial / 当前速率）
+                    # 估算 ETA（按剩余 trial / 当前速率�?
                     rem = max(0, (total - done))
                     eta_sec = rem / max(1e-6, rate)
 
                     RUNSTAT[tag].update({"done":done, "total":total, "rate":rate, "eta_sec":eta_sec})
                     last_key = line.strip()
 
-                    # 回显并附带 ETA
+                    # 回显并附�?ETA
                     log_line(tag, (last_key[:110] + f"  | ETA {fmt_eta(eta_sec)}"))
                     continue
                 except Exception:
                     pass
 
-            # 其它信息：best loss / 百分比 / 速率等，轻量回显
+            # 其它信息：best loss / 百分�?/ 速率等，轻量回显
             if ("best loss" in low) or ("best score" in low) or ("trial/s" in low) or low.endswith("%"):
                 last_key = line.strip()
                 log_line(tag, last_key[:110])
@@ -149,7 +149,7 @@ def launch_one(db, days, symbol, topk, outdir, tag):
         "--only-strategy", tag
     ]
     t0 = time.time()
-    log_line(tag, f"RUN  → {cmd!r}")
+    log_line(tag, f"RUN  �?{cmd!r}")
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1)
     last = stream_proc(p, logf, tag)
     rc = p.returncode
@@ -176,9 +176,9 @@ class Task:
 def schedule(db, days, symbol, topk, outdir, workers, model_workers):
     """
     资源约束调度器：
-      - 任意时刻最多 workers 个任务；
+      - 任意时刻最�?workers 个任务；
       - 模型类同时不超过 model_workers 个；
-      - 任务就绪即发，尽量保持满槽。
+      - 任务就绪即发，尽量保持满槽�?
     """
     q = queue.Queue()
     for t in INDICATOR: q.put(Task(t,"ind"))
@@ -198,10 +198,10 @@ def schedule(db, days, symbol, topk, outdir, workers, model_workers):
 
     last_eta_print = 0.0
     while not stop:
-        # 启动尽可能多的任务
+        # 启动尽可能多的任�?
         while (len(running) < workers) and (not q.empty()):
-            # 检查模型并发限制
-            nxt: Task = q.queue[0]  # 先偷看队首
+            # 检查模型并发限�?
+            nxt: Task = q.queue[0]  # 先偷看队�?
             if nxt.kind == "mdl" and counters["mdl"] >= model_workers:
                 # 不能上模型；尝试在队列中找到指标任务先上
                 moved = False
@@ -214,9 +214,9 @@ def schedule(db, days, symbol, topk, outdir, workers, model_workers):
                         moved = True
                         break
                     else:
-                        q.put(t)  # 模型任务暂且回队尾
+                        q.put(t)  # 模型任务暂且回队�?
                 if not moved:
-                    break  # 没有可上的指标任务，只能等
+                    break  # 没有可上的指标任务，只能�?
             else:
                 # 可上（指标；或模型且未超限）
                 t: Task = q.get()
@@ -230,11 +230,11 @@ def schedule(db, days, symbol, topk, outdir, workers, model_workers):
             stop = True
             continue
 
-        # === 每 ~10s 打印一次 Overall ETA ===
+        # === �?~10s 打印一�?Overall ETA ===
         now = time.time()
         if now - last_eta_print >= 10.0:
             try:
-                # 当前总速率（所有在跑策略的 trial/s 之和）
+                # 当前总速率（所有在跑策略的 trial/s 之和�?
                 sum_rate = 0.0
                 rem_trials_running = 0
                 for tag, st in list(RUNSTAT.items()):
@@ -243,7 +243,7 @@ def schedule(db, days, symbol, topk, outdir, workers, model_workers):
                     done  = int(st.get("done", 0) or 0)
                     rem_trials_running += max(0, total - done)
 
-                # 队列中尚未开跑的任务：用默认 trial 数估计
+                # 队列中尚未开跑的任务：用默认 trial 数估�?
                 rem_trials_queued = 0
                 try:
                     rem_trials_queued = q.qsize() * TOTAL_TRIALS_DEFAULT
@@ -256,7 +256,7 @@ def schedule(db, days, symbol, topk, outdir, workers, model_workers):
                 denom = sum_rate if sum_rate > 1e-3 else max(1.0, float(workers))
                 eta_all = rem_total / denom
                 with PRINT_LOCK:
-                    print(Fore.CYAN + f"[ETA] Overall remaining ≈ {fmt_eta(eta_all)}   "
+                    print(Fore.CYAN + f"[ETA] Overall remaining �?{fmt_eta(eta_all)}   "
                                       f"(running rate={sum_rate:.2f} trial/s, rem trials={rem_total})"
                           + Style.RESET_ALL)
             except Exception:
@@ -271,15 +271,15 @@ def print_summary():
     order = INDICATOR + MODEL
     by = {r["strat"]: r for r in SUMMARY}
     print("\n" + Fore.CYAN + "策略执行汇总：" + Style.RESET_ALL)
-    print("┌────────┬────────┬───────────────┬──────────┬──────────────────────────────────────────────┐")
-    print("│ 策略    │ 状态   │ best loss     │ 用时(s)  │ 日志                                         │")
-    print("├────────┼────────┼───────────────┼──────────┼──────────────────────────────────────────────┤")
+    print("┌────────┬────────┬───────────────┬──────────┬──────────────────────────────────────────────�?)
+    print("�?策略    �?状�?  �?best loss     �?用时(s)  �?日志                                         �?)
+    print("├────────┼────────┼───────────────┼──────────┼──────────────────────────────────────────────�?)
     for tag in order:
         r = by.get(tag, {"status":"-","best_loss":None,"dur_sec":0,"log":"-"})
-        print("│ {:<6} │ {:<6} │ {:>13} │ {:>8.1f} │ {:<44} │".format(
+        print("�?{:<6} �?{:<6} �?{:>13} �?{:>8.1f} �?{:<44} �?.format(
             tag, color_status(r["status"]), fmt_loss(r["best_loss"]), float(r.get("dur_sec",0)), Path(r["log"]).name[:44]
         ))
-    print("└────────┴────────┴───────────────┴──────────┴──────────────────────────────────────────────┘")
+    print("└────────┴────────┴───────────────┴──────────┴──────────────────────────────────────────────�?)
 
     # best_combo 预览
     try:
@@ -288,23 +288,23 @@ def print_summary():
         if combo.exists():
             df = pd.read_csv(combo, nrows=10)
             cols = [c for c in df.columns if c not in ("参数JSON",)]
-            print("\n" + Fore.CYAN + "best_combo.csv 预览（前 10 行）：" + Style.RESET_ALL)
+            print("\n" + Fore.CYAN + "best_combo.csv 预览（前 10 行）�? + Style.RESET_ALL)
             print(df[cols].to_string(index=False))
     except Exception:
         pass
 
 def main():
     cpu_threads = os.cpu_count() or 8
-    rec_workers = max(4, min(12, math.ceil(cpu_threads * 0.6)))  # 自适应建议：60% 线程数，封顶 12
+    rec_workers = max(4, min(12, math.ceil(cpu_threads * 0.6)))  # 自适应建议�?0% 线程数，封顶 12
     ap = argparse.ArgumentParser()
     ap.add_argument("--db",   default=r"D:\quant_system_v2\data\market_data.db")
     ap.add_argument("--days", type=int, default=90)
     ap.add_argument("--symbol", default="BTCUSDT")
     ap.add_argument("--topk", type=int, default=40)
     ap.add_argument("--outdir", default=str(RESULTS_DIR))
-    ap.add_argument("--workers", type=int, default=rec_workers, help="总并发（默认≈CPU*0.6，封顶12）")
-    ap.add_argument("--model-workers", type=int, default=1, help="模型策略并发上限（建议 1；显存足可试 2）")
-    ap.add_argument("--omp-threads", type=int, default=0, help="每个子进程 OMP/MKL 线程数（0=自动）")
+    ap.add_argument("--workers", type=int, default=rec_workers, help="总并发（默认≈CPU*0.6，封�?2�?)
+    ap.add_argument("--model-workers", type=int, default=1, help="模型策略并发上限（建�?1；显存足可试 2�?)
+    ap.add_argument("--omp-threads", type=int, default=0, help="每个子进�?OMP/MKL 线程数（0=自动�?)
     args = ap.parse_args()
 
     set_threads_env(cpu_threads, args.workers, manual_omp=args.omp_threads)
@@ -315,7 +315,7 @@ def main():
     t1 = time.time()
 
     print_summary()
-    print("\n" + Fore.CYAN + "═"*90 + Style.RESET_ALL)
+    print("\n" + Fore.CYAN + "�?*90 + Style.RESET_ALL)
     print(Fore.GREEN + f"总用时：{t1 - t0:.1f}s" + Style.RESET_ALL)
     banner_big("回測完成!", color=Fore.GREEN)
 

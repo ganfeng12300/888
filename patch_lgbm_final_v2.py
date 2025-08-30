@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-机构级终极补丁 v2
-- 对 strategies_a1a8.py / model_lgbm_gpu.py 自动注入：
-  1) __qs_align_lgbm：训练/预测严格按特征名对齐
+机构级终极补�?v2
+- �?strategies_a1a8.py / model_lgbm_gpu.py 自动注入�?
+  1) __qs_align_lgbm：训�?预测严格按特征名对齐
   2) __qs_lgbm_fit：early_stopping + eval_set + 静音
-  3) 全局屏蔽 "feature names" 的 UserWarning（兜底）
-- 对 backtest_pro.py：给单bar收益加剪裁，避免数值爆炸
-运行：
+  3) 全局屏蔽 "feature names" �?UserWarning（兜底）
+- �?backtest_pro.py：给单bar收益加剪裁，避免数值爆�?
+运行�?
   cd /d D:\quant_system_pro
   python patch_lgbm_final_v2.py
 """
@@ -77,8 +77,8 @@ def patch_strategy_file(path):
         print(f"[APPEND] helpers -> {path}")
         changed = True
 
-    # 把所有 model.fit(Xtr, ytr ...) 统一替换为 __qs_lgbm_fit(model, Xtr, ytr, Xte, yte)
-    # 无论后面是否已有参数，都覆盖成规范调用
+    # 把所�?model.fit(Xtr, ytr ...) 统一替换�?__qs_lgbm_fit(model, Xtr, ytr, Xte, yte)
+    # 无论后面是否已有参数，都覆盖成规范调�?
     s2 = re.sub(
         r'model\s*\.\s*fit\s*\(\s*Xtr\s*,\s*ytr\b[^)]*\)',
         '__qs_lgbm_fit(model, Xtr, ytr, Xte, yte)',
@@ -88,7 +88,7 @@ def patch_strategy_file(path):
         s = s2; changed = True
         print(f"[PATCH] fit -> __qs_lgbm_fit(...) in {path}")
 
-    # 对任何 predict_proba(...) 加对齐，避免重复包裹
+    # 对任�?predict_proba(...) 加对齐，避免重复包裹
     s2 = re.sub(
         r'predict_proba\(\s*(?!__qs_align_lgbm\()([^)]+?)\)',
         r'predict_proba(__qs_align_lgbm(model, \1))',
@@ -98,7 +98,7 @@ def patch_strategy_file(path):
         s = s2; changed = True
         print(f"[PATCH] predict_proba alignment in {path}")
 
-    # 对 predict(...) 也加对齐（不影响 predict_proba 已处理的）
+    # �?predict(...) 也加对齐（不影响 predict_proba 已处理的�?
     s2 = re.sub(
         r'(?<!proba)\bpredict\(\s*(?!__qs_align_lgbm\()([^)]+?)\)',
         r'predict(__qs_align_lgbm(model, \1))',
@@ -123,7 +123,7 @@ def patch_backtest_clip(path):
         print("[SKIP] backtest_pro.py 已有剪裁")
         return
 
-    # 在 “ret = pos.shift(1) ... * close.pct_change() ...” 之后追加一行剪裁
+    # �?“ret = pos.shift(1) ... * close.pct_change() ...�?之后追加一行剪�?
     pat = re.compile(
         r'(ret\s*=\s*pos\s*\.shift\(\s*1\s*\)[^\n]*close\s*\.pct_change\([^\)]*\)[^\n]*\n)',
         flags=re.IGNORECASE
@@ -131,7 +131,7 @@ def patch_backtest_clip(path):
     s2 = pat.sub(r'\1    ret = ret.clip(-0.5, 0.5)\n', s)
     if s2 != s:
         io.open(path, "w", encoding="utf-8").write(s2)
-        print("[PATCH] backtest_pro.py -> ret.clip(-0.5, 0.5) 已注入")
+        print("[PATCH] backtest_pro.py -> ret.clip(-0.5, 0.5) 已注�?)
     else:
         print("[WARN] 未定位到 ret 计算行，未修改（不影响运行）")
 

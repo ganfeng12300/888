@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-一次性机构级终极补丁：
-- 对 LGBM 策略：对齐训练/预测特征列，加入 early stopping，降低噪声
-- 对回测：剪裁极端单bar收益，防止数值爆炸导致 score 异常巨大
+一次性机构级终极补丁�?
+- �?LGBM 策略：对齐训�?预测特征列，加入 early stopping，降低噪�?
+- 对回测：剪裁极端单bar收益，防止数值爆炸导�?score 异常巨大
 运行：cd /d D:\quant_system_pro && python patch_institutional_final.py
 """
 import io, os, re, datetime
@@ -54,7 +54,7 @@ def patch_strategies_file(path):
         s = s2; changed = True
         print(f"[PATCH] predict_proba 对齐 -> {path}")
 
-    # model.fit(Xtr, ytr) -> 增加 early_stopping 与 eval_set、屏蔽verbose
+    # model.fit(Xtr, ytr) -> 增加 early_stopping �?eval_set、屏蔽verbose
     fit_pat = re.compile(r'model\s*\.\s*fit\s*\(\s*Xtr\s*,\s*ytr\s*\)')
     s2 = fit_pat.sub('model.fit(Xtr, ytr, eval_set=[(Xte, yte)], '
                      'eval_metric="binary_logloss", early_stopping_rounds=50, verbose=False)', s)
@@ -74,17 +74,17 @@ def patch_backtest_ret_clip(path):
     if "ret = ret.clip(" in s:
         print("[SKIP] 已存在剪裁，无需重复")
         return
-    # 在 ret = pos.shift(1)*close.pct_change() 之后插入剪裁
+    # �?ret = pos.shift(1)*close.pct_change() 之后插入剪裁
     pat = re.compile(r'(ret\s*=\s*pos\.shift\(1\)\.fillna\(0\.0\)\s*\*\s*close\.pct_change\(\)\.fillna\(0\.0\)\s*)')
     s2 = pat.sub(r'\1\n    # 防极端数据导致数值爆炸\n    ret = ret.clip(-0.5, 0.5)', s)
     if s2 != s:
         io.open(path, "w", encoding="utf-8").write(s2)
         print("[PATCH] backtest_pro.py: 加入 ret.clip(-0.5, 0.5)")
     else:
-        print("[WARN] 未匹配到 ret 计算位置，未修改（不影响运行）")
+        print("[WARN] 未匹配到 ret 计算位置，未修改（不影响运行�?)
 
 def main():
-    # 1) 策略文件补丁（两处：内置 LGBM 与 GPU 版 LGBM，如存在）
+    # 1) 策略文件补丁（两处：内置 LGBM �?GPU �?LGBM，如存在�?
     strat_path = os.path.join(BASE, "strategy", "strategies_a1a8.py")
     patch_strategies_file(strat_path)
 
@@ -92,7 +92,7 @@ def main():
     if os.path.exists(lgbm_gpu_path):
         patch_strategies_file(lgbm_gpu_path)
 
-    # 2) 回测收益剪裁（防 score 异常巨大）
+    # 2) 回测收益剪裁（防 score 异常巨大�?
     backtest_path = os.path.join(BASE, "backtest", "backtest_pro.py")
     patch_backtest_ret_clip(backtest_path)
 

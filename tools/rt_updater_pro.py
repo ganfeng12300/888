@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-rt_updater_pro.py — 实时守护（Binance 永续），批量并发拉取 5m，自动增量写表 & 聚合出高周期
-- 自动从 DB 扫描出 SYMBOL 列表（*_5m 表），也可 --symbols-file 指定清单
-- 仅请求 5m（减少耗流量/限频风险），本地聚合 15m/30m/1h/2h/4h/1d
-- 断点续传：读取各表 MAX(ts) 作为起点
-- 并发 + 节流：线程池 + 每次循环 sleep，适配几百币
+rt_updater_pro.py �?实时守护（Binance 永续），批量并发拉取 5m，自动增量写�?& 聚合出高周期
+- 自动�?DB 扫描�?SYMBOL 列表�?_5m 表），也�?--symbols-file 指定清单
+- 仅请�?5m（减少耗流�?限频风险），本地聚合 15m/30m/1h/2h/4h/1d
+- 断点续传：读取各�?MAX(ts) 作为起点
+- 并发 + 节流：线程池 + 每次循环 sleep，适配几百�?
 """
 import argparse, os, time, sqlite3
 import requests, pandas as pd
@@ -71,7 +71,7 @@ def fetch_5m(symbol, start_ms=None, limit=1500):
 
 def aggregate_from_5m(df5, tgt_tf):
     """
-    稳健版聚合：严格 1D，避免 'Per-column arrays must each be 1-dimensional'
+    稳健版聚合：严格 1D，避�?'Per-column arrays must each be 1-dimensional'
     - df5: 5m 数据（含 ts/open/high/low/close/volume），ts 毫秒
     - tgt_tf: '15m'/'30m'/'1h'/'2h'/'4h'/'1d'
     """
@@ -104,7 +104,7 @@ def aggregate_from_5m(df5, tgt_tf):
 
 def update_one_symbol(db, symbol, back_days=3, max_loops=12):
     """
-    单次调用会尝试把 symbol 的 5m 表追到最新（近 back_days 天），并生成高周期
+    单次调用会尝试把 symbol �?5m 表追到最新（�?back_days 天），并生成高周�?
     """
     now_ms=int(time.time()*1000)
     win_start = now_ms - back_days*86400000
@@ -126,7 +126,7 @@ def update_one_symbol(db, symbol, back_days=3, max_loops=12):
             start = int(df["ts"].iloc[-1])+1
             if len(df)<1500: break
 
-        # 聚合其他周期（只用近窗口的 5m）
+        # 聚合其他周期（只用近窗口�?5m�?
         src5=pd.read_sql_query(f'SELECT ts,open,high,low,close,volume FROM "{tb5}" WHERE ts>=?', con, params=(win_start,))
         if not src5.empty:
             for tf in TARGET_TFS:
@@ -142,9 +142,9 @@ def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("--db", required=True)
     ap.add_argument("--symbols-file")
-    ap.add_argument("--interval", type=int, default=30, help="每轮循环间隔秒")
+    ap.add_argument("--interval", type=int, default=30, help="每轮循环间隔�?)
     ap.add_argument("--max-workers", type=int, default=8)
-    ap.add_argument("--backfill-days", type=int, default=3, help="每轮补齐近N天")
+    ap.add_argument("--backfill-days", type=int, default=3, help="每轮补齐近N�?)
     args=ap.parse_args()
 
     syms=None
@@ -154,7 +154,7 @@ def main():
     if not syms:
         syms=list_symbols_from_db(args.db)
         if not syms:
-            console.print("[red]未在 DB 中发现 *_5m 表，无法自动获取 SYMBOL 清单。请提供 --symbols-file[/red]")
+            console.print("[red]未在 DB 中发�?*_5m 表，无法自动获取 SYMBOL 清单。请提供 --symbols-file[/red]")
             return
 
     console.rule(f"[bold green]实时守护启动 | {len(syms)} symbols | {args.max_workers} 并发 | 间隔 {args.interval}s")
@@ -165,7 +165,7 @@ def main():
             for s in syms:
                 jobs.append(ex.submit(update_one_symbol, args.db, s, args.backfill_days))
             with Progress() as prog:
-                task=prog.add_task("[cyan]更新中...", total=len(jobs))
+                task=prog.add_task("[cyan]更新�?..", total=len(jobs))
                 for fut in as_completed(jobs):
                     try: fut.result()
                     except Exception as e: console.print(f"[red]任务错误：{e}[/red]")

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-tools/ensure_unique_ts_index.py — 为K线表补齐 UNIQUE(ts) 索引（可重复执行，幂等）
+tools/ensure_unique_ts_index.py �?为K线表补齐 UNIQUE(ts) 索引（可重复执行，幂等）
 """
 import sqlite3
 import re
@@ -19,7 +19,7 @@ def main():
             cur.execute(f'CREATE UNIQUE INDEX IF NOT EXISTS "{idx}" ON "{t}"(ts)')
             created += 1
     con.commit(); con.close()
-    print(f"✅ 确保 UNIQUE(ts) 完成，处理表数：{created}")
+    print(f"�?确保 UNIQUE(ts) 完成，处理表数：{created}")
 
 if __name__ == "__main__":
     main()

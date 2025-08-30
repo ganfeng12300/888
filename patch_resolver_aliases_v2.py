@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-patch_resolver_aliases_v2.py —— 更健壮的 A1~A8 策略解析（含模糊匹配关键词）
+patch_resolver_aliases_v2.py —�?更健壮的 A1~A8 策略解析（含模糊匹配关键词）
 运行：cd /d D:\quant_system_pro && python patch_resolver_aliases_v2.py
 """
 import io, os, re, datetime
@@ -18,12 +18,12 @@ def _resolve_fn(strat_key):
     S = _imp("strategy.strategies_a1a8")
     key = str(strat_key)
 
-    # 1) 直接模块属性
+    # 1) 直接模块属�?
     if hasattr(S, key):
         fn = getattr(S, key)
         if callable(fn): return fn
 
-    # 2) 常见注册表/字典
+    # 2) 常见注册�?字典
     for k in ("STRATEGIES","STRATEGY_FUNCS","STRAT_TABLE","REGISTRY","ALIASES","ALIAS"):
         if hasattr(S, k):
             M = getattr(S, k)
@@ -38,7 +38,7 @@ def _resolve_fn(strat_key):
     names = [n for n in dir(S) if n.startswith("strat_") and callable(getattr(S,n, None))]
     lowmap = {n.lower(): n for n in names}
 
-    # 3) 标准映射关键词
+    # 3) 标准映射关键�?
     alias_keywords = {
         "A1": ["bbands","band"],
         "A2": ["break","don","channel","bo"],  # breakout/donchian/channel/bo
@@ -59,7 +59,7 @@ def _resolve_fn(strat_key):
     if m:
         num = m.group(1)
 
-    # 4) 先尝试 A\d 命名/后缀/下划线变体
+    # 4) 先尝�?A\d 命名/后缀/下划线变�?
     if num:
         patt = [
             rf"^strat_.*(?:^|_)a{num}$",   # strat_xxx_a2
@@ -72,7 +72,7 @@ def _resolve_fn(strat_key):
                 if _re.search(p, ln):
                     return getattr(S, lowmap[ln])
 
-    # 5) 再按关键词模糊匹配（按优先级顺序）
+    # 5) 再按关键词模糊匹配（按优先级顺序�?
     if up in alias_keywords:
         kws = alias_keywords[up]
         for kw in kws:
@@ -80,7 +80,7 @@ def _resolve_fn(strat_key):
                 if kw in ln:
                     return getattr(S, lowmap[ln])
 
-    # 6) A1 特殊兜底：找带 bbands 的任意策略
+    # 6) A1 特殊兜底：找�?bbands 的任意策�?
     if up == "A1":
         for ln in list(lowmap.keys()):
             if "bbands" in ln:
@@ -91,7 +91,7 @@ def _resolve_fn(strat_key):
 
 def main():
     if not os.path.exists(TARGET):
-        print(f"[ERR] 未找到 {TARGET}")
+        print(f"[ERR] 未找�?{TARGET}")
         return
     s = io.open(TARGET, "r", encoding="utf-8").read()
 
@@ -104,12 +104,12 @@ def main():
     except Exception as e:
         print(f"[WARN] 备份失败: {e}")
 
-    # 用正则替换整个 def _resolve_fn(...)
+    # 用正则替换整�?def _resolve_fn(...)
     pat = re.compile(r"(?ms)^def\s+_resolve_fn\s*\([^)]*\)\s*:\s*.*?(?=^\w|^#|\Z)")
     if pat.search(s):
         s2 = pat.sub(NEW_RESOLVER.strip()+"\n", s)
     else:
-        # 插入到首次 import numpy as np 之后
+        # 插入到首�?import numpy as np 之后
         idx = s.find('import numpy as np')
         if idx != -1:
             insert_at = idx + len('import numpy as np')
@@ -118,7 +118,7 @@ def main():
             s2 = NEW_RESOLVER.strip() + "\n" + s
 
     io.open(TARGET, "w", encoding="utf-8").write(s2)
-    print("[PATCH] _resolve_fn 已升级为 A1~A8 模糊解析版")
+    print("[PATCH] _resolve_fn 已升级为 A1~A8 模糊解析�?)
 
 if __name__ == "__main__":
     main()

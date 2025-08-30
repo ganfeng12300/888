@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-live_trader_pro.py — 机构级安全纸面/真盘双挡（默认纸面）
-- 数据源：SQLite，表名 {SYMBOL}_{TF}，字段 [ts, open, high, low, close, volume]
-- 策略：strategy/strategies_a1a8.py 中的 STRATS（A1..A8）
-- 风控：固定单笔仓位比例，含手续费；仅做多（演示版，避免复杂度）
-- 输出：彩色终端 + 落盘 CSV（trades.csv, summary.json）
+live_trader_pro.py �?机构级安全纸�?真盘双挡（默认纸面）
+- 数据源：SQLite，表�?{SYMBOL}_{TF}，字�?[ts, open, high, low, close, volume]
+- 策略：strategy/strategies_a1a8.py 中的 STRATS（A1..A8�?
+- 风控：固定单笔仓位比例，含手续费；仅做多（演示版，避免复杂度�?
+- 输出：彩色终�?+ 落盘 CSV（trades.csv, summary.json�?
 """
 import argparse, os, time, sqlite3, json, math, datetime as dt
 import pandas as pd
@@ -40,7 +40,7 @@ def load_strategy(key):
     return STRATS[key][1]
 
 def sig_to_pos(sig: pd.Series):
-    """信号转仓位(0/1)：简单持有逻辑，sig>0 持有，否则空仓；避免未来数据用 shift(0) 已在策略内处理。"""
+    """信号转仓�?0/1)：简单持有逻辑，sig>0 持有，否则空仓；避免未来数据�?shift(0) 已在策略内处理�?""
     s = sig.fillna(0.0).astype(float)
     return s
 
@@ -49,8 +49,8 @@ class PaperBroker:
         self.base_equity = float(base_equity)
         self.equity = float(base_equity)
         self.leverage = float(leverage)
-        self.position_pct = float(position_pct)  # 按总资金比例
-        self.fee_side = float(fee_side)          # 单边费率（0.0005 = 0.05%）
+        self.position_pct = float(position_pct)  # 按总资金比�?
+        self.fee_side = float(fee_side)          # 单边费率�?.0005 = 0.05%�?
         self.trades = []  # {time,symbol,tf,side,price,qty,pnl,fee,reason}
 
         self.open_pos = {}  # symbol -> dict( entry_price, qty, value )
@@ -88,16 +88,16 @@ class PaperBroker:
         return dict(win=win, loss=loss, winrate=winrate, total_pnl=total_pnl, equity=self.equity)
 
 def print_header(run_id, args):
-    console.rule(f"[bold green]🔴 实盘（{args.mode}） — run_id={run_id}")
+    console.rule(f"[bold green]🔴 实盘（{args.mode}�?�?run_id={run_id}")
     tbl = Table(box=box.SIMPLE_HEAVY)
     tbl.add_column("参数", style="bold")
-    tbl.add_column("值")
-    tbl.add_row("数据库", args.db)
+    tbl.add_column("�?)
+    tbl.add_row("数据�?, args.db)
     tbl.add_row("周期", args.tf)
     tbl.add_row("策略", args.strategy)
-    tbl.add_row("杠杆×/仓位", f"{args.leverage}× / {int(args.position_pct*100)}%/笔")
+    tbl.add_row("杠杆×/仓位", f"{args.leverage}× / {int(args.position_pct*100)}%/�?)
     tbl.add_row("费率(单边)", f"{args.fee_side*100:.3f}%")
-    tbl.add_row("轮询秒", str(args.interval))
+    tbl.add_row("轮询�?, str(args.interval))
     tbl.add_row("模式", args.mode)
     console.print(tbl)
 
@@ -106,7 +106,7 @@ def print_event_open(symbol, price, pnl_summary):
 
 def print_event_close(symbol, price, pnl, pnl_summary):
     color = "green" if pnl >= 0 else "red"
-    console.print(f"[{color}]✅ CLOSE[/] {symbol} @ {price:.4f}  单笔PNL {pnl:+.4f} | [cyan]胜率[/cyan] {pnl_summary['winrate']:.1f}%  [magenta]累计[/magenta] {pnl_summary['total_pnl']:.4f}")
+    console.print(f"[{color}]�?CLOSE[/] {symbol} @ {price:.4f}  单笔PNL {pnl:+.4f} | [cyan]胜率[/cyan] {pnl_summary['winrate']:.1f}%  [magenta]累计[/magenta] {pnl_summary['total_pnl']:.4f}")
 
 def save_results(out_dir, broker):
     ensure_dir(out_dir)
@@ -117,7 +117,7 @@ def save_results(out_dir, broker):
 
 def run_loop(args):
     if args.mode.lower() == "real":
-        console.print("[bold red]当前为安全挡：真实下单未启用。[/bold red] 我会照常跑纸面逻辑并落盘。需要对接交易所请让我再发 execution_engine。")
+        console.print("[bold red]当前为安全挡：真实下单未启用。[/bold red] 我会照常跑纸面逻辑并落盘。需要对接交易所请让我再�?execution_engine�?)
 
     run_id = dt.datetime.now().strftime("%Y%m%d-%H%M%S")
     out_dir = os.path.join("results", "live_trades", run_id)
@@ -150,10 +150,10 @@ def run_loop(args):
                 last_seen_ts[s] = latest_ts
                 any_update = True
 
-                # 计算策略信号 → 仓位 → 交易事件
+                # 计算策略信号 �?仓位 �?交易事件
                 sig = strat(df)
                 pos = sig_to_pos(sig)
-                # 最近两根：对比仓位变化决定是否开/平
+                # 最近两根：对比仓位变化决定是否开/�?
                 p_now = float(df["close"].iloc[-1])
                 pos_prev = int(round(pos.iloc[-2])) if len(pos) >= 2 else 0
                 pos_curr = int(round(pos.iloc[-1]))

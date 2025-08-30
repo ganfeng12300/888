@@ -1,9 +1,9 @@
 powershell -NoLogo -NoProfile -ExecutionPolicy Bypass -Command "$code=@'
 # -*- coding: utf-8 -*-
-# 注入式引导器（不改 backtest_pro.py）：
-# 1) 打印 FEATURES/COSTS/RISK 回显（便于核验开关与口径）
-# 2) best_combo.csv 原子落盘（防半截）
-# 3) 进程退出时自动跑 validators（SPA/PBO/DS），受 QS_ENABLE_VALIDATORS 控制
+# 注入式引导器（不�?backtest_pro.py）：
+# 1) 打印 FEATURES/COSTS/RISK 回显（便于核验开关与口径�?
+# 2) best_combo.csv 原子落盘（防半截�?
+# 3) 进程退出时自动�?validators（SPA/PBO/DS），�?QS_ENABLE_VALIDATORS 控制
 
 from __future__ import annotations
 import os, sys, re, atexit, tempfile, importlib, runpy

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-execution_engine_binance_ws.py — 机构级 WebSocket 实时执行引擎（彩色看板）
-- 仅使用 DB 内已有合约币：扫描 *_5m 表或 --symbols-file
-- 分片订阅 bookTicker（每片<=50）→ 毫秒级最新价；5s无心跳回退REST
-- 真盘 reduceOnly 市价平仓（自动识别 单向/对冲；数量按 stepSize/minQty/precision 对齐）
-- Kill-Switch：close SYMBOL / closeall / panic（并发）/ q 退出
-- 彩色实时看板（Rich Live）：全局状态、心跳延迟、仓位&PnL热力色、指令提示
+execution_engine_binance_ws.py �?机构�?WebSocket 实时执行引擎（彩色看板）
+- 仅使�?DB 内已有合约币：扫�?*_5m 表或 --symbols-file
+- 分片订阅 bookTicker（每�?=50）→ 毫秒级最新价�?s无心跳回退REST
+- 真盘 reduceOnly 市价平仓（自动识�?单向/对冲；数量按 stepSize/minQty/precision 对齐�?
+- Kill-Switch：close SYMBOL / closeall / panic（并发）/ q 退�?
+- 彩色实时看板（Rich Live）：全局状态、心跳延迟、仓�?PnL热力色、指令提�?
 
 依赖：pip install websocket-client rich requests
 """
@@ -29,7 +29,7 @@ console = Console()
 try:
     import websocket  # pip install websocket-client
 except Exception:
-    console.print("[red]缺少 websocket-client，请执行： pip install websocket-client[/red]")
+    console.print("[red]缺少 websocket-client，请执行�?pip install websocket-client[/red]")
     raise
 
 BINANCE_FAPI = "https://fapi.binance.com"
@@ -38,7 +38,7 @@ STREAM_FMT   = "{sym}@bookTicker"
 SHARD_SIZE   = 50
 HEARTBEAT_MS = 5_000
 
-# ------------------ 小工具 ------------------
+# ------------------ 小工�?------------------
 def now(): return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 def ts_ms(): return int(time.time() * 1000)
 def ensure_dir(p): os.makedirs(p, exist_ok=True); return p
@@ -66,7 +66,7 @@ def list_symbols_from_db(db):
         rows = con.execute("SELECT name FROM sqlite_master WHERE type='table' AND name LIKE '%_5m'").fetchall()
     return sorted(set(r["name"][:-3] for r in rows))
 
-# ------------------ REST 客户端 ------------------
+# ------------------ REST 客户�?------------------
 class FuturesREST:
     def __init__(self, api_key=None, api_secret=None, timeout=10, recv_window=5000):
         self.ak = (api_key or "").strip()
@@ -88,7 +88,7 @@ class FuturesREST:
 
     def _signed(self, method, path, params: dict):
         if not self.ak or not self.sk:
-            raise RuntimeError("缺少 API Key/Secret（BINANCE_API_KEY / BINANCE_API_SECRET 或 configs/keys.yaml）")
+            raise RuntimeError("缺少 API Key/Secret（BINANCE_API_KEY / BINANCE_API_SECRET �?configs/keys.yaml�?)
         d = dict(params)
         d["timestamp"] = ts_ms()
         d["recvWindow"] = self.recv_window
@@ -183,7 +183,7 @@ class WSShard(threading.Thread):
             t.start()
             while t.is_alive() and not self._stop.is_set():
                 time.sleep(0.2)
-            time.sleep(1.0)  # 退避重连
+            time.sleep(1.0)  # 退避重�?
 
     def stop(self): self._stop.set()
     def on_open(self, ws): self.err_q.put(("INFO", f"WS shard up {len(self.symbols)} symbols"))
@@ -204,7 +204,7 @@ class WSShard(threading.Thread):
         except Exception as e:
             self.err_q.put(("ERROR", f"parse message fail: {e}"))
 
-# ------------------ 执行引擎（带彩色看板） ------------------
+# ------------------ 执行引擎（带彩色看板�?------------------
 class ExecEngine:
     def __init__(self, db, symbols, mode="paper", sl_pct=0.0, tp_pct=0.0, trailing_pct=0.0,
                  ui_rows=25):
@@ -222,7 +222,7 @@ class ExecEngine:
         except Exception:
             self.dual = False
 
-        # 行情与状态
+        # 行情与状�?
         self.price: Dict[str, float] = {s:0.0 for s in symbols}
         self.stamp: Dict[str, int]   = {s:0 for s in symbols}
         self.positions: Dict[str, dict] = {}
@@ -282,7 +282,7 @@ class ExecEngine:
             self.refresh_positions()
             p = self.positions.get(sym)
             if not p or p["side"]=="NONE" or abs(p["amt"])<=0:
-                self.log_q.put(("INFO", f"{sym} 无持仓"))
+                self.log_q.put(("INFO", f"{sym} 无持�?))
                 return True
             if not self._cool_ok(sym): 
                 return False
@@ -294,7 +294,7 @@ class ExecEngine:
                 self.log_q.put(("CLOSE", f"[PAPER] {sym} qty={qty} reason={reason}"))
                 return True
 
-            # 真盘：重试直到仓位为 0 或超限
+            # 真盘：重试直到仓位为 0 或超�?
             for attempt in range(4):
                 resp = self.rest.market_reduce_only(sym, qty, side, dual=self.dual)
                 oid = resp.get("orderId", "?")
@@ -302,7 +302,7 @@ class ExecEngine:
                 self.refresh_positions()
                 p = self.positions.get(sym)
                 if not p or abs(p["amt"])<=1e-12:
-                    self.log_q.put(("CLOSE", f"[REAL] {sym} oid={oid} reason={reason} ✓"))
+                    self.log_q.put(("CLOSE", f"[REAL] {sym} oid={oid} reason={reason} �?))
                     return True
                 qty = abs(p["amt"])
             self.log_q.put(("WARN", f"仍有持仓未平 {sym} amt={p['amt']}"))
@@ -318,14 +318,14 @@ class ExecEngine:
         return ok
 
     def panic_kill(self):
-        self.log_q.put(("WARN","PANIC KILL：并发平所有仓位"))
+        self.log_q.put(("WARN","PANIC KILL：并发平所有仓�?))
         ths=[]
         for s in list(self.symbols):
             t = threading.Thread(target=self.close_symbol, args=(s,"panic"), daemon=True)
             t.start(); ths.append(t)
         for t in ths: t.join()
 
-    # ====== 命令与 WS ======
+    # ====== 命令�?WS ======
     def cmd_loop(self):
         while True:
             try: line = input().strip()
@@ -359,18 +359,18 @@ class ExecEngine:
     # ====== UI 组件 ======
     def _header_panel(self):
         mode_str = f"{self.mode.upper()}" + (" / DUAL" if self.dual else " / ONE-WAY")
-        title = Text("WS 执行引擎（机构级彩色看板）", style="bold")
+        title = Text("WS 执行引擎（机构级彩色看板�?, style="bold")
         info = Table.grid(expand=True)
         info.add_column(ratio=1); info.add_column(ratio=1); info.add_column(ratio=1)
         info.add_row(
             Text(f"模式: {mode_str}", style="yellow"),
             Text(f"订阅分片: {len(self.shards)}", style="cyan"),
-            Text(f"符号数: {len(self.symbols)}", style="magenta"),
+            Text(f"符号�? {len(self.symbols)}", style="magenta"),
         )
         return Panel(Group(title, info), border_style="bright_blue")
 
     def _status_panel(self):
-        # 消息日志（最近 6 条）
+        # 消息日志（最�?6 条）
         logs=[]
         try:
             for _ in range(6):
@@ -380,7 +380,7 @@ class ExecEngine:
         except queue.Empty:
             pass
         if not logs:
-            logs = [Text("就绪… 输入命令：close BTCUSDT | closeall | panic | q", style="dim")]
+            logs = [Text("就绪�?输入命令：close BTCUSDT | closeall | panic | q", style="dim")]
         return Panel(Group(*logs), title="事件", border_style="white", padding=(0,1))
 
     def _age_color(self, ms):
@@ -422,11 +422,11 @@ class ExecEngine:
                 Text(f"{r*100:.2f}%", style=pnl_color),
                 Text(f"{age}ms", style=age_color),
             )
-        return Panel(tbl, title="仓位 & 实时价格（优先展示有仓位）", border_style="bright_magenta")
+        return Panel(tbl, title="仓位 & 实时价格（优先展示有仓位�?, border_style="bright_magenta")
 
     def _hint_panel(self):
         lines = [
-            Text("指令：", style="bold"),
+            Text("指令�?, style="bold"),
             Text("close BTCUSDT", style="yellow"),
             Text(" | "),
             Text("closeall", style="yellow"),
@@ -434,7 +434,7 @@ class ExecEngine:
             Text("panic", style="yellow"),
             Text(" | "),
             Text("q", style="yellow"),
-            Text("    （reduceOnly 市价平仓；5s 无心跳自动回退 REST）", style="dim")
+            Text("    （reduceOnly 市价平仓�?s 无心跳自动回退 REST�?, style="dim")
         ]
         return Panel(Text.assemble(*lines), border_style="green", title="操作提示", padding=(0,1))
 
@@ -457,10 +457,10 @@ class ExecEngine:
         layout["bottom"].update(Panel(Text(f"时间 {now()}  |  DB: {self.db}", style="dim"), border_style="blue"))
         return layout
 
-    # ====== 主循环 ======
+    # ====== 主循�?======
     def run(self):
         if not self.symbols:
-            console.print("[red]未发现 *_5m 表对应的币种，请检查 DB 或使用 --symbols-file[/red]"); return
+            console.print("[red]未发�?*_5m 表对应的币种，请检�?DB 或使�?--symbols-file[/red]"); return
 
         # 初始
         self.refresh_positions()
@@ -472,7 +472,7 @@ class ExecEngine:
             last_pos_refresh = 0
             while True:
                 try:
-                    # 处理命令（非阻塞）
+                    # 处理命令（非阻塞�?
                     try: self.handle_cmd(self.cmd_q.get_nowait())
                     except queue.Empty: pass
 
@@ -518,7 +518,7 @@ def main():
     ap.add_argument("--sl-pct", type=float, default=0.0)
     ap.add_argument("--tp-pct", type=float, default=0.0)
     ap.add_argument("--trailing-pct", type=float, default=0.0)
-    ap.add_argument("--ui-rows", type=int, default=25, help="看板表格显示的最大行数")
+    ap.add_argument("--ui-rows", type=int, default=25, help="看板表格显示的最大行�?)
     args = ap.parse_args()
 
     if args.symbols_file and os.path.exists(args.symbols_file):
